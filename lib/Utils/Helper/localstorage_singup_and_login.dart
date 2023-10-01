@@ -1,5 +1,3 @@
-
-
 import 'package:delivery/Screen/about_us.dart';
 import 'package:delivery/Screen/login.dart';
 import 'package:delivery/Screen/signup.dart';
@@ -37,7 +35,7 @@ Future localStorageSignUpUser(TextEditingController name,TextEditingController e
   if(getNameImage1!.isNotEmpty && getNameImage!.isNotEmpty && getCarNumber!.isNotEmpty && getEmail!.isNotEmpty && getName!.isNotEmpty && getMobileNumber!.isNotEmpty && getPassword.toString().isNotEmpty && getDropDownValue!.isNotEmpty &&  getCountryCode!.isNotEmpty)
   {
 
-    AddUser(name,email,carNumber,mobileNumber,countryCode,context:context);
+    addUser(name,email,carNumber,mobileNumber,countryCode,context:context);
 
   }
   else
@@ -49,7 +47,7 @@ Future localStorageSignUpUser(TextEditingController name,TextEditingController e
 }
 
 Future localStorageLoginUser(TextEditingController mobileNumber,TextEditingController password,
-    String countryCode, {required BuildContext context}) async {
+    String countryCode,{required BuildContext context}) async {
 
   SharedPreferences signUpUser = await SharedPreferences.getInstance();
   signUpUser.setString('mobileNumber', mobileNumber.text);
@@ -62,7 +60,7 @@ Future localStorageLoginUser(TextEditingController mobileNumber,TextEditingContr
   if(getMobileNumber!.isNotEmpty && getPassword.toString().isNotEmpty && getCountryCode!.isNotEmpty)
   {
 
-    Navigator.of(context).push( MaterialPageRoute(builder: (context) =>  const AboutUs()));
+    login(mobileNumber,countryCode,context:context);
 
   }
   else
@@ -76,6 +74,7 @@ Future localStorageLoginUser(TextEditingController mobileNumber,TextEditingContr
 
 
 Future localStorageCheck({required BuildContext context}) async{
+
   SharedPreferences signUpUser = await SharedPreferences.getInstance();
   String? getMobileNumber = signUpUser.getString('mobileNumber') ??"";
   String? getPassword = signUpUser.getString('Password1') ??"";

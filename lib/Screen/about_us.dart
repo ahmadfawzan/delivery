@@ -1,4 +1,5 @@
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:delivery/Utils/Helper/localstorage_singup_and_login.dart';
 import 'package:delivery/Utils/Ui/imagewidgets.dart';
 import 'package:delivery/Utils/Ui/textwidgets.dart';
@@ -95,8 +96,8 @@ class _AboutUsState extends State<AboutUs> {
               MaterialButton(onPressed: (){
               if(countIndex==pages.length-1){
                  localStorageCheck(context: context);
-              }else
-              {
+
+              }else{
                 _controller.nextPage(duration: const Duration(milliseconds: 10), curve: Curves.bounceIn);
               }
               },
