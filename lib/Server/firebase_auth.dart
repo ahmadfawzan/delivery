@@ -26,23 +26,7 @@ login(mobileNumber , countryCode,{required BuildContext context}) async {
       .where('Mobile Number', isEqualTo: mobileNumber.text.toString())
       .where('country Code', isEqualTo: countryCode)
       .get().then((value) => value.size > 0 ? true : false );
-  /*// هيك بعطيني كل اشي موجود داخل
-  // collection
-  final result1 =await FirebaseFirestore.instance.collection('user').get().then((snapshot){
-    print(snapshot.docs);
-    for (var element in snapshot.docs) {
-      print(element.data());
 
-    }
-  } );
-  // بعطيني الي تحقق فيهم شرط
- final result2 =await FirebaseFirestore.instance.collection('user')
-      .where('Mobile Number', isEqualTo: mobileNumber.text.toString())
-      .where('country Code', isEqualTo: countryCode).get().then(( snapshot){
-        for (var element in snapshot.docs) {
-          print(element.data());
-        }
-     } );*/
   if(result == true){
     Navigator.push(context, MaterialPageRoute(builder: (context) => AboutUs()));
   }else{
