@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 class TextFormFieldWidgets extends StatefulWidget {
   final String hintText;
-  final Icon prefixIcon;
+  final Icon? prefixIcon;
   final double borderRudiucCircularSize;
   final IconButton? suffixIcon;
   final Function()? onTap;
@@ -18,7 +18,7 @@ class TextFormFieldWidgets extends StatefulWidget {
 
   TextFormFieldWidgets({Key? key,
   required this.hintText,
-  required this.prefixIcon,
+  this.prefixIcon,
   this.controller,
   this.suffixIcon,
   this.validator,
@@ -41,6 +41,7 @@ class _TextFormFieldWidgetsState extends State<TextFormFieldWidgets> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+
       onTap: widget.onTap,
       enableSuggestions:widget.enableSuggestions,
       autocorrect: widget.autocorrect,
@@ -52,7 +53,7 @@ class _TextFormFieldWidgetsState extends State<TextFormFieldWidgets> {
       ),
       decoration:   InputDecoration(
         alignLabelWithHint: widget.alignLabelWithHint,
-        contentPadding: const EdgeInsets.symmetric(vertical: 12),
+        contentPadding: const EdgeInsets.symmetric(vertical: 12,horizontal: 10),
         enabledBorder:  OutlineInputBorder(
           borderRadius: BorderRadius.circular(widget.borderRudiucCircularSize),
           borderSide: const BorderSide(color: Color(0xffBFBFBF)),

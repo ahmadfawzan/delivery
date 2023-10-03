@@ -1,5 +1,5 @@
 
-import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:delivery/Utils/Helper/localstorage_singup_and_login.dart';
 import 'package:delivery/Utils/Ui/imagewidgets.dart';
 import 'package:delivery/Utils/Ui/textwidgets.dart';
@@ -94,6 +94,7 @@ class _AboutUsState extends State<AboutUs> {
               TextWidgets(text: pages[index].discription,fontSize: 15,),
               const SizedBox(height: 100,),
               MaterialButton(onPressed: (){
+                 /* 0,1,2             3-1=2 */
               if(countIndex==pages.length-1){
                  localStorageCheck(context: context);
 

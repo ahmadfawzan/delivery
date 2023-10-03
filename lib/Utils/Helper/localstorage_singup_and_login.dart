@@ -1,10 +1,9 @@
-import 'package:delivery/Screen/about_us.dart';
-import 'package:delivery/Screen/login.dart';
-import 'package:delivery/Screen/signup.dart';
 
+import 'package:delivery/Screen/login.dart';
+import 'package:delivery/Screen/profile.dart';
+import 'package:delivery/Screen/signup.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import '../../Server/firebase_auth.dart';
 
 Future localStorageSignUpUser(TextEditingController name,TextEditingController email,TextEditingController carNumber,
@@ -60,12 +59,20 @@ Future localStorageLoginUser(TextEditingController mobileNumber,TextEditingContr
   if(getMobileNumber!.isNotEmpty && getPassword.toString().isNotEmpty && getCountryCode!.isNotEmpty)
   {
 
-    login(mobileNumber,countryCode,context:context);
+    login(mobileNumber,context:context);
 
   }
   else
   {
     Navigator.of(context).push( MaterialPageRoute(builder: (context) =>  const Login()));
+
+
+
+
+
+
+
+
 
 
   }
@@ -82,7 +89,7 @@ Future localStorageCheck({required BuildContext context}) async{
 
   if(getMobileNumber.isNotEmpty && getPassword.toString().isNotEmpty && getCountryCode.isNotEmpty)
   {
-    Navigator.of(context).push( MaterialPageRoute(builder: (context) =>  const AboutUs()));
+    Navigator.of(context).push( MaterialPageRoute(builder: (context) =>  const Profile()));
 
   }
   else

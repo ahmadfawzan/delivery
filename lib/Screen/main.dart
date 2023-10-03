@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:delivery/Server/firebase_options.dart';
 import 'splach_screen.dart';
 
 Future<void> main() async {

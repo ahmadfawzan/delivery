@@ -141,7 +141,7 @@ class _LoginState extends State<Login> {
 
                              children: [
                                SizedBox(width: 75,),
-                               Text('LOG IN', style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),),
+                               TextWidgets(text:"LOG IN",fontSize: 17,fontWeight: FontWeight.bold),
                                SizedBox(width: 80,),
                                Icon(Icons.arrow_forward,color:Colors.white ,size: 25,),
                              ],
