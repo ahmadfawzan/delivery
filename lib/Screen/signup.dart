@@ -164,36 +164,42 @@ class _SignUpState extends State<SignUp> {
                   const SizedBox(height: 20,),
                   Row(
                     children: [
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 5),
-                        decoration:  BoxDecoration(
-                          color: const Color(0xff15CB95),
-                          borderRadius: BorderRadius.circular(25),
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 10.0),
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 5),
+                          decoration:  BoxDecoration(
+                            color: const Color(0xff15CB95),
+                            borderRadius: BorderRadius.circular(25),
+                          ),
+                          child:countryCodePicker(countryCode,onCountryChange),
                         ),
-                        child:countryCodePicker(countryCode,onCountryChange),
                       ),
 
                       const SizedBox(width: 8,),
                        SizedBox(
                         width:246,
-                        height: 50,
-                         child:  TextFormFieldWidgets(
-                           hintText: 'Mobile Number',
-                           controller: mobileNumber,
-                           prefixIcon: const Icon(Icons.phone,color:Colors.black  ,size: 25,),
-                           alignLabelWithHint: true,
-                           validator: (value){
-                             /*r'^7[789](\d{7})$' jordan mobile number*/
-                             String validMobileNumber = r'(^[0-9]{9}$)';
-                             RegExp regExp = RegExp(validMobileNumber);
-                           if(value == null || value.isEmpty ) {
-                             return 'Please enter your Mobile Number';
-                           }
-                             if (!regExp.hasMatch(value)) {
-                               return 'Please enter 9 number only';
+                        height:80,
+                         child:  Padding(
+                           padding: const EdgeInsets.only(top :9.0),
+                           child: TextFormFieldWidgets(
+                             hintText: 'Mobile Number',
+                             controller: mobileNumber,
+                             prefixIcon: const Icon(Icons.phone,color:Colors.black  ,size: 25,),
+                             alignLabelWithHint: true,
+                             validator: (value){
+                               /*r'^7[789](\d{7})$' jordan mobile number*/
+                               String validMobileNumber = r'(^[0-9]{9}$)';
+                               RegExp regExp = RegExp(validMobileNumber);
+                             if(value == null || value.isEmpty ) {
+                               return 'Please enter your Mobile Number';
                              }
-                             return null;
-                           }
+                               if (!regExp.hasMatch(value)) {
+                                 return 'Please enter 9 number only';
+                               }
+                               return null;
+                             }
+                           ),
                          ),
                       )
                     ],
@@ -234,7 +240,14 @@ class _SignUpState extends State<SignUp> {
                                   borderRadius: BorderRadius.circular(7),
                                   borderSide: const BorderSide(color: Colors.black,width: 2),
                                 ),
-
+                                errorBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(7),
+                                  borderSide: const BorderSide(color: Colors.black,width: 2),
+                                ),
+                                focusedErrorBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(7),
+                                  borderSide: const BorderSide(color: Colors.black,width: 2),
+                                ),
                                 hintText:'Profile Picture',
                                 labelText: nameImage == null ?  "" : nameImage!.toString(),
                                 floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -264,7 +277,14 @@ class _SignUpState extends State<SignUp> {
                             borderRadius: BorderRadius.circular(7),
                             borderSide: const BorderSide(color: Colors.black,width: 2),
                           ),
-
+                          errorBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(7),
+                            borderSide: const BorderSide(color: Colors.black,width: 2),
+                          ),
+                          focusedErrorBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(7),
+                            borderSide: const BorderSide(color: Colors.black,width: 2),
+                          ),
                           hintText:nameImage1 == null ?  "License Picture" : nameImage1!.toString() ,
                           floatingLabelBehavior: FloatingLabelBehavior.always,
                           hintStyle: const TextStyle(color: Color(0xff1D1D1D),fontSize: 14,fontWeight: FontWeight.bold) ,
@@ -278,16 +298,17 @@ class _SignUpState extends State<SignUp> {
                       ),
                   const SizedBox(height: 15,),
                   TextFormFieldWidgets(
-                    hintText: 'Car Number',
-                    controller: carNumber,
-                    prefixIcon: const Icon(Icons.numbers_outlined,color:Colors.black  ,size: 25,),
-                    alignLabelWithHint: true,
                     validator: (value){
                       if(value ==null || value.isEmpty){
                         return 'Please enter your Car Number';
                       }
                       return null;
                     },
+                    hintText: 'Car Number',
+                    controller: carNumber,
+                    prefixIcon: const Icon(Icons.numbers_outlined,color:Colors.black  ,size: 25,),
+                    alignLabelWithHint: true,
+
                   ),
 
                   const SizedBox(height: 15,),
@@ -303,6 +324,7 @@ class _SignUpState extends State<SignUp> {
                       focusedBorder: OutlineInputBorder(
                         borderSide: BorderSide(color: Color(0xffB9B9B9)),
                       ),
+
 
                     ),
                       value: dropDownValue,

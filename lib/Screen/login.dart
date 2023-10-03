@@ -58,34 +58,40 @@ class _LoginState extends State<Login> {
                      children: [
                        Row(
                          children: [
-                        Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 10),
-                          decoration:  BoxDecoration(
-                            color: const Color(0xff15CB95),
-                            borderRadius: BorderRadius.circular(25),
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 10.0),
+                          child: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                            decoration:  BoxDecoration(
+                              color: const Color(0xff15CB95),
+                              borderRadius: BorderRadius.circular(25),
+                            ),
+                            child:countryCodePicker(countryCode,onCountryChange),
                           ),
-                          child:countryCodePicker(countryCode,onCountryChange),
                         ),
                            const SizedBox(width: 8,),
                             SizedBox(
                              width:235,
-                             height: 50,
-                              child: TextFormFieldWidgets(
-                                hintText: 'Mobile Number',
-                                controller: mobileNumber,
-                                prefixIcon: const Icon(Icons.phone,color:Colors.black  ,size: 25,),
-                                alignLabelWithHint: true,
-                                  validator: (value){
-                                    /*r'^7[789](\d{7})$' jordan mobile number*/
-                                    String validMobileNumber = r'(^[0-9]{9}$)';
-                                    RegExp regExp = RegExp(validMobileNumber);
-                                    if(value == null || value.isEmpty ) {
-                                      return 'Please enter your Mobile Number';
+                             height: 80,
+                              child: Padding(
+                                padding: const EdgeInsets.only(top :9.0),
+                                child: TextFormFieldWidgets(
+                                  hintText: 'Mobile Number',
+                                  controller: mobileNumber,
+                                  prefixIcon: const Icon(Icons.phone,color:Colors.black  ,size: 25,),
+                                  alignLabelWithHint: true,
+                                    validator: (value){
+                                      /*r'^7[789](\d{7})$' jordan mobile number*/
+                                      String validMobileNumber = r'(^[0-9]{9}$)';
+                                      RegExp regExp = RegExp(validMobileNumber);
+                                      if(value == null || value.isEmpty ) {
+                                        return 'Please enter your Mobile Number';
+                                      }
+                                      if (!regExp.hasMatch(value)) {
+                                        return 'Please enter 9 number only';
+                                      }
                                     }
-                                    if (!regExp.hasMatch(value)) {
-                                      return 'Please enter 9 number only';
-                                    }
-                                  }
+                                ),
                               ),
                            )
                       ],

@@ -60,7 +60,15 @@ class _TextFormFieldWidgetsState extends State<TextFormFieldWidgets> {
         ),
         focusedBorder:  OutlineInputBorder(
           borderRadius: BorderRadius.circular(widget.borderRudiucCircularSize),
-          borderSide: const BorderSide(color: Color(0xffBFBFBF)),
+          borderSide: const BorderSide(color: Color(0xffBFBFBF),),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(widget.borderRudiucCircularSize),
+          borderSide: const BorderSide(color: Color(0xffBFBFBF),),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(widget.borderRudiucCircularSize),
+          borderSide: const BorderSide(color: Color(0xffBFBFBF),),
         ),
         hintText:widget.hintText,
         labelText: widget.labelText,
