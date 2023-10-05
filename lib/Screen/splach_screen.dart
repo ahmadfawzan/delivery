@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:delivery/Utils/Ui/imagewidgets.dart';
+import 'package:delivery/Utils/Ui/image_widgets.dart';
 import 'package:flutter/material.dart';
 import 'about_us.dart';
 

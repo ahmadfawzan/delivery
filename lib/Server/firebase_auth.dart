@@ -1,9 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:delivery/Screen/login.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../Screen/login.dart';
-import '../Screen/profile.dart';
-
+import '../Screen/homepage.dart';
 
 Future<void> addUser(name,email,carNumber, mobileNumber, countryCode, {required BuildContext context})async{
   CollectionReference user = FirebaseFirestore.instance.collection('user');
@@ -20,7 +19,7 @@ Future<void> addUser(name,email,carNumber, mobileNumber, countryCode, {required 
     })
         .then((value) =>
         Navigator.of(context).push(
-            MaterialPageRoute(builder: (context) => const Login())))
+            MaterialPageRoute(builder: (context) =>   Login())))
         .catchError((error) => print(error));
   }
   else{
@@ -37,7 +36,7 @@ Future login(mobileNumber , {required BuildContext context}) async {
       .get().then((value) => value.size > 0 ? true : false );
 
   if(result == true){
-    Navigator.push(context, MaterialPageRoute(builder: (context) => Profile()));
+    Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
   }else{
     mobileNumber.text = '';
     print("inc password");

@@ -1,8 +1,8 @@
 
 
 import 'package:delivery/Utils/Helper/localstorage_singup_and_login.dart';
-import 'package:delivery/Utils/Ui/imagewidgets.dart';
-import 'package:delivery/Utils/Ui/textwidgets.dart';
+import 'package:delivery/Utils/Ui/image_widgets.dart';
+import 'package:delivery/Utils/Ui/text_widgets.dart';
 import 'package:flutter/material.dart';
 import '../Utils/Helper/about_list.dart';
 class AboutUs extends StatefulWidget {

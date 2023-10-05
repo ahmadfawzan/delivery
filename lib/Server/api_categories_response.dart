@@ -1,7 +1,8 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
-import '../Utils/Helper/get_categories_api.dart';
+
+import '../Utils/Helper/list_data_categories_api.dart';
 Future<List<Categories>> fetchCategories() async {
   final response = await http.get(Uri.parse('https://news.wasiljo.com/public/api/v1/user/categories'));
 

@@ -1,8 +1,9 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:delivery/Screen/about_us.dart';
 import 'package:delivery/Server/firebase_auth.dart';
-import 'package:delivery/Utils/Ui/textformfieldwidgets.dart';
-import 'package:delivery/Utils/Ui/textwidgets.dart';
+import 'package:delivery/Utils/Ui/textformfield_widgets.dart';
+import 'package:delivery/Utils/Ui/text_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -62,16 +63,16 @@ class _ProfileState extends State<Profile> {
                 color: Colors.white,
                 width: double.infinity,
                 height: 150,
-                child:  const Row(
+                child:   Row(
                   children: [
-                    SizedBox(width: 25,),
-                    Icon(Icons.arrow_back,color:Colors.grey ,size: 25,),
-                    SizedBox(width: 80,),
-                    TextWidgets(text:"Account Info",fontSize: 20,fontWeight: FontWeight.bold,color: Colors.grey,),
+                    const SizedBox(width: 25,),
+                    IconButton( onPressed: () { Navigator.of(context).pop(); }, icon: const Icon(Icons.arrow_back,color:Colors.grey ,size: 25,),),
+                    const SizedBox(width: 80,),
+                    const TextWidgets(text:"Account Info",fontSize: 20,fontWeight: FontWeight.bold,color: Colors.grey,),
                   ],
                 ),
               ),
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
                Container(
           color: Colors.white,
           width: double.infinity,
@@ -81,7 +82,7 @@ class _ProfileState extends State<Profile> {
           child: Column(
 
                     children: [
-                      SizedBox(height: 40,),
+                      const SizedBox(height: 40,),
                       TextFormFieldWidgets(
                         labelText: 'Name',
                           hintText: '$name',
@@ -94,7 +95,7 @@ class _ProfileState extends State<Profile> {
                             }
                             return null;}
                       ),
-                  SizedBox(height: 20,),
+                  const SizedBox(height: 20,),
                       TextFormFieldWidgets(
                           labelText: 'Email',
                           hintText: '$email',
@@ -107,7 +108,7 @@ class _ProfileState extends State<Profile> {
                             }
                             return null;}
                       ),
-                      SizedBox(height: 20,),
+                      const SizedBox(height: 20,),
                       TextFormFieldWidgets(
                           labelText: 'Car Number',
                           hintText: '$carNumber',
@@ -120,7 +121,7 @@ class _ProfileState extends State<Profile> {
                             }
                             return null;}
                       ),
-                      SizedBox(height: 20,),
+                      const SizedBox(height: 20,),
                       TextFormFieldWidgets(
                           labelText: 'Mobile Number',
                           hintText: '$mobileNumber',
@@ -138,7 +139,7 @@ class _ProfileState extends State<Profile> {
                             }
                             return null;}
                       ),
-                      SizedBox(height: 20,),
+                      const SizedBox(height: 20,),
                       Container(
                         width: 150,
                         child: MaterialButton(
