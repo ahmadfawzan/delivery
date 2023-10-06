@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 
 class ImageWidget extends StatefulWidget {
   final String image;
-  final double height;
-  final double width;
+  final double? height;
+  final double? width;
   final BoxFit? fit;
   const ImageWidget({
     Key? key,
   required this.image,
-  required this.height,
-  required this.width,
+  this.height,
+  this.width,
   this.fit,
 
   }) : super(key: key);
