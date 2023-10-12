@@ -1,13 +1,15 @@
+import 'dart:convert';
+
 import 'package:delivery/Screen/profile.dart';
 import 'package:delivery/Utils/Ui/image_widgets.dart';
 import 'package:delivery/Utils/Ui/text_widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+
 import '../Server/api_categories_response.dart';
 import '../Utils/Helper/list_data_address_api.dart';
 import '../Utils/Helper/list_data_categories_api.dart';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
 import '../Utils/Ui/network_image.dart';
 import 'add_new_address.dart';
 
@@ -23,6 +25,7 @@ class _HomePageState extends State<HomePage> {
   late List addresses = [];
   String? popMenuValue;
   var scaffoldKey = GlobalKey<ScaffoldState>();
+
   Future fetchAddresses() async {
     SharedPreferences sharedtoken = await SharedPreferences.getInstance();
     String? token = sharedtoken.getString('token');
@@ -62,16 +65,23 @@ class _HomePageState extends State<HomePage> {
         child: Drawer(
           backgroundColor: Color(0xff15CB95),
           child: ListView(
-
             children: [
               ListTile(
-                contentPadding: EdgeInsets.only(left: 40,top: 100),
-                minLeadingWidth : 10,
-                leading: Icon(Icons.person,size: 25,color: Colors.white,),
-                title: const TextWidgets(text:'Profile',fontSize: 16,color: Colors.white,),
+                contentPadding: EdgeInsets.only(left: 40, top: 100),
+                minLeadingWidth: 10,
+                leading: Icon(
+                  Icons.person,
+                  size: 25,
+                  color: Colors.white,
+                ),
+                title: const TextWidgets(
+                  text: 'Profile',
+                  fontSize: 16,
+                  color: Colors.white,
+                ),
                 onTap: () {
-                  Navigator.of(context)
-                      .push(MaterialPageRoute(builder: (context) => const Profile()));
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => const Profile()));
                 },
               ),
             ],
@@ -85,19 +95,14 @@ class _HomePageState extends State<HomePage> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-
-                Builder(
-                  builder: (context) {
-                    return IconButton(
-                        onPressed: ()=> scaffoldKey.currentState?.openDrawer(),
-
-
-                        icon: const Icon(
-                          Icons.menu,
-                          size: 25,
-                        ));
-                  }
-                ),
+                Builder(builder: (context) {
+                  return IconButton(
+                      onPressed: () => scaffoldKey.currentState?.openDrawer(),
+                      icon: const Icon(
+                        Icons.menu,
+                        size: 25,
+                      ));
+                }),
                 IconButton(
                   onPressed: () {},
                   icon: const Icon(
@@ -144,9 +149,9 @@ class _HomePageState extends State<HomePage> {
                           ...addresses.map((item) => PopupMenuItem<String>(
                                 value: "Home (${item.street[0].toString()})",
                                 child: TextWidgets(
-                                  text: item.type == 0
+                                  text: item.type == 1
                                       ? "Home (${item.street.toString()})"
-                                      : item.type == 1
+                                      : item.type == 2
                                           ? "Work (${item.street.toString()})"
                                           : "Other (${item.street.toString()})",
                                   textOverFlow: TextOverflow.ellipsis,

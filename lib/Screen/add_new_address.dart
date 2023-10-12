@@ -100,9 +100,9 @@ class _AddNewAddressState extends State<AddNewAddress> {
       markerId: const MarkerId('1'),
       draggable: true,
       onDragEnd: (LatLng v) {
-        getAddressAndcity();
         lat = v.latitude;
         long = v.longitude;
+        getAddressAndcity();
       },
       position: LatLng(lat, long),
     )
