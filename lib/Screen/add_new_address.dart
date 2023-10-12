@@ -24,7 +24,6 @@ class _AddNewAddressState extends State<AddNewAddress> {
   late Position loction;
   var lat;
   var long;
-
   CameraPosition? _kGooglePlex;
   int selectedOption = 1;
   String? city;

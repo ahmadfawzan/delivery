@@ -1,3 +1,4 @@
+import 'package:delivery/Screen/profile.dart';
 import 'package:delivery/Utils/Ui/image_widgets.dart';
 import 'package:delivery/Utils/Ui/text_widgets.dart';
 import 'package:flutter/material.dart';
@@ -21,7 +22,7 @@ class _HomePageState extends State<HomePage> {
   late Future<List<Categories>> fetchcategories;
   late List addresses = [];
   String? popMenuValue;
-
+  var scaffoldKey = GlobalKey<ScaffoldState>();
   Future fetchAddresses() async {
     SharedPreferences sharedtoken = await SharedPreferences.getInstance();
     String? token = sharedtoken.getString('token');
@@ -55,6 +56,28 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: scaffoldKey,
+      drawer: Container(
+        width: 230,
+        child: Drawer(
+          backgroundColor: Color(0xff15CB95),
+          child: ListView(
+
+            children: [
+              ListTile(
+                contentPadding: EdgeInsets.only(left: 40,top: 100),
+                minLeadingWidth : 10,
+                leading: Icon(Icons.person,size: 25,color: Colors.white,),
+                title: const TextWidgets(text:'Profile',fontSize: 16,color: Colors.white,),
+                onTap: () {
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (context) => const Profile()));
+                },
+              ),
+            ],
+          ),
+        ),
+      ),
       body: Column(
         children: [
           Container(
@@ -62,14 +85,19 @@ class _HomePageState extends State<HomePage> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                IconButton(
-                    onPressed: () {
-                      MaterialLocalizations.of(context).openAppDrawerTooltip;
-                    },
-                    icon: const Icon(
-                      Icons.menu,
-                      size: 25,
-                    )),
+
+                Builder(
+                  builder: (context) {
+                    return IconButton(
+                        onPressed: ()=> scaffoldKey.currentState?.openDrawer(),
+
+
+                        icon: const Icon(
+                          Icons.menu,
+                          size: 25,
+                        ));
+                  }
+                ),
                 IconButton(
                   onPressed: () {},
                   icon: const Icon(

@@ -1,9 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 import 'package:delivery/Utils/Ui/text_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import '../Server/firebase_auth_ Just_to_learn.dart';
 import '../Utils/Ui/material_button_widgets.dart';
 import '../Utils/Ui/text_form_field_widgets.dart';
@@ -22,13 +21,65 @@ class _ProfileState extends State<Profile> {
   String? name;
   String? email;
   String? mobileNumber;
-  String? carNumber;
   final TextEditingController nameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController mobileNumberController = TextEditingController();
-  final TextEditingController carNumberController = TextEditingController();
 
-  Future getData() async {
+  Future UpdateProfile() async {
+    SharedPreferences sharedtoken = await SharedPreferences.getInstance();
+    String? token = sharedtoken.getString('token');
+
+    final response = await http.put(
+      Uri.parse(
+          'https://news.wasiljo.com/public/api/v1/user/update_profile?lang=ar'),
+      headers: {
+        'Authorization': 'Bearer $token',
+      },
+
+      body: {
+        "name": nameController.text.isEmpty ? name : nameController.text.toString(),
+        "email": emailController.text.isEmpty?email:emailController.text.toString(),
+        "mobile": mobileNumberController.text.isEmpty?mobileNumber:'962${mobileNumberController.text.toString()}',
+      },
+    );
+    print(nameController.text.toString());
+    print(emailController.text.toString());
+    print('962${mobileNumberController.text.toString()}');
+    if (response.statusCode == 200) {
+      final jsonRes = json.decode(response.body);
+      final ProfilList = jsonRes['data']['user'];
+      print(ProfilList);
+    } else {
+      throw Exception('Failed to load Profile');
+    }
+  }
+
+  Future getProfile() async {
+    SharedPreferences sharedtoken = await SharedPreferences.getInstance();
+    String? token = sharedtoken.getString('token');
+
+    final response = await http.put(
+      Uri.parse(
+          'https://news.wasiljo.com/public/api/v1/user/update_profile?lang=ar'),
+      headers: {
+        'Authorization': 'Bearer $token',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final jsonRes = json.decode(response.body);
+      final ProfilList = jsonRes['data']['user'];
+      setState(() {
+        name = ProfilList['name'];
+        email = ProfilList['email'];
+        mobileNumber = ProfilList['mobile'];
+      });
+    } else {
+      throw Exception('Failed to load Profile');
+    }
+  }
+
+  /*Future getData() async {
     SharedPreferences signUpUser = await SharedPreferences.getInstance();
     String? getMobileNumber = signUpUser.getString('mobileNumber');
 
@@ -49,12 +100,12 @@ class _ProfileState extends State<Profile> {
       mobileNumber = ds['Mobile Number'];
       carNumber = ds['Car Number'];
     });
-  }
+  }*/
 
   @override
   void initState() {
-    getData().whenComplete(() => setState(() {}));
-
+    /*getData().whenComplete(() => setState(() {}));*/
+    getProfile();
     super.initState();
   }
 
@@ -70,7 +121,7 @@ class _ProfileState extends State<Profile> {
           child: Row(
             children: [
               const SizedBox(
-                width: 25,
+                width: 15,
               ),
               IconButton(
                 onPressed: () {
@@ -83,7 +134,7 @@ class _ProfileState extends State<Profile> {
                 ),
               ),
               const SizedBox(
-                width: 80,
+                width: 60,
               ),
               const TextWidgets(
                 text: "Account Info",
@@ -182,7 +233,7 @@ class _ProfileState extends State<Profile> {
                   const SizedBox(
                     height: 20,
                   ),
-                  TextFormFieldWidgets(
+                  /*TextFormFieldWidgets(
                       labeltext: 'Car Number',
                       hintText: '$carNumber',
                       controller: carNumberController,
@@ -219,7 +270,7 @@ class _ProfileState extends State<Profile> {
                       }),
                   const SizedBox(
                     height: 20,
-                  ),
+                  ),*/
                   TextFormFieldWidgets(
                       labeltext: 'Mobile Number',
                       hintText: '$mobileNumber',
@@ -267,16 +318,7 @@ class _ProfileState extends State<Profile> {
                     width: 150,
                     child: MaterialButtonWidgets(
                         onPressed: () {
-                          updateUser(
-                              name,
-                              email,
-                              mobileNumber,
-                              carNumber,
-                              nameController,
-                              emailController,
-                              mobileNumberController,
-                              carNumberController,
-                              documentID);
+                          UpdateProfile();
                         },
                         height: 45,
                         minWidth: double.infinity,
