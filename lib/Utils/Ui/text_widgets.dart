@@ -1,8 +1,6 @@
 import 'dart:ui';
 
-
 import 'package:flutter/material.dart';
-
 
 class TextWidgets extends StatefulWidget {
   final String text;
@@ -10,6 +8,8 @@ class TextWidgets extends StatefulWidget {
   final FontWeight? fontWeight;
   final Color? color;
   final TextDecoration? textDecoration;
+  final TextOverflow? textOverFlow;
+
   const TextWidgets({
     Key? key,
     required this.text,
@@ -17,6 +17,7 @@ class TextWidgets extends StatefulWidget {
     this.fontWeight,
     this.color,
     this.textDecoration,
+    this.textOverFlow,
   }) : super(key: key);
 
   @override
@@ -26,6 +27,14 @@ class TextWidgets extends StatefulWidget {
 class _TextWidgetsState extends State<TextWidgets> {
   @override
   Widget build(BuildContext context) {
-    return Text(widget.text,style: TextStyle(fontSize: widget.fontSize,fontWeight: widget.fontWeight, color: widget.color ,decoration: widget.textDecoration),);
+    return Text(
+      widget.text,
+      style: TextStyle(
+          overflow: widget.textOverFlow,
+          fontSize: widget.fontSize,
+          fontWeight: widget.fontWeight,
+          color: widget.color,
+          decoration: widget.textDecoration),
+    );
   }
 }

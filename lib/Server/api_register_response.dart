@@ -1,28 +1,38 @@
-
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-void FetchSingUp(name,email,carNumber,password,mobileNumber, countryCode, {required BuildContext context}) async {
-  final response = await http.post(Uri.parse('https://news.wasiljo.com/public/api/v1/user/register'),
-  headers: {
+import '../Screen/login.dart';
+
+void FetchRegister(name, email, password, carNumber, mobileNumber, countryCode,
+    {required BuildContext context}) async {
+  SharedPreferences sharedtoken = await SharedPreferences.getInstance();
+  Map<String, String> header = {
     'Accept': 'application/json',
-     'Content-Type': 'application/json'
-  },
-  body: {
-    "name":"$name",
-    "mobile":"${countryCode + mobileNumber}",
-    "password":"$password",
-    "email":"$email",
-    "account_type":"$carNumber",
-  }
-  );
-  var data = jsonDecode(response.body);
-  if (response.statusCode == 200) {
-  print(data['token']);
-  } else {
-    throw Exception('Failed to load Categories');
-  }
+    'Content-Type': 'application/json'
+  };
+  final msg = jsonEncode({
+    "name": name.text,
+    "mobile": countryCode.toString() + mobileNumber.text,
+    "email": email.text,
+    "password": password.text,
+    "account_type": carNumber.text,
+  });
 
+  final response = await http.post(
+    Uri.parse('https://news.wasiljo.com/public/api/v1/user/register'),
+    headers: header,
+    body: msg,
+  );
+
+  var data = json.decode(response.body);
+  if (response.statusCode == 200) {
+    sharedtoken.setString('token', data['data']['token']);
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => const Login()));
+  } else {
+    throw Exception('Failed to load register');
+  }
 }

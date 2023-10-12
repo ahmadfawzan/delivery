@@ -1,9 +1,14 @@
 import 'package:delivery/Utils/Ui/image_widgets.dart';
 import 'package:delivery/Utils/Ui/text_widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../Server/api_categories_response.dart';
+import '../Utils/Helper/list_data_address_api.dart';
 import '../Utils/Helper/list_data_categories_api.dart';
-import '../Utils/Ui/image_network_image.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import '../Utils/Ui/network_image.dart';
+import 'add_new_address.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -13,48 +18,145 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  late Future<List<Categories>> fetchcategories;
+  late List addresses = [];
+  String? popMenuValue;
+  Future fetchAddresses() async {
+    SharedPreferences sharedtoken = await SharedPreferences.getInstance();
+    String? token = sharedtoken.getString('token');
 
+    final response = await http.get(
+      Uri.parse('https://news.wasiljo.com/public/api/v1/user/addresses'),
+      headers: {
+        'Authorization': 'Bearer $token',
+      },
+    );
+    if (response.statusCode == 200) {
+      final jsonRes = json.decode(response.body);
+      final addressList = jsonRes['data']['addresses'] as List<dynamic>;
+      setState(() {
+        addresses = addressList.map((json) => Address.fromJson(json)).toList();
+      });
+    } else {
+      throw Exception('Failed to load Addresses');
+    }
+
+  }
+
+  @override
+  void initState() {
+    setState(() {
+      fetchcategories = fetchCategories();
+    });
+    fetchAddresses();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
-
         children: [
           Container(
-          padding: const EdgeInsets.only(top: 40,right:18,left: 12),
-          child:  Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              IconButton(onPressed:(){MaterialLocalizations.of(context).openAppDrawerTooltip;} , icon: const Icon(Icons.menu,size: 25,)),
-              IconButton(onPressed: () {  },icon:const Icon(Icons.shopping_bag,color: Color(0xff4E5156),size: 25,), )
-            ],
+            padding: const EdgeInsets.only(top: 40, right: 18, left: 12),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                IconButton(
+                    onPressed: () {
+                      MaterialLocalizations.of(context).openAppDrawerTooltip;
+                    },
+                    icon: const Icon(
+                      Icons.menu,
+                      size: 25,
+                    )),
+                IconButton(
+                  onPressed: () {},
+                  icon: const Icon(
+                    Icons.shopping_bag,
+                    color: Color(0xff4E5156),
+                    size: 25,
+                  ),
+                )
+              ],
+            ),
           ),
+          const SizedBox(
+            height: 7,
           ),
-          const SizedBox(height: 7,),
           const Padding(
             padding: EdgeInsets.only(right: 235.0),
-            child: TextWidgets(text:"Delvering To",fontSize: 13,fontWeight: FontWeight.bold,color: Colors.grey,),
+            child: TextWidgets(
+              text: "Delvering To",
+              fontSize: 13,
+              fontWeight: FontWeight.bold,
+              color: Colors.grey,
+            ),
           ),
-          SizedBox(height: 30,),
+          const SizedBox(
+            height: 5,
+          ),
+          Padding(
+            padding: const EdgeInsets.only(right: 190.0),
+            child: SizedBox(
+                width: 120,
+                height: 40,
+                child: PopupMenuButton<String>(
+                    onSelected: (value) {
+                      setState(() {
+                        popMenuValue = value;
+                      });
+                    },
+                    icon: const Icon(
+                      Icons.keyboard_arrow_down_outlined,
+                      color: Colors.green,
+                      size: 25,
+                    ),
+                    itemBuilder: (context) => [
+                          ...addresses.map((item) => PopupMenuItem<String>(
+                                value: "Home (${item.street[0].toString()})",
+                                child: TextWidgets(
+                                  text: item.type == 0
+                                      ? "Home (${item.street.toString()})"
+                                      : item.type == 1
+                                          ? "Work (${item.street.toString()})"
+                                          : "Other (${item.street.toString()})",
+                                  textOverFlow: TextOverflow.ellipsis,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              )),
+                          PopupMenuItem(
+                            child: const TextWidgets(text: '+Add new address'),
+                            onTap: () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) => AddNewAddress(),
+                                ),
+                              );
+                            },
+                          )
+                        ])),
+          ),
           Container(
             width: double.infinity,
             height: 122,
-            child:const ImageWidget(image:'assets/images/image6.png',fit: BoxFit.cover,),
+            child: const ImageWidget(
+              image: 'assets/images/image6.png',
+              fit: BoxFit.cover,
+            ),
           ),
           Expanded(
             child: FutureBuilder<List<Categories>>(
-              future: fetchCategories(),
+              future: fetchcategories,
               builder: (context, snapshot) {
-
                 if (snapshot.hasError) {
                   return const Center(
-                    child: Text('An error has occurred!'),
+                    child: TextWidgets(text: 'An error has occurred!'),
                   );
                 } else if (snapshot.hasData) {
                   return categoriesList(categories: snapshot.data!);
-                }
-                else {
+                } else {
                   return const Text('');
                 }
               },
@@ -63,15 +165,13 @@ class _HomePageState extends State<HomePage> {
           Container(
             width: double.infinity,
             height: 55,
-            color: Color(0xff15CB95),
+            color: const Color(0xff14CB95),
           )
         ],
       ),
-
     );
   }
 }
-
 
 class categoriesList extends StatefulWidget {
   const categoriesList({super.key, required this.categories});
@@ -85,31 +185,43 @@ class categoriesList extends StatefulWidget {
 class _categoriesListState extends State<categoriesList> {
   @override
   Widget build(BuildContext context) {
-    return GridView.builder(
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-
-      ),
-      itemCount: widget.categories.length,
-      itemBuilder: (context, index) {
-        return InkWell(
-          onTap: (){ print(index); },
-          child: Card(
-
+    return SingleChildScrollView(
+      child: GridView.builder(
+        physics: const NeverScrollableScrollPhysics(),
+        shrinkWrap: true,
+        scrollDirection: Axis.vertical,
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+        ),
+        itemCount: widget.categories.length,
+        itemBuilder: (context, index) {
+          return InkWell(
+            onTap: () {},
+            child: Card(
               elevation: 10,
               shadowColor: Colors.black,
               child: Column(
-
                 children: [
-                ImageNetworkWidget(image: 'https://news.wasiljo.com/public/${widget.categories[index].image}',height: 120,width: double.infinity,fit: BoxFit.fitHeight,),
-                SizedBox(height: 23,),
-                TextWidgets(text:widget.categories[index].title, fontSize: 10, fontWeight: FontWeight.bold)
+                  ImageNetworkWidget(
+                    image:
+                        'https://news.wasiljo.com/public/${widget.categories[index].image}',
+                    height: 120,
+                    width: double.infinity,
+                    fit: BoxFit.fitHeight,
+                  ),
+                  SizedBox(
+                    height: 23,
+                  ),
+                  TextWidgets(
+                      text: widget.categories[index].title,
+                      fontSize: 10,
+                      fontWeight: FontWeight.bold)
                 ],
               ),
             ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
-
 }

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+
 class TextFormFieldWidgets extends StatefulWidget {
   final String hintText;
   final Icon? prefixIcon;
-  final double borderRudiucCircularSize;
+
   final IconButton? suffixIcon;
   final Function()? onTap;
   bool readOnly;
@@ -12,25 +13,39 @@ class TextFormFieldWidgets extends StatefulWidget {
   final String? Function(String?)? validator;
   final TextEditingController? controller;
   bool autocorrect;
-  final String? labelText;
-
-
-
-  TextFormFieldWidgets({Key? key,
-  required this.hintText,
-  this.prefixIcon,
-  this.controller,
-  this.suffixIcon,
-  this.validator,
-  this.onTap,
-  this.readOnly=false,
-  this.autocorrect=false,
-  this.enableSuggestions=false,
-  this.passwordVisible=false,
-  this.labelText,
-  this.alignLabelWithHint=true,
-  this.borderRudiucCircularSize=0,
-
+  final String? labeltext;
+  final TextStyle? labelstyle;
+  final TextStyle? hintstyle;
+  final OutlineInputBorder?  enabledBorder;
+  final OutlineInputBorder? focusedBorder;
+  final OutlineInputBorder? errorBorder;
+  final OutlineInputBorder? focusedErrorBorder;
+  final UnderlineInputBorder?  enabledBorderUnderline;
+  final UnderlineInputBorder? focusedBorderUnderline;
+  final InputBorder? inputBorder;
+  TextFormFieldWidgets({
+    Key? key,
+    required this.hintText,
+    this.prefixIcon,
+    this.controller,
+    this.suffixIcon,
+    this.validator,
+    this.onTap,
+    this.readOnly = false,
+    this.autocorrect = false,
+    this.enableSuggestions = false,
+    this.passwordVisible = false,
+    this.labeltext,
+    this.alignLabelWithHint = true,
+    this.labelstyle,
+    this.hintstyle,
+    this.enabledBorder,
+    this.focusedBorder,
+    this.errorBorder,
+    this.focusedErrorBorder,
+    this.enabledBorderUnderline,
+    this.focusedBorderUnderline,
+    this.inputBorder,
   }) : super(key: key);
 
   @override
@@ -41,50 +56,30 @@ class _TextFormFieldWidgetsState extends State<TextFormFieldWidgets> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-
       onTap: widget.onTap,
-      enableSuggestions:widget.enableSuggestions,
+      readOnly: widget.readOnly,
+      enableSuggestions: widget.enableSuggestions,
       autocorrect: widget.autocorrect,
       obscureText: widget.passwordVisible,
       controller: widget.controller,
       validator: widget.validator,
-      style: const TextStyle(
-        fontSize: 16.0,
-      ),
-      decoration:   InputDecoration(
+      decoration: InputDecoration(
         alignLabelWithHint: widget.alignLabelWithHint,
-        contentPadding: const EdgeInsets.symmetric(vertical: 12,horizontal: 10),
-        enabledBorder:  OutlineInputBorder(
-          borderRadius: BorderRadius.circular(widget.borderRudiucCircularSize),
-          borderSide: const BorderSide(color: Color(0xffBFBFBF)),
-        ),
-        focusedBorder:  OutlineInputBorder(
-          borderRadius: BorderRadius.circular(widget.borderRudiucCircularSize),
-          borderSide: const BorderSide(color: Color(0xffBFBFBF),),
-        ),
-        errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(widget.borderRudiucCircularSize),
-          borderSide: const BorderSide(color: Color(0xffBFBFBF),),
-        ),
-        focusedErrorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(widget.borderRudiucCircularSize),
-          borderSide: const BorderSide(color: Color(0xffBFBFBF),),
-        ),
-        hintText:widget.hintText,
-        labelText: widget.labelText,
+        border: widget.inputBorder,
+        contentPadding:
+            const EdgeInsets.symmetric(vertical: 12, horizontal: 10),
+        enabledBorder: widget.enabledBorder??widget.enabledBorderUnderline,
+        focusedBorder: widget.focusedBorder??widget.focusedBorderUnderline,
+        errorBorder: widget.errorBorder,
+        focusedErrorBorder: widget.focusedErrorBorder,
+        hintText: widget.hintText,
+        labelText: widget.labeltext,
         floatingLabelBehavior: FloatingLabelBehavior.always,
-        labelStyle: const TextStyle(color: Color(0xff9B9B9B)),
-        hintStyle: const TextStyle(color: Color(0xff9B9B9B) ),
+        labelStyle: widget.labelstyle,
+        hintStyle: widget.hintstyle,
         prefixIcon: widget.prefixIcon,
         suffixIcon: widget.suffixIcon,
       ),
-
-    );;
+    );
   }
 }
-
-
-
-
-
-

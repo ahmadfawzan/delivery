@@ -5,13 +5,13 @@ class ImageWidget extends StatefulWidget {
   final double? height;
   final double? width;
   final BoxFit? fit;
+
   const ImageWidget({
     Key? key,
-  required this.image,
-  this.height,
-  this.width,
-  this.fit,
-
+    required this.image,
+    this.height,
+    this.width,
+    this.fit,
   }) : super(key: key);
 
   @override
@@ -21,7 +21,9 @@ class ImageWidget extends StatefulWidget {
 class _ImageWidgetState extends State<ImageWidget> {
   @override
   Widget build(BuildContext context) {
-    return Image(image: AssetImage(widget.image),height: widget.height,
+    return Image(
+      image: AssetImage(widget.image),
+      height: widget.height,
       width: widget.width,
       fit: widget.fit,
     );

@@ -9,12 +9,9 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-
 }
 
 class MyApp extends StatelessWidget {
-
-
   const MyApp({super.key});
 
   // This widget is the root of your application.
@@ -22,7 +19,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home:SplachScreen(),
+      home: SplachScreen(),
     );
   }
 }
