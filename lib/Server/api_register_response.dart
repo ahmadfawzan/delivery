@@ -6,7 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../Screen/login.dart';
 
-void FetchRegister(name, email, password, carNumber, mobileNumber, countryCode,
+void FetchRegister(name, email, password,  mobileNumber,countryCode,
     {required BuildContext context}) async {
   SharedPreferences sharedtoken = await SharedPreferences.getInstance();
   Map<String, String> header = {
@@ -15,10 +15,10 @@ void FetchRegister(name, email, password, carNumber, mobileNumber, countryCode,
   };
   final msg = jsonEncode({
     "name": name.text,
-    "mobile": countryCode.toString() + mobileNumber.text,
+    "mobile": countryCode.toString() + mobileNumber.text.toString(),
     "email": email.text,
     "password": password.text,
-    "account_type": carNumber.text,
+    "account_type": 1,
   });
 
   final response = await http.post(

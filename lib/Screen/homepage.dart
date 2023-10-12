@@ -21,6 +21,7 @@ class _HomePageState extends State<HomePage> {
   late Future<List<Categories>> fetchcategories;
   late List addresses = [];
   String? popMenuValue;
+
   Future fetchAddresses() async {
     SharedPreferences sharedtoken = await SharedPreferences.getInstance();
     String? token = sharedtoken.getString('token');
@@ -40,7 +41,6 @@ class _HomePageState extends State<HomePage> {
     } else {
       throw Exception('Failed to load Addresses');
     }
-
   }
 
   @override

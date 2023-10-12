@@ -291,7 +291,6 @@ class _SignUpState extends State<SignUp> {
                                 )
                               ],
                             ),
-
                             TextFormFieldWidgets(
                                 hintText: 'Email',
                                 controller: email,
@@ -334,7 +333,6 @@ class _SignUpState extends State<SignUp> {
                                   }
                                   return null;
                                 }),
-
                             image == null
                                 ? const TextWidgets(
                                     text: '',
@@ -583,8 +581,8 @@ class _SignUpState extends State<SignUp> {
                                 if (value == null || value.isEmpty) {
                                   return 'Please enter your password';
                                 }
-                                if (value.length < 6) {
-                                  return 'Password length at least 6 character';
+                                if (value.length < 8) {
+                                  return 'Password length at least 8 character';
                                 }
                                 return null;
                               },
@@ -606,8 +604,7 @@ class _SignUpState extends State<SignUp> {
                                         dropDownValue,
                                         countryCode,
                                         context: context);
-                                  }
-                                  ;
+                                  };
                                 },
                                 height: 50,
                                 minWidth: double.infinity,

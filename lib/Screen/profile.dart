@@ -249,7 +249,6 @@ class _ProfileState extends State<Profile> {
                           color: Color(0xffBFBFBF),
                         ),
                       ),
-
                       validator: (value) {
                         String validMobileNumber = r'(^[0-9]{9}$)';
                         RegExp regExp = RegExp(validMobileNumber);

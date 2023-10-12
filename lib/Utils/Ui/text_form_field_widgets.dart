@@ -16,13 +16,14 @@ class TextFormFieldWidgets extends StatefulWidget {
   final String? labeltext;
   final TextStyle? labelstyle;
   final TextStyle? hintstyle;
-  final OutlineInputBorder?  enabledBorder;
+  final OutlineInputBorder? enabledBorder;
   final OutlineInputBorder? focusedBorder;
   final OutlineInputBorder? errorBorder;
   final OutlineInputBorder? focusedErrorBorder;
-  final UnderlineInputBorder?  enabledBorderUnderline;
+  final UnderlineInputBorder? enabledBorderUnderline;
   final UnderlineInputBorder? focusedBorderUnderline;
   final InputBorder? inputBorder;
+
   TextFormFieldWidgets({
     Key? key,
     required this.hintText,
@@ -68,8 +69,8 @@ class _TextFormFieldWidgetsState extends State<TextFormFieldWidgets> {
         border: widget.inputBorder,
         contentPadding:
             const EdgeInsets.symmetric(vertical: 12, horizontal: 10),
-        enabledBorder: widget.enabledBorder??widget.enabledBorderUnderline,
-        focusedBorder: widget.focusedBorder??widget.focusedBorderUnderline,
+        enabledBorder: widget.enabledBorder ?? widget.enabledBorderUnderline,
+        focusedBorder: widget.focusedBorder ?? widget.focusedBorderUnderline,
         errorBorder: widget.errorBorder,
         focusedErrorBorder: widget.focusedErrorBorder,
         hintText: widget.hintText,

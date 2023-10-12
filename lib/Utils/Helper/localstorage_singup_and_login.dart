@@ -47,7 +47,7 @@ Future localStorageSignUpUser(
       getPassword.toString().isNotEmpty &&
       getDropDownValue!.isNotEmpty &&
       getCountryCode!.isNotEmpty) {
-    FetchRegister(name, email, password, carNumber, mobileNumber, countryCode,
+    FetchRegister(name, email, password,  mobileNumber, countryCode,
         context: context);
   } else {
     Navigator.of(context)
