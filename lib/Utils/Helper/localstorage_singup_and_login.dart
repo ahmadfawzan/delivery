@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../Screen/homepage.dart';
 import '../../Server/api_login_response.dart';
-import '../../Server/api_register_response.dart';
+
 
 Future localStorageSignUpUser(
     TextEditingController name,
@@ -47,8 +47,7 @@ Future localStorageSignUpUser(
       getPassword.toString().isNotEmpty &&
       getDropDownValue!.isNotEmpty &&
       getCountryCode!.isNotEmpty) {
-    FetchRegister(name, email, password,  mobileNumber, countryCode,
-        context: context);
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) => const Login()));
   } else {
     Navigator.of(context)
         .push(MaterialPageRoute(builder: (context) => const SignUp()));
