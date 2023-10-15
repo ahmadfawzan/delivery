@@ -153,21 +153,24 @@ class _AddNewAddressState extends State<AddNewAddress> {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    /*SearchMapPlaceWidget(
+                    SearchMapPlaceWidget(
+                      textColor: Colors.black,
                       iconColor: Colors.black,
-                      bgColor: Colors.red,
+                      bgColor: Colors.white,
                       hasClearButton: false,
                       apiKey: 'AIzaSyC9iE-sKFlD1_1OctdF6ixRzSFj8lCoJS4',
                       placeType: PlaceType.address,
                       placeholder: 'Search Location',
                       onSelected: (Place place) async {
-                        Geolocation? geolocation = await place.geolocation;
-                        _controller.animateCamera(
-                            CameraUpdate.newLatLng(geolocation?.coordinates));
-                        _controller.animateCamera((CameraUpdate.newLatLngBounds(
-                            geolocation?.bounds, 0)));
+                        print(place.geolocation);
+                        loction = await Geolocator.getCurrentPosition().then((value) => value);
+
+                        final geolocation = await place.geolocation;
+
+                        _controller.animateCamera(CameraUpdate.newCameraPosition(geolocation?.coordinates));
+                        _controller.animateCamera(CameraUpdate.newLatLngBounds(geolocation?.bounds, 0));
                       },
-                    ),*/
+                    ),
                     Padding(
                       padding: const EdgeInsets.only(left: 10.0),
                       child: Row(
@@ -398,7 +401,7 @@ class _AddNewAddressState extends State<AddNewAddress> {
                                     street,
                                     name,
                                     buildingNumber,
-                                    apartmentNum);
+                                    apartmentNum, context: context);
                               },
                               height: 60,
                               textColor: Colors.white,

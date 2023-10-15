@@ -1,9 +1,13 @@
 
+import 'dart:convert';
+import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
+import '../Utils/Ui/text_widgets.dart';
 
 Future postDataAddresses(lat, long, selectedOption, city, street, name,
-    buildingNumber, apartmentNum) async {
+    buildingNumber, apartmentNum,{required BuildContext context}) async {
   SharedPreferences sharedtoken = await SharedPreferences.getInstance();
   String? token = sharedtoken.getString('token');
   final response = await http.post(
@@ -22,10 +26,30 @@ Future postDataAddresses(lat, long, selectedOption, city, street, name,
       "building_number": buildingNumber.text.toString(),
     },
   );
-
+  var data = json.decode(response.body);
   if (response.statusCode == 200) {
-    print("Save is Done");
+
+    AwesomeDialog(
+      animType: AnimType.leftSlide,
+      dialogType: DialogType.success,
+      btnOkOnPress: () {},
+      context: context,
+      title: 'Success',
+      body: TextWidgets(
+        text: 'The address has been added successfully',textAlign:TextAlign.center, fontSize: 18,
+        fontWeight: FontWeight.bold,
+      ),
+    ).show();
   } else {
-    throw Exception('Failed to load Addresses');
+    AwesomeDialog(
+      animType: AnimType.leftSlide,
+      dialogType: DialogType.success,
+      btnOkOnPress: () {},
+      context: context,
+      title: 'Error',
+      body: TextWidgets(
+        text: '${data['error']}',
+      ),
+    ).show();
   }
 }

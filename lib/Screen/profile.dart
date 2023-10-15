@@ -1,3 +1,4 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:delivery/Utils/Ui/text_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -40,11 +41,30 @@ class _ProfileState extends State<Profile> {
         "mobile": mobileNumberController.text.isEmpty?mobileNumber:'962${mobileNumberController.text.toString()}',
       },
     );
-
+    var data = json.decode(response.body);
     if (response.statusCode == 200) {
-      print('Update data');
+      AwesomeDialog(
+        animType: AnimType.leftSlide,
+        dialogType: DialogType.success,
+        btnOkOnPress: () {},
+        context: context,
+        title: 'Success',
+        body: TextWidgets(
+          text: 'Your account has been modified',
+        ),
+      ).show();
     } else {
-      throw Exception('Failed to load Profile');
+      AwesomeDialog(
+        animType: AnimType.leftSlide,
+        dialogType: DialogType.success,
+        btnOkOnPress: () {},
+        context: context,
+        title: 'Error',
+        body: TextWidgets(
+          text: '${data['error']}', fontSize: 18,
+          fontWeight: FontWeight.bold,
+        ),
+      ).show();
     }
   }
 

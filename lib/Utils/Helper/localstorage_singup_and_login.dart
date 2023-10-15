@@ -1,3 +1,4 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:delivery/Screen/about_us.dart';
 import 'package:delivery/Screen/login.dart';
 import 'package:delivery/Screen/signup.dart';
@@ -5,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../Screen/homepage.dart';
 import '../../Server/api_login_response.dart';
+import '../Ui/text_widgets.dart';
 
 
 Future localStorageSignUpUser(
@@ -48,9 +50,21 @@ Future localStorageSignUpUser(
       getDropDownValue!.isNotEmpty &&
       getCountryCode!.isNotEmpty) {
     Navigator.of(context).push(MaterialPageRoute(builder: (context) => const Login()));
+    AwesomeDialog(
+      animType: AnimType.leftSlide,
+      dialogType: DialogType.success,
+      btnOkOnPress: () {},
+      context: context,
+      title: 'Success',
+      body: TextWidgets(
+        text: 'You have been successfully registered on the site',textAlign:TextAlign.center, fontSize: 18,
+        fontWeight: FontWeight.bold,
+      ),
+    ).show();
   } else {
     Navigator.of(context)
         .push(MaterialPageRoute(builder: (context) => const SignUp()));
+
   }
 }
 

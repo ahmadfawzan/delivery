@@ -10,6 +10,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import '../Utils/Ui/text_form_field_widgets.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({Key? key}) : super(key: key);
@@ -31,6 +34,49 @@ class _SignUpState extends State<SignUp> {
   final TextEditingController carNumber = TextEditingController();
   final TextEditingController mobileNumber = TextEditingController();
   final TextEditingController password = TextEditingController();
+  late List register = [];
+  void FetchRegister({required BuildContext context}) async {
+    SharedPreferences sharedtoken = await SharedPreferences.getInstance();
+    Map<String, String> header = {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    };
+    final msg = jsonEncode({
+      "name": name.text,
+      "mobile": countryCode.toString() + mobileNumber.text.toString(),
+      "email": email.text,
+      "password": password.text,
+      "account_type": 1,
+    });
+
+    final response = await http.post(
+      Uri.parse('https://news.wasiljo.com/public/api/v1/user/register'),
+      headers: header,
+      body: msg,
+    );
+
+    var data = json.decode(response.body);
+    if (response.statusCode == 200) {
+      sharedtoken.setString('token', data['data']['token']);
+      localStorageSignUpUser(
+          name,
+          email,
+          carNumber,
+          nameImage!,
+          nameImage1!,
+          mobileNumber,
+          password,
+          dropDownValue,
+          countryCode,
+          context: context);
+
+    } else {
+
+      setState(() {
+        register = data['error'] as List<dynamic>;
+      });
+    }
+  }
   String countryCode = '962';
 
   void onCountryChange(CountryCode CountryCode1) async {
@@ -587,25 +633,25 @@ class _SignUpState extends State<SignUp> {
                                 return null;
                               },
                             ),
+                            SizedBox(height: 10,),
+                        ListView.builder(
+                            scrollDirection: Axis.vertical,
+                            shrinkWrap: true,
+                            padding: const EdgeInsets.all(8),
+                            itemCount: register.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return TextWidgets(text: register[index],color: Colors.red,fontSize: 15,);
+                            }
+                        ),
                             const SizedBox(
                               height: 25,
                             ),
                             MaterialButtonWidgets(
                                 onPressed: () async {
                                   if (_formKey.currentState!.validate()) {
-                                    localStorageSignUpUser(
-                                        name,
-                                        email,
-                                        carNumber,
-                                        nameImage!,
-                                        nameImage1!,
-                                        mobileNumber,
-                                        password,
-                                        dropDownValue,
-                                        countryCode,
-                                        context: context);
-                                  };
-                                },
+                                 FetchRegister(context: context);
+                                };
+                             },
                                 height: 50,
                                 minWidth: double.infinity,
                                 textColor: Colors.white,
