@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:delivery/Screen/profile.dart';
 import 'package:delivery/Utils/Ui/image_widgets.dart';
 import 'package:delivery/Utils/Ui/text_widgets.dart';
@@ -8,6 +9,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../Server/api_categories_response.dart';
+import '../Server/api_delete_account_response.dart';
 import '../Utils/Helper/list_data_address_api.dart';
 import '../Utils/Helper/list_data_categories_api.dart';
 import '../Utils/Ui/network_image.dart';
@@ -63,28 +65,63 @@ class _HomePageState extends State<HomePage> {
       drawer: Container(
         width: 230,
         child: Drawer(
-          backgroundColor: Color(0xff15CB95),
-          child: ListView(
-            children: [
-              ListTile(
-                contentPadding: EdgeInsets.only(left: 40, top: 100),
-                minLeadingWidth: 10,
-                leading: Icon(
-                  Icons.person,
-                  size: 25,
-                  color: Colors.white,
+          backgroundColor: const Color(0xff15CB95),
+          child: Padding(
+            padding: const  EdgeInsets.only(left: 40, top: 100),
+            child: ListView(
+              children: [
+                ListTile(
+                  minLeadingWidth: 10,
+                  leading: const Icon(
+                    Icons.person,
+                    size: 25,
+                    color: Colors.white,
+                  ),
+                  title: const TextWidgets(
+                    text: 'Profile',
+                    fontSize: 16,
+                    color: Colors.white,
+                  ),
+                  onTap: () {
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) => const Profile()));
+                  },
                 ),
-                title: const TextWidgets(
-                  text: 'Profile',
-                  fontSize: 16,
-                  color: Colors.white,
+
+                ListTile(
+                  minLeadingWidth: 10,
+                  leading: const Icon(
+                    Icons.delete,
+                    size: 25,
+                    color: Colors.white,
+                  ),
+                  title: const TextWidgets(
+                    text: 'Delete User',
+                    fontSize: 16,
+                    color: Colors.white,
+                  ),
+                  onTap: () {
+                    if (!mounted) return;
+                    AwesomeDialog(
+                      context: context,
+                      animType: AnimType.leftSlide,
+                      dialogType: DialogType.info,
+                      btnOkOnPress: () {DeleteAccount(context: context);},
+                      btnCancelOnPress:(){},
+                      title: "Delete Account",
+                        body: const TextWidgets(
+                          text: "Are you sure you want to delete your account?",
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          textAlign:TextAlign.center,
+                        ),
+
+                    ).show();
+
+                  },
                 ),
-                onTap: () {
-                  Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => const Profile()));
-                },
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
@@ -164,7 +201,7 @@ class _HomePageState extends State<HomePage> {
                             onTap: () {
                               Navigator.of(context).push(
                                 MaterialPageRoute(
-                                  builder: (context) => AddNewAddress(),
+                                  builder: (context) => const AddNewAddress(),
                                 ),
                               );
                             },
@@ -242,7 +279,7 @@ class _categoriesListState extends State<categoriesList> {
                     width: double.infinity,
                     fit: BoxFit.fitHeight,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 23,
                   ),
                   TextWidgets(

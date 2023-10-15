@@ -153,7 +153,7 @@ class _AddNewAddressState extends State<AddNewAddress> {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    SearchMapPlaceWidget(
+                    /*SearchMapPlaceWidget(
                       iconColor: Colors.black,
                       bgColor: Colors.red,
                       hasClearButton: false,
@@ -167,7 +167,7 @@ class _AddNewAddressState extends State<AddNewAddress> {
                         _controller.animateCamera((CameraUpdate.newLatLngBounds(
                             geolocation?.bounds, 0)));
                       },
-                    ),
+                    ),*/
                     Padding(
                       padding: const EdgeInsets.only(left: 10.0),
                       child: Row(

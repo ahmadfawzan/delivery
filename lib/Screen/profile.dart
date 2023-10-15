@@ -28,27 +28,21 @@ class _ProfileState extends State<Profile> {
   Future UpdateProfile() async {
     SharedPreferences sharedtoken = await SharedPreferences.getInstance();
     String? token = sharedtoken.getString('token');
-
     final response = await http.put(
       Uri.parse(
           'https://news.wasiljo.com/public/api/v1/user/update_profile?lang=ar'),
       headers: {
         'Authorization': 'Bearer $token',
       },
-
       body: {
         "name": nameController.text.isEmpty ? name : nameController.text.toString(),
         "email": emailController.text.isEmpty?email:emailController.text.toString(),
         "mobile": mobileNumberController.text.isEmpty?mobileNumber:'962${mobileNumberController.text.toString()}',
       },
     );
-    print(nameController.text.toString());
-    print(emailController.text.toString());
-    print('962${mobileNumberController.text.toString()}');
+
     if (response.statusCode == 200) {
-      final jsonRes = json.decode(response.body);
-      final ProfilList = jsonRes['data']['user'];
-      print(ProfilList);
+      print('Update data');
     } else {
       throw Exception('Failed to load Profile');
     }

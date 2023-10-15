@@ -9,8 +9,9 @@ class TextWidgets extends StatefulWidget {
   final Color? color;
   final TextDecoration? textDecoration;
   final TextOverflow? textOverFlow;
+  final TextAlign? textAlign;
 
-  const TextWidgets({
+  const TextWidgets( {
     Key? key,
     required this.text,
     this.fontSize,
@@ -18,6 +19,7 @@ class TextWidgets extends StatefulWidget {
     this.color,
     this.textDecoration,
     this.textOverFlow,
+    this.textAlign,
   }) : super(key: key);
 
   @override
@@ -34,7 +36,10 @@ class _TextWidgetsState extends State<TextWidgets> {
           fontSize: widget.fontSize,
           fontWeight: widget.fontWeight,
           color: widget.color,
-          decoration: widget.textDecoration),
+          decoration: widget.textDecoration
+
+      ),
+      textAlign: widget.textAlign,
     );
   }
 }
