@@ -67,6 +67,7 @@ class _AddNewAddressState extends State<AddNewAddress> {
 
   Future<void> getLatAndLogn() async {
     loction = await Geolocator.getCurrentPosition().then((value) => value);
+
     lat = loction.latitude;
     long = loction.longitude;
     _kGooglePlex = CameraPosition(
@@ -99,6 +100,7 @@ class _AddNewAddressState extends State<AddNewAddress> {
     Marker(
       markerId: const MarkerId('1'),
       draggable: true,
+
       onDragEnd: (LatLng v) {
         lat = v.latitude;
         long = v.longitude;
@@ -154,21 +156,45 @@ class _AddNewAddressState extends State<AddNewAddress> {
                 child: Column(
                   children: [
                     SearchMapPlaceWidget(
-                      textColor: Colors.black,
-                      iconColor: Colors.black,
+
                       bgColor: Colors.white,
-                      hasClearButton: false,
-                      apiKey: 'AIzaSyC9iE-sKFlD1_1OctdF6ixRzSFj8lCoJS4',
-                      placeType: PlaceType.address,
+                      iconColor: Colors.black,
                       placeholder: 'Search Location',
+                      placeType: PlaceType.address,
+                      hasClearButton: false,
+                      textColor: Colors.black,
+                      apiKey: 'AIzaSyC7OA_kF9duRuHHew__jN_HdYh8yq0BCtE',
                       onSelected: (Place place) async {
-                        print(place.geolocation);
-                        loction = await Geolocator.getCurrentPosition().then((value) => value);
 
-                        final geolocation = await place.geolocation;
 
-                        _controller.animateCamera(CameraUpdate.newCameraPosition(geolocation?.coordinates));
-                        _controller.animateCamera(CameraUpdate.newLatLngBounds(geolocation?.bounds, 0));
+
+                        //   _onAddMarkerButtonPressed();
+                      final  geo = await place.geolocation;
+
+                      _controller.animateCamera(CameraUpdate.newLatLng(geo?.coordinates));
+                      _controller.animateCamera(CameraUpdate.newLatLngBounds(geo?.bounds, 0));
+                      final  center = geo!.coordinates;
+
+                      setState(() {
+
+                        lat = center.latitude;
+                        long = center.longitude;
+                        marker.add(
+                          Marker(
+                            draggable: true,
+                            markerId: MarkerId('1'),
+                            position: center,
+                            onDragEnd: (LatLng v) {
+                              lat = center.latitude;
+                              long = center.longitude;
+                              getAddressAndcity();
+                            },
+
+                          ),
+                        );
+                      });
+                      getAddressAndcity();
+                      onMapCreated();
                       },
                     ),
                     Padding(

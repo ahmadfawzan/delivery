@@ -23,19 +23,21 @@ Future DeleteAccount({required BuildContext context}) async {
   var data = json.decode(response.body);
   if (response.statusCode == 200) {
     await sharedtoken.clear();
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => const SignUp()));
+
+
     AwesomeDialog(
       animType: AnimType.leftSlide,
       dialogType: DialogType.success,
-      btnOkOnPress: () {},
+      btnOkOnPress: () {Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => const SignUp()));},
       context: context,
+
       title: 'Success',
       body: TextWidgets(
-        text: '${data['message']}',textAlign:TextAlign.center, fontSize: 18,
+        text: '${data['message']} Click OK to go to the page SignUp',textAlign:TextAlign.center, fontSize: 18,
         fontWeight: FontWeight.bold,
       ),
     ).show();
+
   } else {
     throw Exception('Failed to load Login');
   }

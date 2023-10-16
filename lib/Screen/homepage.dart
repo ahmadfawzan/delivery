@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:delivery/Screen/login.dart';
 import 'package:delivery/Screen/profile.dart';
 import 'package:delivery/Utils/Ui/image_widgets.dart';
 import 'package:delivery/Utils/Ui/text_widgets.dart';
@@ -115,6 +116,42 @@ class _HomePageState extends State<HomePage> {
                           fontWeight: FontWeight.bold,
                           textAlign:TextAlign.center,
                         ),
+
+                    ).show();
+
+                  },
+                ),
+                ListTile(
+                  minLeadingWidth: 10,
+                  leading: const Icon(
+                    Icons.login_outlined,
+                    size: 25,
+                    color: Colors.white,
+                  ),
+                  title: const TextWidgets(
+                    text: 'LogOut',
+                    fontSize: 16,
+                    color: Colors.white,
+                  ),
+                  onTap: () {
+                    if (!mounted) return;
+                    AwesomeDialog(
+                      context: context,
+                      animType: AnimType.leftSlide,
+                      dialogType: DialogType.info,
+                      btnOkOnPress: () async {
+                        SharedPreferences sharedtoken  = await SharedPreferences.getInstance();
+                        await sharedtoken.clear();
+                        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => const Login()));
+                        },
+                      btnCancelOnPress:(){},
+                      title: "LogOut",
+                      body: const TextWidgets(
+                        text: "Are you sure you want to LogOut?",
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        textAlign:TextAlign.center,
+                      ),
 
                     ).show();
 
