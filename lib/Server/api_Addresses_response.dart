@@ -43,7 +43,7 @@ Future postDataAddresses(lat, long, selectedOption, city, street, name,
   } else {
     AwesomeDialog(
       animType: AnimType.leftSlide,
-      dialogType: DialogType.success,
+      dialogType: DialogType.error,
       btnOkOnPress: () {},
       context: context,
       title: 'Error',

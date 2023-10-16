@@ -100,7 +100,6 @@ class _AddNewAddressState extends State<AddNewAddress> {
     Marker(
       markerId: const MarkerId('1'),
       draggable: true,
-
       onDragEnd: (LatLng v) {
         lat = v.latitude;
         long = v.longitude;
@@ -156,7 +155,6 @@ class _AddNewAddressState extends State<AddNewAddress> {
                 child: Column(
                   children: [
                     SearchMapPlaceWidget(
-
                       bgColor: Colors.white,
                       iconColor: Colors.black,
                       placeholder: 'Search Location',
@@ -165,36 +163,33 @@ class _AddNewAddressState extends State<AddNewAddress> {
                       textColor: Colors.black,
                       apiKey: 'AIzaSyC7OA_kF9duRuHHew__jN_HdYh8yq0BCtE',
                       onSelected: (Place place) async {
-
-
-
                         //   _onAddMarkerButtonPressed();
-                      final  geo = await place.geolocation;
+                        final geo = await place.geolocation;
 
-                      _controller.animateCamera(CameraUpdate.newLatLng(geo?.coordinates));
-                      _controller.animateCamera(CameraUpdate.newLatLngBounds(geo?.bounds, 0));
-                      final  center = geo!.coordinates;
+                        _controller.animateCamera(
+                            CameraUpdate.newLatLng(geo?.coordinates));
+                        _controller.animateCamera(
+                            CameraUpdate.newLatLngBounds(geo?.bounds, 0));
+                        final center = geo!.coordinates;
 
-                      setState(() {
-
-                        lat = center.latitude;
-                        long = center.longitude;
-                        marker.add(
-                          Marker(
-                            draggable: true,
-                            markerId: MarkerId('1'),
-                            position: center,
-                            onDragEnd: (LatLng v) {
-                              lat = center.latitude;
-                              long = center.longitude;
-                              getAddressAndcity();
-                            },
-
-                          ),
-                        );
-                      });
-                      getAddressAndcity();
-                      onMapCreated();
+                        setState(() {
+                          lat = center.latitude;
+                          long = center.longitude;
+                          marker.add(
+                            Marker(
+                              draggable: true,
+                              markerId: MarkerId('1'),
+                              position: center,
+                              onDragEnd: (LatLng v) {
+                                lat = v.latitude;
+                                long = v.longitude;
+                                getAddressAndcity();
+                              },
+                            ),
+                          );
+                        });
+                        getAddressAndcity();
+                        onMapCreated();
                       },
                     ),
                     Padding(
@@ -427,7 +422,8 @@ class _AddNewAddressState extends State<AddNewAddress> {
                                     street,
                                     name,
                                     buildingNumber,
-                                    apartmentNum, context: context);
+                                    apartmentNum,
+                                    context: context);
                               },
                               height: 60,
                               textColor: Colors.white,

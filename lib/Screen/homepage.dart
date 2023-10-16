@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:delivery/Screen/login.dart';
 import 'package:delivery/Screen/profile.dart';
+import 'package:delivery/Screen/shops.dart';
 import 'package:delivery/Utils/Ui/image_widgets.dart';
 import 'package:delivery/Utils/Ui/text_widgets.dart';
 import 'package:flutter/material.dart';
@@ -68,7 +69,7 @@ class _HomePageState extends State<HomePage> {
         child: Drawer(
           backgroundColor: const Color(0xff15CB95),
           child: Padding(
-            padding: const  EdgeInsets.only(left: 40, top: 100),
+            padding: const EdgeInsets.only(left: 40, top: 100),
             child: ListView(
               children: [
                 ListTile(
@@ -84,11 +85,10 @@ class _HomePageState extends State<HomePage> {
                     color: Colors.white,
                   ),
                   onTap: () {
-                    Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => const Profile()));
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => const Profile()));
                   },
                 ),
-
                 ListTile(
                   minLeadingWidth: 10,
                   leading: const Icon(
@@ -107,18 +107,18 @@ class _HomePageState extends State<HomePage> {
                       context: context,
                       animType: AnimType.leftSlide,
                       dialogType: DialogType.info,
-                      btnOkOnPress: () {DeleteAccount(context: context);},
-                      btnCancelOnPress:(){},
+                      btnOkOnPress: () {
+                        DeleteAccount(context: context);
+                      },
+                      btnCancelOnPress: () {},
                       title: "Delete Account",
-                        body: const TextWidgets(
-                          text: "Are you sure you want to delete your account?",
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          textAlign:TextAlign.center,
-                        ),
-
+                      body: const TextWidgets(
+                        text: "Are you sure you want to delete your account?",
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        textAlign: TextAlign.center,
+                      ),
                     ).show();
-
                   },
                 ),
                 ListTile(
@@ -140,24 +140,23 @@ class _HomePageState extends State<HomePage> {
                       animType: AnimType.leftSlide,
                       dialogType: DialogType.info,
                       btnOkOnPress: () async {
-                        SharedPreferences sharedtoken  = await SharedPreferences.getInstance();
+                        SharedPreferences sharedtoken =
+                            await SharedPreferences.getInstance();
                         await sharedtoken.clear();
-                        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => const Login()));
-                        },
-                      btnCancelOnPress:(){},
+                        Navigator.of(context).pushReplacement(MaterialPageRoute(
+                            builder: (context) => const Login()));
+                      },
+                      btnCancelOnPress: () {},
                       title: "LogOut",
                       body: const TextWidgets(
                         text: "Are you sure you want to LogOut?",
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
-                        textAlign:TextAlign.center,
+                        textAlign: TextAlign.center,
                       ),
-
                     ).show();
-
                   },
                 ),
-
               ],
             ),
           ),
@@ -303,8 +302,16 @@ class _categoriesListState extends State<categoriesList> {
         ),
         itemCount: widget.categories.length,
         itemBuilder: (context, index) {
+
           return InkWell(
-            onTap: () {},
+            onTap: () {
+              int id = widget.categories[index].id ;
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) =>  Shops(id:id),
+                ),
+              );
+            },
             child: Card(
               elevation: 10,
               shadowColor: Colors.black,
