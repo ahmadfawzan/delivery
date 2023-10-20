@@ -31,7 +31,6 @@ class _TextWidgetsState extends State<TextWidgets> {
   Widget build(BuildContext context) {
     return Text(
       widget.text,
-
       style: TextStyle(
           fontSize: widget.fontSize,
           fontWeight: widget.fontWeight,

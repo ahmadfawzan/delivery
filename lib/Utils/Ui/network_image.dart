@@ -5,13 +5,14 @@ class ImageNetworkWidget extends StatefulWidget {
   final double? height;
   final double? width;
   final BoxFit? fit;
-
+  final  Widget Function(BuildContext, Object, StackTrace?)? errorbuilder;
   const ImageNetworkWidget({
     Key? key,
     required this.image,
     this.height,
     this.width,
     this.fit,
+    this.errorbuilder,
   }) : super(key: key);
 
   @override
@@ -22,6 +23,7 @@ class _ImageNetworkWidgetState extends State<ImageNetworkWidget> {
   @override
   Widget build(BuildContext context) {
     return Image.network(
+      errorBuilder:widget.errorbuilder,
       widget.image,
       height: widget.height,
       width: widget.width,

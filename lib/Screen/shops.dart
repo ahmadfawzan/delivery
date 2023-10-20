@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import '../Utils/Helper/list_data_shops_api.dart';
+import '../Utils/Ui/network_image.dart';
 import '../Utils/Ui/text_form_field_widgets.dart';
 import '../Utils/Ui/text_widgets.dart';
 import 'add_new_address.dart';
@@ -125,6 +126,7 @@ class _ShopsState extends State<Shops> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xffF2F2F2),
       body: Column(
         children: [
           Container(
@@ -255,16 +257,16 @@ class _ShopsState extends State<Shops> {
             ),
           ),
           const SizedBox(
-            height: 7,
+            height: 3,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Container(
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-                width: 175,
-                height: 60,
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                width: 176,
+                height: 50,
                 color: Colors.white,
                 child: TextFormFieldWidgets(
                   hintText: 'Fiters',
@@ -273,49 +275,122 @@ class _ShopsState extends State<Shops> {
                   prefixIcon: const Icon(
                     Icons.filter,
                     color: Color(0xff676666),
+                    size: 25,
                   ),
                   inputBorder: InputBorder.none,
                 ),
               ),
-              const SizedBox(
-                width: 5,
-              ),
               Container(
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                width: 180,
-                height: 60,
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                width: 181,
+                height: 50,
                 color: Colors.white,
                 child: TextFormFieldWidgets(
                   hintText: 'Search',
                   prefixIcon: const Icon(
                     Icons.search_outlined,
                     color: Color(0xff676666),
+                    size: 30,
                   ),
                   inputBorder: InputBorder.none,
                 ),
               )
             ],
           ),
-          const SizedBox(
-            height: 15,
-          ),
           Expanded(
-            child: Container(
-              color: Colors.white,
-              child: ListView.builder(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 25, vertical: 10),
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  itemCount: shopsItemList?.length,
-                  itemBuilder: (context, index) {
-                    return SingleChildScrollView(
-                      child: Text(
-                          '${shopsItemList?[index].shop_name_en.toString()}'),
-                    );
-                  }),
-            ),
+            child: ListView.builder(
+                padding: const EdgeInsets.only(top: 7),
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                itemCount: shopsItemList?.length,
+                itemBuilder: (context, index) {
+                  return SingleChildScrollView(
+                      child: shopsItemList == null
+                          ? const Text('')
+                          : Padding(
+                              padding: const EdgeInsets.only(bottom: 3),
+                              child: Container(
+                                width: double.infinity,
+                                color: Colors.white,
+                                height: 120,
+                                child: InkWell(
+                                  splashColor: Colors.grey,
+                                  onTap: () {},
+                                  child: Row(
+
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      const SizedBox(
+                                        width: 25,
+                                      ),
+                                      ImageNetworkWidget(
+                                        errorbuilder: (BuildContext context,
+                                            Object exception,
+                                            StackTrace? stackTrace) {
+                                          return Image.asset(
+                                            'assets/images/images.png',
+                                            fit: BoxFit.fitHeight,
+                                            height: 90,
+                                            width: 90,
+                                          );
+                                        },
+                                        image:
+                                            'https://news.wasiljo.com/${shopsItemList?[index].license.toString()}',
+                                        height: 90,
+                                        width: 90,
+                                        fit: BoxFit.fitHeight,
+                                      ),
+                                      const SizedBox(
+                                        width: 30,
+                                      ),
+                                      Column(
+
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          const SizedBox(
+                                            height: 10,
+                                          ),
+                                          TextWidgets(
+                                            text:
+                                                '${shopsItemList?[index].shop_name_en.toString()}',
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold,
+                                            color: const Color(0xff000000),
+                                          ),
+                                          const SizedBox(
+                                            height: 3,
+                                          ),
+                                          TextWidgets(
+                                            text:
+                                                '${shopsItemList?[index].address.toString()}',
+                                            fontSize: 11,
+                                            color: Colors.grey,
+
+                                          ),
+                                          const SizedBox(
+                                            height: 40,
+                                          ),
+                                          Row(
+                                            children: [
+                                              const Icon(Icons.star,color: Color(0xff15CB95),size: 19,),
+                                              const SizedBox(width: 4,),
+                                              TextWidgets(text: '${shopsItemList?[index].rating.toString()}',fontWeight: FontWeight.bold,),
+                                              const SizedBox(width: 3,),
+                                              TextWidgets(text: '(${shopsItemList?[index].total_rating.toString()}+ Ratings)',fontWeight: FontWeight.bold,color: Colors.grey,)
+                                            ],
+                                          )
+                                       
+                                        ],
+                                        
+                                      )
+
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ));
+                }),
           ),
         ],
       ),
