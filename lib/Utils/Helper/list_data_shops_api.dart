@@ -19,12 +19,12 @@ class ShopsList {
 
   factory ShopsList.fromJson(Map<String, dynamic> json) {
     return ShopsList(
-      image: json['avatar_url'],
-      shop_name_en: json['shop_name_en'],
-      address: json['address'],
-      rating: json['rating'],
-      total_rating: json['total_rating'],
-      category_id: json['category_id'],
+      image: json['avatar_url']??'',
+      shop_name_en: json['shop_name_en']??'',
+      address: json['address']??'',
+      rating: json['rating']??'',
+      total_rating: json['total_rating']??'',
+      category_id: json['category_id']??'',
 
     );
   }

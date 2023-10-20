@@ -48,7 +48,7 @@ Future postDataAddresses(lat, long, selectedOption, city, street, name,
       context: context,
       title: 'Error',
       body: TextWidgets(
-        text: '${data['error']}',
+        text: '${data['error'].map((item)=>item.toString())}',
       ),
     ).show();
   }

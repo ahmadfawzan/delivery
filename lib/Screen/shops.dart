@@ -22,7 +22,6 @@ class _ShopsState extends State<Shops> {
   String? popMenuValue;
   var lat;
   var long;
-
   List? shopsItemList;
 
   Future fetchLatAndLong() async {
@@ -80,6 +79,7 @@ class _ShopsState extends State<Shops> {
       'latitude': lat,
       'longitude': long,
     };
+
     final uri = Uri.https(
         'news.wasiljo.com',
         '/public/api/v1/user/get-delivery-or-shop-by-location/1/location',
@@ -102,7 +102,7 @@ class _ShopsState extends State<Shops> {
         dialogType: DialogType.error,
         btnOkOnPress: () {},
         title: "Error Api Shop",
-        body:  Padding(
+        body: Padding(
           padding: const EdgeInsets.only(bottom: 10.0),
           child: TextWidgets(
             text: '${jsonRes['error']}',
@@ -300,25 +300,23 @@ class _ShopsState extends State<Shops> {
           const SizedBox(
             height: 15,
           ),
-            Expanded(
-                      child: Container(
-                        color: Colors.white,
-                        child: ListView.builder(
-                          padding: EdgeInsets.symmetric(horizontal: 25, vertical: 10),
-                            scrollDirection: Axis.vertical,
-                            shrinkWrap: true,
-                            itemCount: shopsItemList?.length,
-                            itemBuilder: (context, index) {
-                              return SingleChildScrollView(
-                              child:  Text(
-                                      '${shopsItemList?[index].shop_name_en.toString()}'),
-
-                              );
-                            }),
-                      ),
-                    ),
-
-
+          Expanded(
+            child: Container(
+              color: Colors.white,
+              child: ListView.builder(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 25, vertical: 10),
+                  scrollDirection: Axis.vertical,
+                  shrinkWrap: true,
+                  itemCount: shopsItemList?.length,
+                  itemBuilder: (context, index) {
+                    return SingleChildScrollView(
+                      child: Text(
+                          '${shopsItemList?[index].shop_name_en.toString()}'),
+                    );
+                  }),
+            ),
+          ),
         ],
       ),
     );

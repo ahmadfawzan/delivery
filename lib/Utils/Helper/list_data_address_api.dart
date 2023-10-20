@@ -19,13 +19,13 @@ class Address {
 
   factory Address.fromJson(Map<String, dynamic> json) {
     return Address(
-      longitude: json['longitude'],
-      latitude: json['latitude'],
-      street: json['street'],
-      name: json['name'],
-      city: json['city'],
-      building_number: json['building_number'],
-      type: json['type'],
+      longitude: json['longitude']??'',
+      latitude: json['latitude']??'',
+      street: json['street']??'',
+      name: json['name']??'',
+      city: json['city']??'',
+      building_number: json['building_number']??'',
+      type: json['type']??'',
     );
   }
 }
