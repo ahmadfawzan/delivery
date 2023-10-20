@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:delivery/Screen/login.dart';
 import 'package:delivery/Screen/profile.dart';
@@ -9,7 +8,6 @@ import 'package:delivery/Utils/Ui/text_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-
 import '../Server/api_categories_response.dart';
 import '../Server/api_delete_account_response.dart';
 import '../Utils/Helper/list_data_address_api.dart';
@@ -26,7 +24,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   late Future<List<Categories>> fetchcategories;
-  late List addresses = [];
+  List? addresses;
   String? popMenuValue;
   var scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -43,12 +41,14 @@ class _HomePageState extends State<HomePage> {
     if (response.statusCode == 200) {
       final jsonRes = json.decode(response.body);
       final addressList = jsonRes['data']['addresses'] as List<dynamic>;
+
       setState(() {
         addresses = addressList.map((json) => Address.fromJson(json)).toList();
       });
     } else {
       throw Exception('Failed to load Addresses');
     }
+
   }
 
   @override
@@ -56,6 +56,7 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       fetchcategories = fetchCategories();
     });
+
     fetchAddresses();
     super.initState();
   }
@@ -204,9 +205,9 @@ class _HomePageState extends State<HomePage> {
             height: 5,
           ),
           Padding(
-            padding: const EdgeInsets.only(right: 190.0),
+            padding: const EdgeInsets.only(right: 158.0),
             child: SizedBox(
-                width: 120,
+                width: 150,
                 height: 40,
                 child: PopupMenuButton<String>(
                     onSelected: (value) {
@@ -214,14 +215,39 @@ class _HomePageState extends State<HomePage> {
                         popMenuValue = value;
                       });
                     },
-                    icon: const Icon(
-                      Icons.keyboard_arrow_down_outlined,
-                      color: Colors.green,
-                      size: 25,
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 2.0, bottom: 12),
+                      child: Row(
+                        children: [
+                          addresses?.length==0
+                              ? const Text('')
+                              : Expanded(
+                                  child: TextWidgets(
+                                  text: popMenuValue ??
+                                      (addresses?[0].type == 1
+                                          ? "Home (${addresses?[0].street.toString()})"
+                                          : addresses?[0].type == 2
+                                              ? "Work (${addresses?[0].street.toString()})"
+                                              :addresses?[0].type==3? "Other (${addresses?[0].street.toString()})":''),
+                                  fontWeight: FontWeight.bold,
+                                  textOverFlow: TextOverflow.ellipsis,
+                                  fontSize: 15,
+                                )),
+                          const Icon(
+                            Icons.keyboard_arrow_down_outlined,
+                            color: Colors.green,
+                            size: 25,
+                          ),
+                        ],
+                      ),
                     ),
                     itemBuilder: (context) => [
-                          ...addresses.map((item) => PopupMenuItem<String>(
-                                value: "Home (${item.street[0].toString()})",
+                          ...?addresses?.map((item) => PopupMenuItem<String>(
+                                value: item.type == 1
+                                    ? "Home (${item.street.toString()})"
+                                    : item.type == 2
+                                        ? "Work (${item.street.toString()})"
+                                        : "Other (${item.street.toString()})",
                                 child: TextWidgets(
                                   text: item.type == 1
                                       ? "Home (${item.street.toString()})"
@@ -262,7 +288,7 @@ class _HomePageState extends State<HomePage> {
                     child: TextWidgets(text: 'An error has occurred!'),
                   );
                 } else if (snapshot.hasData) {
-                  return categoriesList(categories: snapshot.data!);
+                  return categoriesList(categories: snapshot.data!,addresses:addresses);
                 } else {
                   return const Text('');
                 }
@@ -281,10 +307,10 @@ class _HomePageState extends State<HomePage> {
 }
 
 class categoriesList extends StatefulWidget {
-  const categoriesList({super.key, required this.categories});
+  const categoriesList({super.key, required this.categories, required this.addresses});
 
   final List<Categories> categories;
-
+  final List? addresses;
   @override
   State<categoriesList> createState() => _categoriesListState();
 }
@@ -302,13 +328,12 @@ class _categoriesListState extends State<categoriesList> {
         ),
         itemCount: widget.categories.length,
         itemBuilder: (context, index) {
-
           return InkWell(
             onTap: () {
-              int id = widget.categories[index].id ;
+              int id = widget.categories[index].id;
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) =>  Shops(id:id),
+                  builder: (context) => Shops(id: id,addresses:widget.addresses),
                 ),
               );
             },

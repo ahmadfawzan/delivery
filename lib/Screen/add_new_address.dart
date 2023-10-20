@@ -58,9 +58,7 @@ class _AddNewAddressState extends State<AddNewAddress> {
 
     if (per == LocationPermission.denied) {
       per = await Geolocator.requestPermission();
-      Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => const HomePage(),
-      ));
+      Navigator.of(context).pop();
     }
     return per;
   }
@@ -85,6 +83,7 @@ class _AddNewAddressState extends State<AddNewAddress> {
       street = placemarks[0].street;
       name = placemarks[0].name;
     });
+
   }
 
   Future<void> onMapCreated() async {
@@ -113,6 +112,7 @@ class _AddNewAddressState extends State<AddNewAddress> {
   void initState() {
     getPer();
     getLatAndLogn();
+
     super.initState();
   }
 
@@ -163,9 +163,7 @@ class _AddNewAddressState extends State<AddNewAddress> {
                       textColor: Colors.black,
                       apiKey: 'AIzaSyC7OA_kF9duRuHHew__jN_HdYh8yq0BCtE',
                       onSelected: (Place place) async {
-                        //   _onAddMarkerButtonPressed();
                         final geo = await place.geolocation;
-
                         _controller.animateCamera(
                             CameraUpdate.newLatLng(geo?.coordinates));
                         _controller.animateCamera(
@@ -178,7 +176,7 @@ class _AddNewAddressState extends State<AddNewAddress> {
                           marker.add(
                             Marker(
                               draggable: true,
-                              markerId: MarkerId('1'),
+                              markerId: const MarkerId('1'),
                               position: center,
                               onDragEnd: (LatLng v) {
                                 lat = v.latitude;
@@ -395,7 +393,7 @@ class _AddNewAddressState extends State<AddNewAddress> {
                       height: 120,
                       child: Row(
                         children: [
-                          SizedBox(
+                          const SizedBox(
                             width: 10,
                           ),
                           IconButton(
@@ -451,7 +449,7 @@ class _AddNewAddressState extends State<AddNewAddress> {
                                       fontWeight: FontWeight.bold),
                                 ],
                               )),
-                          SizedBox(
+                          const SizedBox(
                             width: 10,
                           ),
                           Container(

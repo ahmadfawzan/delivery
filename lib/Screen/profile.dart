@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import '../Server/firebase_auth_ Just_to_learn.dart';
 import '../Utils/Ui/material_button_widgets.dart';
 import '../Utils/Ui/text_form_field_widgets.dart';
 
@@ -18,7 +17,7 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
-  var documentID;
+  /*var documentID;*/
   String? name;
   String? email;
   String? mobileNumber;
@@ -43,27 +42,29 @@ class _ProfileState extends State<Profile> {
     );
     var data = json.decode(response.body);
     if (response.statusCode == 200) {
+      if (!mounted) return;
       AwesomeDialog(
         animType: AnimType.leftSlide,
         dialogType: DialogType.success,
         btnOkOnPress: () {},
         context: context,
         title: 'Success',
-        body: TextWidgets(
+        body: const TextWidgets(
           text: 'Your account has been modified',
         ),
       ).show();
     } else {
+      if (!mounted) return;
       AwesomeDialog(
         animType: AnimType.leftSlide,
         dialogType: DialogType.success,
         btnOkOnPress: () {},
-        context: context,
         title: 'Error',
         body: TextWidgets(
           text: '${data['error']}', fontSize: 18,
           fontWeight: FontWeight.bold,
         ),
+        context: context,
       ).show();
     }
   }

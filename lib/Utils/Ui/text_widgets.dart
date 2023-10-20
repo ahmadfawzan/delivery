@@ -31,14 +31,15 @@ class _TextWidgetsState extends State<TextWidgets> {
   Widget build(BuildContext context) {
     return Text(
       widget.text,
+
       style: TextStyle(
-          overflow: widget.textOverFlow,
           fontSize: widget.fontSize,
           fontWeight: widget.fontWeight,
           color: widget.color,
           decoration: widget.textDecoration
 
       ),
+      overflow: widget.textOverFlow,
       textAlign: widget.textAlign,
     );
   }
