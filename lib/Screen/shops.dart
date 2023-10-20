@@ -318,35 +318,35 @@ class _ShopsState extends State<Shops> {
                                   splashColor: Colors.grey,
                                   onTap: () {},
                                   child: Row(
-
-                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
                                     children: [
                                       const SizedBox(
                                         width: 25,
                                       ),
                                       ImageNetworkWidget(
-                                        errorbuilder: (BuildContext context,
-                                            Object exception,
-                                            StackTrace? stackTrace) {
-                                          return Image.asset(
-                                            'assets/images/images.png',
-                                            fit: BoxFit.fitHeight,
-                                            height: 90,
-                                            width: 90,
-                                          );
-                                        },
                                         image:
                                             'https://news.wasiljo.com/${shopsItemList?[index].license.toString()}',
                                         height: 90,
                                         width: 90,
                                         fit: BoxFit.fitHeight,
+                                        errorbuilder: (BuildContext context,
+                                            Object exception,
+                                            StackTrace? stackTrace) {
+                                          return Image.asset(
+                                            'assets/images/image2.png',
+                                            fit: BoxFit.fitHeight,
+                                            height: 90,
+                                            width: 90,
+                                          );
+                                        },
                                       ),
                                       const SizedBox(
                                         width: 30,
                                       ),
                                       Column(
-
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
                                           const SizedBox(
                                             height: 10,
@@ -366,25 +366,38 @@ class _ShopsState extends State<Shops> {
                                                 '${shopsItemList?[index].address.toString()}',
                                             fontSize: 11,
                                             color: Colors.grey,
-
                                           ),
                                           const SizedBox(
                                             height: 40,
                                           ),
                                           Row(
                                             children: [
-                                              const Icon(Icons.star,color: Color(0xff15CB95),size: 19,),
-                                              const SizedBox(width: 4,),
-                                              TextWidgets(text: '${shopsItemList?[index].rating.toString()}',fontWeight: FontWeight.bold,),
-                                              const SizedBox(width: 3,),
-                                              TextWidgets(text: '(${shopsItemList?[index].total_rating.toString()}+ Ratings)',fontWeight: FontWeight.bold,color: Colors.grey,)
+                                              const Icon(
+                                                Icons.star,
+                                                color: Color(0xff15CB95),
+                                                size: 19,
+                                              ),
+                                              const SizedBox(
+                                                width: 4,
+                                              ),
+                                              TextWidgets(
+                                                text:
+                                                    '${shopsItemList?[index].rating.toString()}',
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                              const SizedBox(
+                                                width: 3,
+                                              ),
+                                              TextWidgets(
+                                                text:
+                                                    '(${shopsItemList?[index].total_rating.toString()}+ Ratings)',
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.grey,
+                                              )
                                             ],
                                           )
-                                       
                                         ],
-                                        
                                       )
-
                                     ],
                                   ),
                                 ),
