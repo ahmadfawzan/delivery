@@ -1,9 +1,7 @@
 import 'dart:convert';
-import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
-
 import '../Utils/Helper/list_data_shops_api.dart';
 import '../Utils/Ui/text_form_field_widgets.dart';
 import '../Utils/Ui/text_widgets.dart';
@@ -78,14 +76,18 @@ class _ShopsState extends State<Shops> {
   }
 
   Future fetchShops() async {
-    final response = await http.get(
-      Uri.parse(
-          'https://news.wasiljo.com/public/api/v1/user/get-delivery-or-shop-by-location/1/location?latitude=$lat&longitude=$long'),
-    );
+    final queryParameters = {
+      'latitude': lat,
+      'longitude': long,
+    };
+    final uri = Uri.https(
+        'news.wasiljo.com',
+        '/public/api/v1/user/get-delivery-or-shop-by-location/1/location',
+        queryParameters);
+    final response = await http.get(uri);
+    final jsonRes = json.decode(response.body);
     if (response.statusCode == 200) {
-      final jsonRes = json.decode(response.body);
       final shopsList = jsonRes['data']['shops'] as List<dynamic>;
-
       setState(() {
         final shops =
             shopsList.map((json) => ShopsList.fromJson(json)).toList();
@@ -93,7 +95,23 @@ class _ShopsState extends State<Shops> {
             shops.where((element) => element.category_id == widget.id).toList();
       });
     } else {
-      throw Exception('Failed to load Addresses');
+      if (!mounted) return;
+      AwesomeDialog(
+        context: context,
+        animType: AnimType.leftSlide,
+        dialogType: DialogType.error,
+        btnOkOnPress: () {},
+        title: "Error Api Shop",
+        body:  Padding(
+          padding: const EdgeInsets.only(bottom: 10.0),
+          child: TextWidgets(
+            text: '${jsonRes['error']}',
+            fontSize: 15,
+            fontWeight: FontWeight.bold,
+            textAlign: TextAlign.center,
+          ),
+        ),
+      ).show();
     }
   }
 
@@ -282,22 +300,25 @@ class _ShopsState extends State<Shops> {
           const SizedBox(
             height: 15,
           ),
-          Expanded(
-              child: SingleChildScrollView(
-                child: Container(
-                  color: Colors.white,
+            Expanded(
+                      child: Container(
+                        color: Colors.white,
+                        child: ListView.builder(
+                          padding: EdgeInsets.symmetric(horizontal: 25, vertical: 10),
+                            scrollDirection: Axis.vertical,
+                            shrinkWrap: true,
+                            itemCount: shopsItemList?.length,
+                            itemBuilder: (context, index) {
+                              return SingleChildScrollView(
+                              child:  Text(
+                                      '${shopsItemList?[index].shop_name_en.toString()}'),
 
-                  child: ListView.builder(
-                    padding: EdgeInsets.symmetric(horizontal: 25, vertical: 10),
-                      scrollDirection: Axis.vertical,
-                      shrinkWrap: true,
-                      itemCount: shopsItemList?.length,
-                      itemBuilder: (context, index) {
-                        return Text(
-                            '${shopsItemList?[index].shop_name_en.toString()}');
-                      }),
-                ),
-              ))
+                              );
+                            }),
+                      ),
+                    ),
+
+
         ],
       ),
     );
