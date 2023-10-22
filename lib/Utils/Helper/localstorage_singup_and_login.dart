@@ -91,15 +91,9 @@ Future localStorageLoginUser(TextEditingController mobileNumber,
 
 Future localStorageCheck({required BuildContext context}) async {
   SharedPreferences signUpUser = await SharedPreferences.getInstance();
-  String? getMobileNumber = signUpUser.getString('mobileNumber') ?? "";
-  String? getPassword = signUpUser.getString('Password1') ?? "";
-  String? getCountryCode = signUpUser.getString('countryCode') ?? "";
-
-  if (getMobileNumber.isNotEmpty &&
-      getPassword.toString().isNotEmpty &&
-      getCountryCode.isNotEmpty) {
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => const HomePage()));
+  String? token = signUpUser.getString('token') ?? "";
+  if (token.isNotEmpty) {
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) => const HomePage()));
   } else {
     Navigator.of(context)
         .push(MaterialPageRoute(builder: (context) => const AboutUs()));

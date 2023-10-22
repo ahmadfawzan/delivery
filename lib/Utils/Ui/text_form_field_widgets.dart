@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class TextFormFieldWidgets extends StatefulWidget {
   final String hintText;
   final Icon? prefixIcon;
-
+  final EdgeInsetsGeometry? contentPadding;
   final IconButton? suffixIcon;
   final Function()? onTap;
   bool readOnly;
@@ -47,6 +47,7 @@ class TextFormFieldWidgets extends StatefulWidget {
     this.enabledBorderUnderline,
     this.focusedBorderUnderline,
     this.inputBorder,
+    this.contentPadding,
   }) : super(key: key);
 
   @override
@@ -67,8 +68,7 @@ class _TextFormFieldWidgetsState extends State<TextFormFieldWidgets> {
       decoration: InputDecoration(
         alignLabelWithHint: widget.alignLabelWithHint,
         border: widget.inputBorder,
-        contentPadding:
-            const EdgeInsets.symmetric(vertical: 12, horizontal: 10),
+        contentPadding: widget.contentPadding,
         enabledBorder: widget.enabledBorder ?? widget.enabledBorderUnderline,
         focusedBorder: widget.focusedBorder ?? widget.focusedBorderUnderline,
         errorBorder: widget.errorBorder,

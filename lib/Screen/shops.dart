@@ -11,8 +11,8 @@ import 'add_new_address.dart';
 class Shops extends StatefulWidget {
   final int id;
   final List? addresses;
-
-  const Shops({Key? key, required this.id, required this.addresses})
+  final String? popMenuValue;
+  const Shops({Key? key, required this.id, required this.addresses,required this.popMenuValue})
       : super(key: key);
 
   @override
@@ -185,7 +185,7 @@ class _ShopsState extends State<Shops> {
                                   ? const TextWidgets(text: '')
                                   : Expanded(
                                       child: TextWidgets(
-                                      text: popMenuValue ??
+                                      text: popMenuValue ??widget.popMenuValue??
                                           (widget.addresses?[0].type == 1
                                               ? "Home (${widget.addresses?[0]!.street.toString()})"
                                               : widget.addresses?[0]!.type == 2

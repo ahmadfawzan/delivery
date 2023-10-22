@@ -82,6 +82,7 @@ class _LoginState extends State<Login> {
                       child: Padding(
                         padding: const EdgeInsets.only(top: 9.0),
                         child: TextFormFieldWidgets(
+                          contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 10),
                             hintText: 'Mobile Number',
                             controller: mobileNumber,
                             enabledBorder: OutlineInputBorder(
@@ -137,6 +138,7 @@ class _LoginState extends State<Login> {
                   height: 5,
                 ),
                 TextFormFieldWidgets(
+                  contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 10),
                   hintText: 'Password',
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(5),

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:delivery/Screen/homepage.dart';
-
+import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:search_map_place_updated/search_map_place_updated.dart';
@@ -22,8 +23,9 @@ class AddNewAddress extends StatefulWidget {
 class _AddNewAddressState extends State<AddNewAddress> {
   late GoogleMapController _controller;
   late Position loction;
-  var lat;
-  var long;
+  late Position loction1;
+  double? lat;
+  double? long;
   CameraPosition? _kGooglePlex;
   int selectedOption = 1;
   String? city;
@@ -55,7 +57,6 @@ class _AddNewAddressState extends State<AddNewAddress> {
       ).show();
     }
     per = await Geolocator.checkPermission();
-
     if (per == LocationPermission.denied) {
       per = await Geolocator.requestPermission();
       Navigator.of(context).pop();
@@ -65,46 +66,47 @@ class _AddNewAddressState extends State<AddNewAddress> {
 
   Future<void> getLatAndLogn() async {
     loction = await Geolocator.getCurrentPosition().then((value) => value);
-
-    lat = loction.latitude;
-    long = loction.longitude;
-    _kGooglePlex = CameraPosition(
-      target: LatLng(lat, long),
-      zoom: 15,
-    );
-    setState(() {});
+    if (mounted) {
+      setState(() {
+        lat = loction.latitude;
+        long = loction.longitude;
+        _kGooglePlex = CameraPosition(
+          target: LatLng(lat!, long!),
+          zoom: 15,
+        );
+      });
+    }
     getAddressAndcity();
   }
 
   Future<void> getAddressAndcity() async {
-    List<Placemark> placemarks = await placemarkFromCoordinates(lat, long);
+    List<Placemark> placemarks = await placemarkFromCoordinates(lat!, long!);
     setState(() {
-      city = placemarks[0].locality;
+      city =
+          placemarks[0].locality!.isEmpty ? 'No City' : placemarks[0].locality;
       street = placemarks[0].street;
       name = placemarks[0].name;
     });
-
   }
 
   Future<void> onMapCreated() async {
-    LatLng latLng = LatLng(lat, long);
+    LatLng latLng = LatLng(lat!, long!);
     _controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
       target: latLng,
       zoom: 15,
     )));
-    setState(() {});
   }
 
   late Set<Marker> marker = {
     Marker(
       markerId: const MarkerId('1'),
       draggable: true,
+      position: LatLng(lat!, long!),
       onDragEnd: (LatLng v) {
         lat = v.latitude;
         long = v.longitude;
         getAddressAndcity();
       },
-      position: LatLng(lat, long),
     )
   };
 
@@ -112,7 +114,6 @@ class _AddNewAddressState extends State<AddNewAddress> {
   void initState() {
     getPer();
     getLatAndLogn();
-
     super.initState();
   }
 
@@ -120,231 +121,235 @@ class _AddNewAddressState extends State<AddNewAddress> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Padding(
-        padding: const EdgeInsets.only(top: 40.0),
-        child: Column(
-          children: [
-            const Center(
-                child: TextWidgets(
-                    text: 'Address',
-                    fontSize: 25,
-                    fontWeight: FontWeight.bold)),
-            const SizedBox(
-              height: 10,
-            ),
-            Container(
-              width: double.infinity,
-              height: 250,
-              child: _kGooglePlex == null
-                  ? const Text('')
-                  : GoogleMap(
-                      initialCameraPosition: _kGooglePlex!,
-                      markers: marker,
-                      mapType: MapType.normal,
-                      onMapCreated: (GoogleMapController controller) {
-                        _controller = controller;
-                      },
-                      myLocationEnabled: true,
-                    ),
-            ),
-            const SizedBox(
-              height: 15,
-            ),
-            Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    SearchMapPlaceWidget(
-                      bgColor: Colors.white,
-                      iconColor: Colors.black,
-                      placeholder: 'Search Location',
-                      placeType: PlaceType.address,
-                      hasClearButton: false,
-                      textColor: Colors.black,
-                      apiKey: 'AIzaSyC7OA_kF9duRuHHew__jN_HdYh8yq0BCtE',
-                      onSelected: (Place place) async {
-                        final geo = await place.geolocation;
-                        _controller.animateCamera(
-                            CameraUpdate.newLatLng(geo?.coordinates));
-                        _controller.animateCamera(
-                            CameraUpdate.newLatLngBounds(geo?.bounds, 0));
-                        final center = geo!.coordinates;
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.only(top: 40.0),
+          child: Column(
+            children: [
+              const Center(
+                  child: TextWidgets(
+                      text: 'Address',
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold)),
+              const SizedBox(
+                height: 10,
+              ),
+              SizedBox(
+                width: double.infinity,
+                height: 250,
+                child: _kGooglePlex == null
+                    ? const Text('')
+                    : GoogleMap(
+                        gestureRecognizers: <Factory<
+                            OneSequenceGestureRecognizer>>{
+                          Factory<PanGestureRecognizer>(
+                              () => PanGestureRecognizer()),
+                          Factory<ScaleGestureRecognizer>(
+                              () => ScaleGestureRecognizer()),
+                          Factory<TapGestureRecognizer>(
+                              () => TapGestureRecognizer()),
+                          Factory<EagerGestureRecognizer>(
+                              () => EagerGestureRecognizer()),
+                        },
+                        initialCameraPosition: _kGooglePlex!,
+                        markers: marker,
+                        mapType: MapType.normal,
+                        onMapCreated: (GoogleMapController controller) {
+                          _controller = controller;
+                        },
+                        myLocationEnabled: true,
+                      ),
+              ),
+              const SizedBox(
+                height: 7,
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SearchMapPlaceWidget(
+                    bgColor: const Color(0xffE0E0E0),
+                    iconColor: Colors.black,
+                    placeholder: 'Search Location',
+                    placeType: PlaceType.address,
+                    hasClearButton: false,
+                    textColor: Colors.black,
+                    apiKey: 'AIzaSyC7OA_kF9duRuHHew__jN_HdYh8yq0BCtE',
+                    onSelected: (Place place) async {
+                      final geo = await place.geolocation;
+                      _controller.animateCamera(
+                          CameraUpdate.newLatLng(geo?.coordinates));
+                      _controller.animateCamera(
+                          CameraUpdate.newLatLngBounds(geo?.bounds, 0));
+                      final center = geo!.coordinates;
 
-                        setState(() {
-                          lat = center.latitude;
-                          long = center.longitude;
-                          marker.add(
-                            Marker(
-                              draggable: true,
-                              markerId: const MarkerId('1'),
-                              position: center,
-                              onDragEnd: (LatLng v) {
-                                lat = v.latitude;
-                                long = v.longitude;
-                                getAddressAndcity();
-                              },
-                            ),
-                          );
-                        });
-                        getAddressAndcity();
-                        onMapCreated();
-                      },
+                      setState(() {
+                        lat = center.latitude;
+                        long = center.longitude;
+                        marker.add(
+                          Marker(
+                            draggable: true,
+                            markerId: const MarkerId('1'),
+                            position: center,
+                            onDragEnd: (LatLng v) {
+                              lat = v.latitude;
+                              long = v.longitude;
+                              getAddressAndcity();
+                            },
+                          ),
+                        );
+                      });
+                      getAddressAndcity();
+                      onMapCreated();
+                    },
+                  ),
+                  const SizedBox(
+                    height: 5,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 7),
+                    child: Row(
+                      children: [
+                        RadioMenuButton(
+                          value: 1,
+                          groupValue: selectedOption,
+                          onChanged: (value) {
+                            setState(() {
+                              selectedOption = value!;
+                            });
+                          },
+                          child: const TextWidgets(
+                            text: 'Home',
+                            fontSize: 16,
+                            color: Color(0xff8D8D8E),
+                          ),
+                        ),
+                        RadioMenuButton(
+                          value: 2,
+                          groupValue: selectedOption,
+                          onChanged: (value) {
+                            setState(() {
+                              selectedOption = value!;
+                            });
+                          },
+                          child: const TextWidgets(
+                            text: 'Work',
+                            fontSize: 16,
+                            color: Color(0xff8D8D8E),
+                          ),
+                        ),
+                        RadioMenuButton(
+                          value: 3,
+                          groupValue: selectedOption,
+                          onChanged: (value) {
+                            setState(() {
+                              selectedOption = value!;
+                            });
+                          },
+                          child: const TextWidgets(
+                            text: 'Other',
+                            fontSize: 16,
+                            color: Color(0xff8D8D8E),
+                          ),
+                        ),
+                      ],
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 10.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Expanded(
-                            child: RadioListTile<int>(
-                              contentPadding: EdgeInsets.zero,
-                              dense: true,
-                              title: const TextWidgets(
-                                text: 'Home',
-                                fontSize: 16,
-                                color: Color(0xff8D8D8E),
-                              ),
-                              value: 1,
-                              groupValue: selectedOption,
-                              onChanged: (value) {
-                                setState(() {
-                                  selectedOption = value!;
-                                });
-                              },
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 15, right: 15),
+                    child: Container(
+                        height: 235,
+                        width: double.infinity,
+                        decoration: const BoxDecoration(
+                          color: Color(0xffFFFFFF),
+                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Color(0xffE0E0E0),
+                              blurRadius: 15.0,
+                              spreadRadius: 5.0,
+                              offset: Offset(0.0, 0.0),
                             ),
-                          ),
-                          Expanded(
-                            child: RadioListTile<int>(
-                              contentPadding: EdgeInsets.zero,
-                              dense: true,
-                              title: const TextWidgets(
-                                text: 'Work',
-                                fontSize: 16,
-                                color: Color(0xff8D8D8E),
-                              ),
-                              value: 2,
-                              groupValue: selectedOption,
-                              onChanged: (value) {
-                                setState(() {
-                                  selectedOption = value!;
-                                });
-                              },
-                            ),
-                          ),
-                          Expanded(
-                            child: RadioListTile<int>(
-                              contentPadding: EdgeInsets.zero,
-                              dense: true,
-                              title: const TextWidgets(
-                                text: 'Other',
-                                fontSize: 16,
-                                color: Color(0xff8D8D8E),
-                              ),
-                              value: 3,
-                              groupValue: selectedOption,
-                              onChanged: (value) {
-                                setState(() {
-                                  selectedOption = value!;
-                                });
-                              },
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Container(
-                      margin: const EdgeInsets.only(left: 25, right: 25),
-                      height: 200,
-                      width: double.infinity,
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.all(Radius.circular(20)),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey,
-                            blurRadius: 10.0,
-                            spreadRadius: 2.0,
-                            offset: Offset(0.0, 0.0),
-                          ),
-                        ],
-                      ),
-                      child: Column(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(top: 12.0),
-                            child: TextFormFieldWidgets(
-                                readOnly: true,
-                                hintText: street ?? 'StreetName',
-                                enabledBorderUnderline:
-                                    const UnderlineInputBorder(
-                                  borderSide: BorderSide(
-                                    width: 2, //<-- SEE HERE
-                                    color: Colors.black,
+                          ],
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            SizedBox(
+                              height: 80,
+                              child: TextFormFieldWidgets(
+                                contentPadding: EdgeInsets.symmetric(vertical: 25,horizontal: 10),
+                                  readOnly: true,
+                                  hintText: street ?? 'StreetName',
+                                  enabledBorderUnderline:
+                                      const UnderlineInputBorder(
+                                    borderSide: BorderSide(
+                                      width: 2, //<-- SEE HERE
+                                      color: Colors.black,
+                                    ),
                                   ),
-                                ),
-                                focusedBorderUnderline:
-                                    const UnderlineInputBorder(
-                                  borderSide: BorderSide(
-                                    width: 2, //<-- SEE HERE
-                                    color: Colors.black,
+                                  focusedBorderUnderline:
+                                      const UnderlineInputBorder(
+                                    borderSide: BorderSide(
+                                      width: 2, //<-- SEE HERE
+                                      color: Colors.black,
+                                    ),
                                   ),
-                                ),
-                                hintstyle: const TextStyle(
-                                  fontSize: 20,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                prefixIcon: const Icon(
-                                  Icons.location_on,
-                                  color: Colors.black,
-                                  size: 35,
-                                )),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 15.0),
-                            child: TextFormFieldWidgets(
-                              controller: buildingNumber,
-                              enabledBorderUnderline:
-                                  const UnderlineInputBorder(
-                                borderSide: BorderSide(
-                                  width: 2, //<-- SEE HERE
-                                  color: Colors.black,
-                                ),
-                              ),
-                              focusedBorderUnderline:
-                                  const UnderlineInputBorder(
-                                borderSide: BorderSide(
-                                  width: 2, //<-- SEE HERE
-                                  color: Colors.black,
-                                ),
-                              ),
-                              hintText: 'Building Number',
-                              hintstyle: const TextStyle(
-                                fontSize: 20,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                              prefixIcon: const Icon(
-                                Icons.add_location_alt,
-                                color: Colors.black,
-                                size: 35,
-                              ),
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please enter your BulidNumber';
-                                }
-                                return null;
-                              },
+                                  hintstyle: const TextStyle(
+                                    fontSize: 20,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  prefixIcon: const Icon(
+                                    Icons.location_on,
+                                    color: Colors.black,
+                                    size: 35,
+                                  )),
                             ),
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Expanded(
-                                child: Padding(
-                                  padding: const EdgeInsets.only(top: 10.0),
+                            SizedBox(
+                              height: 75,
+                              child: TextFormFieldWidgets(
+                                contentPadding: const EdgeInsets.symmetric(vertical: 25,horizontal: 10),
+                                  controller: buildingNumber,
+                                  hintText: 'Building Number',
+                                  enabledBorderUnderline:
+                                      const UnderlineInputBorder(
+                                    borderSide: BorderSide(
+                                      width: 2, //<-- SEE HERE
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                  focusedBorderUnderline:
+                                      const UnderlineInputBorder(
+                                    borderSide: BorderSide(
+                                      width: 2, //<-- SEE HERE
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                  hintstyle: const TextStyle(
+                                    fontSize: 20,
+
+                                  ),
+                                  prefixIcon: const Icon(
+                                    Icons.add_location_alt,
+                                    color: Colors.black,
+                                    size: 35,
+                                  ),
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'Please enter your BulidNumber';
+                                    }
+                                    return null;
+                                  },
+                                ),
+                              ),
+
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                SizedBox(
+                                  width: 150,
                                   child: TextFormFieldWidgets(
+                                   contentPadding: const EdgeInsets.symmetric(vertical: 25,horizontal: 10),
                                     readOnly: true,
                                     inputBorder: InputBorder.none,
                                     hintText: city ?? 'city',
@@ -358,11 +363,10 @@ class _AddNewAddressState extends State<AddNewAddress> {
                                     ),
                                   ),
                                 ),
-                              ),
-                              Expanded(
-                                child: Padding(
-                                  padding: const EdgeInsets.only(top: 10.0),
+                                SizedBox(
+                                  width: 150,
                                   child: TextFormFieldWidgets(
+                                    contentPadding: const EdgeInsets.symmetric(vertical: 25,horizontal: 10),
                                     validator: (value) {
                                       if (value == null || value.isEmpty) {
                                         return 'Please enter your Apartment Num';
@@ -382,105 +386,115 @@ class _AddNewAddressState extends State<AddNewAddress> {
                                     ),
                                   ),
                                 ),
-                              ),
-                            ],
-                          )
-                        ],
-                      ),
-                    ),
-                    SizedBox(
-                      width: double.infinity,
-                      height: 120,
-                      child: Row(
-                        children: [
-                          const SizedBox(
-                            width: 10,
+                              ],
+                            )
+                          ],
+                        )),
+                  ),
+                  SizedBox(
+                    width: double.infinity,
+                    height: 120,
+                    child: Row(
+                      children: [
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        IconButton(
+                          icon: const Icon(
+                            Icons.arrow_back_ios_new,
+                            color: Color(0xff4B5056),
+                            size: 40,
                           ),
-                          IconButton(
-                            icon: const Icon(
-                              Icons.arrow_back_ios_new,
-                              color: Color(0xff4B5056),
-                              size: 40,
-                            ),
-                            onPressed: () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => const HomePage()));
+                          onPressed: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => const HomePage()));
+                          },
+                        ),
+                        const SizedBox(
+                          width: 40,
+                        ),
+                        MaterialButtonWidgets(
+                            onPressed: () async {
+                              postDataAddresses(lat, long, selectedOption, city,
+                                  street, name, buildingNumber, apartmentNum,
+                                  context: context);
+
                             },
-                          ),
-                          const SizedBox(
-                            width: 40,
-                          ),
-                          MaterialButtonWidgets(
-                              onPressed: () async {
-                                postDataAddresses(
-                                    lat,
-                                    long,
-                                    selectedOption,
-                                    city,
-                                    street,
-                                    name,
-                                    buildingNumber,
-                                    apartmentNum,
-                                    context: context);
-                              },
-                              height: 60,
-                              textColor: Colors.white,
-                              color: const Color(0xff15CB95),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(5),
-                              ),
-                              child: const Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  Icon(
-                                    Icons.check,
-                                    color: Colors.white,
-                                    size: 20,
-                                  ),
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  TextWidgets(
-                                      text: "SAVE ADDRESS",
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.bold),
-                                ],
-                              )),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          Container(
-                            width: 65,
-                            height: 65,
-                            decoration: const BoxDecoration(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(20)),
-                              color: Color(0xff14CB95),
+                            height: 60,
+                            textColor: Colors.white,
+                            color: const Color(0xff15CB95),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5),
                             ),
-                            child: Center(
-                              child: IconButton(
-                                onPressed: () {
-                                  onMapCreated();
-                                },
-                                icon: const Icon(
-                                  Icons.location_on,
-                                  color: Colors.white,
-                                  size: 35,
+                            child: const Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                SizedBox(
+                                  width: 10,
                                 ),
+                                Icon(
+                                  Icons.check,
+                                  color: Colors.white,
+                                  size: 20,
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                TextWidgets(
+                                    text: "SAVE ADDRESS",
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold),
+                              ],
+                            )),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Container(
+                          width: 65,
+                          height: 65,
+                          decoration: const BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(20)),
+                            color: Color(0xff14CB95),
+                          ),
+                          child: Center(
+                            child: IconButton(
+                              onPressed: () async {
+                                loction1 = await Geolocator.getCurrentPosition()
+                                    .then((value) => value);
+                                lat = loction1.latitude;
+                                long = loction1.longitude;
+                                setState(() {
+                                  marker.add(
+                                    Marker(
+                                      draggable: true,
+                                      markerId: const MarkerId('1'),
+                                      position: LatLng(lat!, long!),
+                                      onDragEnd: (LatLng v) {
+                                        lat = v.latitude;
+                                        long = v.longitude;
+                                        getAddressAndcity();
+                                      },
+                                    ),
+                                  );
+                                });
+                                getAddressAndcity();
+                                onMapCreated();
+                              },
+                              icon: const Icon(
+                                Icons.location_on,
+                                color: Colors.white,
+                                size: 35,
                               ),
                             ),
-                          )
-                        ],
-                      ),
+                          ),
+                        )
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

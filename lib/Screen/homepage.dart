@@ -288,7 +288,7 @@ class _HomePageState extends State<HomePage> {
                     child: TextWidgets(text: 'An error has occurred!'),
                   );
                 } else if (snapshot.hasData) {
-                  return categoriesList(categories: snapshot.data!,addresses:addresses);
+                  return categoriesList(categories: snapshot.data!,addresses:addresses,popMenuValue:popMenuValue);
                 } else {
                   return const Text('');
                 }
@@ -307,10 +307,11 @@ class _HomePageState extends State<HomePage> {
 }
 
 class categoriesList extends StatefulWidget {
-  const categoriesList({super.key, required this.categories, required this.addresses});
+  const categoriesList( {super.key, required this.categories, required this.addresses,required this.popMenuValue});
 
   final List<Categories> categories;
   final List? addresses;
+  final String? popMenuValue;
   @override
   State<categoriesList> createState() => _categoriesListState();
 }
@@ -333,7 +334,7 @@ class _categoriesListState extends State<categoriesList> {
               int id = widget.categories[index].id;
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) => Shops(id: id,addresses:widget.addresses),
+                  builder: (context) => Shops(id: id,addresses:widget.addresses, popMenuValue: widget.popMenuValue,),
                 ),
               );
             },

@@ -173,8 +173,9 @@ class _ProfileState extends State<Profile> {
                     height: 40,
                   ),
                   TextFormFieldWidgets(
+                      contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 10),
                       labeltext: 'Name',
-                      hintText: '$name',
+                      hintText: name??"",
                       controller: nameController,
                       alignLabelWithHint: true,
                       enabledBorder: OutlineInputBorder(
@@ -211,8 +212,9 @@ class _ProfileState extends State<Profile> {
                     height: 20,
                   ),
                   TextFormFieldWidgets(
+                      contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 10),
                       labeltext: 'Email',
-                      hintText: '$email',
+                      hintText: email??"",
                       controller: emailController,
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
@@ -287,8 +289,9 @@ class _ProfileState extends State<Profile> {
                     height: 20,
                   ),*/
                   TextFormFieldWidgets(
+                      contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 10),
                       labeltext: 'Mobile Number',
-                      hintText: '$mobileNumber',
+                      hintText: mobileNumber??"",
                       labelstyle: const TextStyle(color: Color(0xff9B9B9B)),
                       hintstyle: const TextStyle(color: Color(0xff9B9B9B)),
                       controller: mobileNumberController,

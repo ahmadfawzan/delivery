@@ -40,6 +40,7 @@ Future postDataAddresses(lat, long, selectedOption, city, street, name,
         fontWeight: FontWeight.bold,
       ),
     ).show();
+
   } else {
     AwesomeDialog(
       animType: AnimType.leftSlide,

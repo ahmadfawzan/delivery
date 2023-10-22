@@ -212,6 +212,7 @@ class _SignUpState extends State<SignUp> {
                               height: 10,
                             ),
                             TextFormFieldWidgets(
+                                contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 10),
                                 hintText: 'Name',
                                 controller: name,
                                 enabledBorder: OutlineInputBorder(
@@ -280,6 +281,7 @@ class _SignUpState extends State<SignUp> {
                                   child: Padding(
                                     padding: const EdgeInsets.only(top: 9.0),
                                     child: TextFormFieldWidgets(
+                                        contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 10),
                                         hintText: 'Mobile Number',
                                         controller: mobileNumber,
                                         enabledBorder: OutlineInputBorder(
@@ -338,6 +340,7 @@ class _SignUpState extends State<SignUp> {
                               ],
                             ),
                             TextFormFieldWidgets(
+                                contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 10),
                                 hintText: 'Email',
                                 controller: email,
                                 enabledBorder: OutlineInputBorder(
@@ -498,6 +501,7 @@ class _SignUpState extends State<SignUp> {
                               height: 15,
                             ),
                             TextFormFieldWidgets(
+                              contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 10),
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
                                   return 'Please enter your Car Number';
@@ -575,6 +579,7 @@ class _SignUpState extends State<SignUp> {
                               height: 15,
                             ),
                             TextFormFieldWidgets(
+                              contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 10),
                               hintText: 'Password',
                               controller: password,
                               enabledBorder: OutlineInputBorder(
