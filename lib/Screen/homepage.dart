@@ -14,6 +14,7 @@ import '../Utils/Helper/list_data_address_api.dart';
 import '../Utils/Helper/list_data_categories_api.dart';
 import '../Utils/Ui/network_image.dart';
 import 'add_new_address.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -48,7 +49,6 @@ class _HomePageState extends State<HomePage> {
     } else {
       throw Exception('Failed to load Addresses');
     }
-
   }
 
   @override
@@ -219,7 +219,7 @@ class _HomePageState extends State<HomePage> {
                       padding: const EdgeInsets.only(left: 2.0, bottom: 12),
                       child: Row(
                         children: [
-                          addresses?.length==0
+                          addresses?.length == 0
                               ? const Text('')
                               : Expanded(
                                   child: TextWidgets(
@@ -228,7 +228,9 @@ class _HomePageState extends State<HomePage> {
                                           ? "Home (${addresses?[0].street.toString()})"
                                           : addresses?[0].type == 2
                                               ? "Work (${addresses?[0].street.toString()})"
-                                              :addresses?[0].type==3? "Other (${addresses?[0].street.toString()})":''),
+                                              : addresses?[0].type == 3
+                                                  ? "Other (${addresses?[0].street.toString()})"
+                                                  : ''),
                                   fontWeight: FontWeight.bold,
                                   textOverFlow: TextOverflow.ellipsis,
                                   fontSize: 15,
@@ -288,7 +290,10 @@ class _HomePageState extends State<HomePage> {
                     child: TextWidgets(text: 'An error has occurred!'),
                   );
                 } else if (snapshot.hasData) {
-                  return categoriesList(categories: snapshot.data!,addresses:addresses,popMenuValue:popMenuValue);
+                  return categoriesList(
+                      categories: snapshot.data!,
+                      addresses: addresses,
+                      popMenuValue: popMenuValue);
                 } else {
                   return const Text('');
                 }
@@ -307,11 +312,16 @@ class _HomePageState extends State<HomePage> {
 }
 
 class categoriesList extends StatefulWidget {
-  const categoriesList( {super.key, required this.categories, required this.addresses,required this.popMenuValue});
+  const categoriesList(
+      {super.key,
+      required this.categories,
+      required this.addresses,
+      required this.popMenuValue});
 
   final List<Categories> categories;
   final List? addresses;
   final String? popMenuValue;
+
   @override
   State<categoriesList> createState() => _categoriesListState();
 }
@@ -320,13 +330,13 @@ class _categoriesListState extends State<categoriesList> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      child: GridView.builder(
+      child: StaggeredGridView.countBuilder(
+        staggeredTileBuilder: (index) => StaggeredTile.count(1,index.isEven?1.3:1.6),
         physics: const NeverScrollableScrollPhysics(),
         shrinkWrap: true,
         scrollDirection: Axis.vertical,
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-        ),
+        crossAxisCount: 2,
+        crossAxisSpacing: 4,
         itemCount: widget.categories.length,
         itemBuilder: (context, index) {
           return InkWell(
@@ -334,29 +344,36 @@ class _categoriesListState extends State<categoriesList> {
               int id = widget.categories[index].id;
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) => Shops(id: id,addresses:widget.addresses, popMenuValue: widget.popMenuValue,),
+                  builder: (context) => Shops(
+                    id: id,
+                    addresses: widget.addresses,
+                    popMenuValue: widget.popMenuValue,
+                  ),
                 ),
               );
             },
             child: Card(
-              elevation: 10,
+              elevation: 3,
               shadowColor: Colors.black,
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  ImageNetworkWidget(
-                    image:
-                        'https://news.wasiljo.com/public/${widget.categories[index].image}',
-                    height: 120,
-                    width: double.infinity,
-                    fit: BoxFit.fitHeight,
+                  Padding(
+                    padding: const EdgeInsets.only(top: 25.0),
+                    child: ImageNetworkWidget(
+                      image:
+                          'https://news.wasiljo.com/public/${widget.categories[index].image}',
+                      fit: BoxFit.fitWidth,
+                    ),
                   ),
-                  const SizedBox(
-                    height: 23,
-                  ),
-                  TextWidgets(
-                      text: widget.categories[index].title,
-                      fontSize: 10,
-                      fontWeight: FontWeight.bold)
+
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 12.0),
+                    child: TextWidgets(
+                        text: widget.categories[index].title,
+                        fontSize: 10,
+                        fontWeight: FontWeight.bold),
+                  )
                 ],
               ),
             ),

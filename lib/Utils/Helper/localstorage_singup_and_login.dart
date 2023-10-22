@@ -8,7 +8,6 @@ import '../../Screen/homepage.dart';
 import '../../Server/api_login_response.dart';
 import '../Ui/text_widgets.dart';
 
-
 Future localStorageSignUpUser(
     TextEditingController name,
     TextEditingController email,
@@ -49,7 +48,8 @@ Future localStorageSignUpUser(
       getPassword.toString().isNotEmpty &&
       getDropDownValue!.isNotEmpty &&
       getCountryCode!.isNotEmpty) {
-    Navigator.of(context).push(MaterialPageRoute(builder: (context) => const Login()));
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => const Login()));
     AwesomeDialog(
       animType: AnimType.leftSlide,
       dialogType: DialogType.success,
@@ -57,14 +57,15 @@ Future localStorageSignUpUser(
       context: context,
       title: 'Success',
       body: TextWidgets(
-        text: 'You have been successfully registered on the site',textAlign:TextAlign.center, fontSize: 18,
+        text: 'You have been successfully registered on the site',
+        textAlign: TextAlign.center,
+        fontSize: 18,
         fontWeight: FontWeight.bold,
       ),
     ).show();
   } else {
     Navigator.of(context)
         .push(MaterialPageRoute(builder: (context) => const SignUp()));
-
   }
 }
 
@@ -95,7 +96,6 @@ Future localStorageCheck({required BuildContext context}) async {
   if (token.isNotEmpty) {
     Navigator.of(context).push(MaterialPageRoute(builder: (context) => const HomePage()));
   } else {
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => const AboutUs()));
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) => const AboutUs()));
   }
 }
