@@ -28,6 +28,7 @@ class _LoginState extends State<Login> {
     setState(() {
       countryCode = CountryCode1.toString();
     });
+
   }
 
   @override
@@ -74,10 +75,10 @@ class _LoginState extends State<Login> {
                       ),
                     ),
                     const SizedBox(
-                      width: 8,
+                      width: 7,
                     ),
                     SizedBox(
-                      width: 235,
+                      width: countryCode.length<5?245:237,
                       height: 80,
                       child: Padding(
                         padding: const EdgeInsets.only(top: 9.0),

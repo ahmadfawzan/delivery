@@ -56,7 +56,7 @@ class _ShopsState extends State<Shops> {
                       : element.type == 3
                           ? 'Other (${element.street})'
                           : '') ==
-              (popMenuValue ??
+              (popMenuValue ??widget.popMenuValue??
                   (widget.addresses?[0].type == 1
                       ? "Home (${widget.addresses?[0].street.toString()})"
                       : widget.addresses?[0].type == 2

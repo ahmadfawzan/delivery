@@ -276,7 +276,7 @@ class _SignUpState extends State<SignUp> {
                                   width: 8,
                                 ),
                                 SizedBox(
-                                  width: 246,
+                                  width: countryCode.length<5?254:246,
                                   height: 80,
                                   child: Padding(
                                     padding: const EdgeInsets.only(top: 9.0),
