@@ -262,9 +262,8 @@ class _AddNewAddressState extends State<AddNewAddress> {
                     hasClearButton: false,
                     textColor: Colors.black,
                     apiKey: 'AIzaSyC7OA_kF9duRuHHew__jN_HdYh8yq0BCtE',
-
                     onSelected: (Place place) async {
-                      if(mounted) {
+                      if (mounted) {
                         final geo = await place.geolocation;
                         _controller.animateCamera(
                             CameraUpdate.newLatLng(geo?.coordinates));

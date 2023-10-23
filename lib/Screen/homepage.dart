@@ -209,6 +209,7 @@ class _HomePageState extends State<HomePage> {
                 width: 150,
                 height: 40,
                 child: PopupMenuButton<String>(
+                    color: const Color(0xffEBFAF5),
                     onSelected: (value) {
                       setState(() {
                         popMenuValue = value;
