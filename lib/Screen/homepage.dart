@@ -32,7 +32,6 @@ class _HomePageState extends State<HomePage> {
   Future fetchAddresses() async {
     SharedPreferences sharedtoken = await SharedPreferences.getInstance();
     String? token = sharedtoken.getString('token');
-
     final response = await http.get(
       Uri.parse('https://news.wasiljo.com/public/api/v1/user/addresses'),
       headers: {
@@ -65,7 +64,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: scaffoldKey,
-      drawer: Container(
+      drawer: SizedBox(
         width: 230,
         child: Drawer(
           backgroundColor: const Color(0xff15CB95),
@@ -273,10 +272,10 @@ class _HomePageState extends State<HomePage> {
                           )
                         ])),
           ),
-          Container(
+          const SizedBox(
             width: double.infinity,
             height: 122,
-            child: const ImageWidget(
+            child: ImageWidget(
               image: 'assets/images/image6.png',
               fit: BoxFit.cover,
             ),
@@ -331,7 +330,8 @@ class _categoriesListState extends State<categoriesList> {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: StaggeredGridView.countBuilder(
-        staggeredTileBuilder: (index) => StaggeredTile.count(1,index.isEven?1.3:1.6),
+        staggeredTileBuilder: (index) =>
+            StaggeredTile.count(1, index.isEven ? 1.3 : 1.6),
         physics: const NeverScrollableScrollPhysics(),
         shrinkWrap: true,
         scrollDirection: Axis.vertical,
@@ -366,7 +366,6 @@ class _categoriesListState extends State<categoriesList> {
                       fit: BoxFit.fitWidth,
                     ),
                   ),
-
                   Padding(
                     padding: const EdgeInsets.only(bottom: 12.0),
                     child: TextWidgets(

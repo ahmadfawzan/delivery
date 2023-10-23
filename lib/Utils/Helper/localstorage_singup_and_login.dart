@@ -11,9 +11,6 @@ import '../Ui/text_widgets.dart';
 Future localStorageSignUpUser(
     TextEditingController name,
     TextEditingController email,
-    TextEditingController carNumber,
-    String nameImage,
-    String nameImage1,
     TextEditingController mobileNumber,
     TextEditingController password,
     String dropDownValue,
@@ -21,27 +18,19 @@ Future localStorageSignUpUser(
     {required BuildContext context}) async {
   SharedPreferences signUpUser = await SharedPreferences.getInstance();
   signUpUser.setString('name', name.text);
-  signUpUser.setString('email', email.text);
-  signUpUser.setString('carNumber', carNumber.text);
-  signUpUser.setString('nameImage', nameImage);
-  signUpUser.setString('nameImage1', nameImage1);
+  signUpUser.setString('email', email.text);;
   signUpUser.setString('mobileNumber', mobileNumber.text);
   signUpUser.setString('Password', password.text);
   signUpUser.setString('dropDownValue', dropDownValue);
   signUpUser.setString('countryCode', countryCode);
   String? getName = signUpUser.getString('name');
   String? getEmail = signUpUser.getString('email');
-  String? getCarNumber = signUpUser.getString('carNumber');
-  String? getNameImage = signUpUser.getString('nameImage');
-  String? getNameImage1 = signUpUser.getString('nameImage1');
   String? getDropDownValue = signUpUser.getString('dropDownValue');
   String? getMobileNumber = signUpUser.getString('mobileNumber');
   String? getPassword = signUpUser.getString('Password');
   String? getCountryCode = signUpUser.getString('countryCode');
 
-  if (getNameImage1!.isNotEmpty &&
-      getNameImage!.isNotEmpty &&
-      getCarNumber!.isNotEmpty &&
+  if (
       getEmail!.isNotEmpty &&
       getName!.isNotEmpty &&
       getMobileNumber!.isNotEmpty &&
@@ -94,8 +83,10 @@ Future localStorageCheck({required BuildContext context}) async {
   SharedPreferences signUpUser = await SharedPreferences.getInstance();
   String? token = signUpUser.getString('token') ?? "";
   if (token.isNotEmpty) {
-    Navigator.of(context).push(MaterialPageRoute(builder: (context) => const HomePage()));
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => const HomePage()));
   } else {
-    Navigator.of(context).push(MaterialPageRoute(builder: (context) => const AboutUs()));
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => const AboutUs()));
   }
 }

@@ -12,6 +12,7 @@ class TextFormFieldWidgets extends StatefulWidget {
   bool alignLabelWithHint;
   final String? Function(String?)? validator;
   final TextEditingController? controller;
+  final void Function(String)? onChanged;
   bool autocorrect;
   final String? labeltext;
   final TextStyle? labelstyle;
@@ -48,6 +49,7 @@ class TextFormFieldWidgets extends StatefulWidget {
     this.focusedBorderUnderline,
     this.inputBorder,
     this.contentPadding,
+    this.onChanged,
   }) : super(key: key);
 
   @override
@@ -65,6 +67,7 @@ class _TextFormFieldWidgetsState extends State<TextFormFieldWidgets> {
       obscureText: widget.passwordVisible,
       controller: widget.controller,
       validator: widget.validator,
+      onChanged: widget.onChanged,
       decoration: InputDecoration(
         alignLabelWithHint: widget.alignLabelWithHint,
         border: widget.inputBorder,

@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:delivery/Utils/Helper/localstorage_singup_and_login.dart';
 import 'package:delivery/Utils/Ui/country_code_picker.dart';
@@ -22,19 +21,16 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
-  File? image;
   final picker = ImagePicker();
-  File? image1;
   bool passwordVisible = true;
-  String? nameImage;
-  String? nameImage1;
   final _formKey = GlobalKey<FormState>();
   final TextEditingController name = TextEditingController();
   final TextEditingController email = TextEditingController();
-  final TextEditingController carNumber = TextEditingController();
+
   final TextEditingController mobileNumber = TextEditingController();
   final TextEditingController password = TextEditingController();
   late List register = [];
+
   void FetchRegister({required BuildContext context}) async {
     SharedPreferences sharedtoken = await SharedPreferences.getInstance();
     Map<String, String> header = {
@@ -59,24 +55,15 @@ class _SignUpState extends State<SignUp> {
     if (response.statusCode == 200) {
       sharedtoken.setString('token', data['data']['token']);
       localStorageSignUpUser(
-          name,
-          email,
-          carNumber,
-          nameImage!,
-          nameImage1!,
-          mobileNumber,
-          password,
-          dropDownValue,
-          countryCode,
+          name, email, mobileNumber, password, dropDownValue, countryCode,
           context: context);
-
     } else {
-
       setState(() {
         register = data['error'] as List<dynamic>;
       });
     }
   }
+
   String countryCode = '962';
 
   void onCountryChange(CountryCode CountryCode1) async {
@@ -88,7 +75,27 @@ class _SignUpState extends State<SignUp> {
   String dropDownValue = 'Gas Service';
   var items = ['Gas Service', 'Water'];
 
-  Future getImageFromGallery() async {
+  /// for image and carNumber ↓
+
+  /*
+
+
+ لا تنسا تضيف المتغيرات على
+ localStorageSignUpUser
+ عشان يخزنهم بل
+ SharedPreferences
+ لما تستخدمهم
+ملاحظه :
+  localStorageSignUpUser
+موجود فوق
+
+  File? image;
+  File? image1;
+  final TextEditingController carNumber = TextEditingController();
+  String? nameImage;
+  String? nameImage1;
+
+ Future getImageFromGallery() async {
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
 
     setState(() {
@@ -182,7 +189,9 @@ class _SignUpState extends State<SignUp> {
         ),
       ),
     );
-  }
+  }*/
+
+  /// for image and carNumber ↑
 
   @override
   Widget build(BuildContext context) {
@@ -212,7 +221,8 @@ class _SignUpState extends State<SignUp> {
                               height: 10,
                             ),
                             TextFormFieldWidgets(
-                                contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 10),
+                                contentPadding: const EdgeInsets.symmetric(
+                                    vertical: 12, horizontal: 10),
                                 hintText: 'Name',
                                 controller: name,
                                 enabledBorder: OutlineInputBorder(
@@ -276,12 +286,14 @@ class _SignUpState extends State<SignUp> {
                                   width: 8,
                                 ),
                                 SizedBox(
-                                  width: countryCode.length<5?254:246,
+                                  width: countryCode.length < 5 ? 254 : 246,
                                   height: 80,
                                   child: Padding(
                                     padding: const EdgeInsets.only(top: 9.0),
                                     child: TextFormFieldWidgets(
-                                        contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 10),
+                                        contentPadding:
+                                            const EdgeInsets.symmetric(
+                                                vertical: 12, horizontal: 10),
                                         hintText: 'Mobile Number',
                                         controller: mobileNumber,
                                         enabledBorder: OutlineInputBorder(
@@ -340,7 +352,8 @@ class _SignUpState extends State<SignUp> {
                               ],
                             ),
                             TextFormFieldWidgets(
-                                contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 10),
+                                contentPadding: const EdgeInsets.symmetric(
+                                    vertical: 12, horizontal: 10),
                                 hintText: 'Email',
                                 controller: email,
                                 enabledBorder: OutlineInputBorder(
@@ -382,7 +395,10 @@ class _SignUpState extends State<SignUp> {
                                   }
                                   return null;
                                 }),
-                            image == null
+
+                            ///for singup driver ↓
+
+                            /* image == null
                                 ? const TextWidgets(
                                     text: '',
                                   )
@@ -501,7 +517,8 @@ class _SignUpState extends State<SignUp> {
                               height: 15,
                             ),
                             TextFormFieldWidgets(
-                              contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 10),
+                              contentPadding: const EdgeInsets.symmetric(
+                                  vertical: 12, horizontal: 10),
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
                                   return 'Please enter your Car Number';
@@ -543,7 +560,10 @@ class _SignUpState extends State<SignUp> {
                                 size: 25,
                               ),
                               alignLabelWithHint: true,
-                            ),
+                            ),*/
+
+                            ///for singup driver ↑
+
                             const SizedBox(
                               height: 15,
                             ),
@@ -579,7 +599,8 @@ class _SignUpState extends State<SignUp> {
                               height: 15,
                             ),
                             TextFormFieldWidgets(
-                              contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 10),
+                              contentPadding: const EdgeInsets.symmetric(
+                                  vertical: 12, horizontal: 10),
                               hintText: 'Password',
                               controller: password,
                               enabledBorder: OutlineInputBorder(
@@ -638,25 +659,27 @@ class _SignUpState extends State<SignUp> {
                                 return null;
                               },
                             ),
-                            SizedBox(height: 10,),
-                        ListView.builder(
-                            scrollDirection: Axis.vertical,
-                            shrinkWrap: true,
-                            padding: const EdgeInsets.all(8),
-                            itemCount: register.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              return TextWidgets(text: register[index],color: Colors.red,fontSize: 15,);
-                            }
-                        ),
-                            const SizedBox(
-                              height: 25,
-                            ),
+
+                            ListView.builder(
+                                scrollDirection: Axis.vertical,
+                                shrinkWrap: true,
+                                padding: const EdgeInsets.all(8),
+                                itemCount: register.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  return TextWidgets(
+                                    text: register[index],
+                                    color: Colors.red,
+                                    fontSize: 15,
+                                  );
+                                }),
+
                             MaterialButtonWidgets(
                                 onPressed: () async {
                                   if (_formKey.currentState!.validate()) {
-                                 FetchRegister(context: context);
-                                };
-                             },
+                                    FetchRegister(context: context);
+                                  }
+                                  ;
+                                },
                                 height: 50,
                                 minWidth: double.infinity,
                                 textColor: Colors.white,

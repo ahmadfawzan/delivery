@@ -1,17 +1,22 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:delivery/Screen/homepage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:search_map_place_updated/search_map_place_updated.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../Server/api_Addresses_response.dart';
+import '../Server/api_update_Adress_response.dart';
+import '../Utils/Helper/list_data_address_api.dart';
 import '../Utils/Ui/material_button_widgets.dart';
 import '../Utils/Ui/text_form_field_widgets.dart';
 import '../Utils/Ui/text_widgets.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:geocoding/geocoding.dart';
+import 'package:http/http.dart' as http;
 
 class AddNewAddress extends StatefulWidget {
   const AddNewAddress({super.key});
@@ -31,8 +36,90 @@ class _AddNewAddressState extends State<AddNewAddress> {
   String? city;
   String? street;
   String? name;
+  List? addresses;
+  List? addressesType;
   final TextEditingController buildingNumber = TextEditingController();
   final TextEditingController apartmentNum = TextEditingController();
+
+  Future fetchAddresses() async {
+    SharedPreferences sharedtoken = await SharedPreferences.getInstance();
+    String? token = sharedtoken.getString('token');
+
+    final response = await http.get(
+      Uri.parse('https://news.wasiljo.com/public/api/v1/user/addresses'),
+      headers: {
+        'Authorization': 'Bearer $token',
+      },
+    );
+    final jsonRes = json.decode(response.body);
+    if (response.statusCode == 200) {
+      final addressList = jsonRes['data']['addresses'] as List<dynamic>;
+      setState(() {
+        addresses = addressList.map((json) => Address.fromJson(json)).toList();
+        addressesType = addresses
+            ?.where((element) =>
+                element.type == 1 && selectedOption == 1 ||
+                selectedOption == 2 && element.type == 2)
+            .toList();
+      });
+      if (mounted) {
+        addressesType!.isEmpty
+            ? postDataAddresses(lat, long, selectedOption, city, street, name,
+                buildingNumber, apartmentNum,
+                context: context)
+            : AwesomeDialog(
+                context: context,
+                animType: AnimType.leftSlide,
+                dialogType: DialogType.info,
+                btnOkOnPress: () {
+                  UpdateAdress(
+                    context: context,
+                    addressesType: addressesType,
+                    lat: lat,
+                    long: long,
+                    name: name,
+                    street: street,
+                    buildingNumber: buildingNumber,
+                    city: city,
+                    apartmentNum: apartmentNum,
+                  );
+                },
+                btnCancelOnPress: () {},
+                title: selectedOption == 1
+                    ? 'change Address Home'
+                    : selectedOption == 2
+                        ? 'change Address Work'
+                        : '',
+                body: TextWidgets(
+                  text: selectedOption == 1
+                      ? "The Home address exists. Do you want to change it?"
+                      : selectedOption == 2
+                          ? "The Work address exists. Do you want to change it?"
+                          : "",
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  textAlign: TextAlign.center,
+                ),
+              ).show();
+      }
+    } else {
+      if (mounted) {
+        AwesomeDialog(
+          animType: AnimType.leftSlide,
+          dialogType: DialogType.success,
+          btnOkOnPress: () {},
+          title: 'Error',
+          body: TextWidgets(
+            text: '${jsonRes['error']}',
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            textAlign: TextAlign.center,
+          ),
+          context: context,
+        ).show();
+      }
+    }
+  }
 
   Future getPer() async {
     bool services;
@@ -114,6 +201,7 @@ class _AddNewAddressState extends State<AddNewAddress> {
   void initState() {
     getPer();
     getLatAndLogn();
+
     super.initState();
   }
 
@@ -174,32 +262,34 @@ class _AddNewAddressState extends State<AddNewAddress> {
                     hasClearButton: false,
                     textColor: Colors.black,
                     apiKey: 'AIzaSyC7OA_kF9duRuHHew__jN_HdYh8yq0BCtE',
-                    onSelected: (Place place) async {
-                      final geo = await place.geolocation;
-                      _controller.animateCamera(
-                          CameraUpdate.newLatLng(geo?.coordinates));
-                      _controller.animateCamera(
-                          CameraUpdate.newLatLngBounds(geo?.bounds, 0));
-                      final center = geo!.coordinates;
 
-                      setState(() {
-                        lat = center.latitude;
-                        long = center.longitude;
-                        marker.add(
-                          Marker(
-                            draggable: true,
-                            markerId: const MarkerId('1'),
-                            position: center,
-                            onDragEnd: (LatLng v) {
-                              lat = v.latitude;
-                              long = v.longitude;
-                              getAddressAndcity();
-                            },
-                          ),
-                        );
-                      });
-                      getAddressAndcity();
-                      onMapCreated();
+                    onSelected: (Place place) async {
+                      if(mounted) {
+                        final geo = await place.geolocation;
+                        _controller.animateCamera(
+                            CameraUpdate.newLatLng(geo?.coordinates));
+                        _controller.animateCamera(
+                            CameraUpdate.newLatLngBounds(geo?.bounds, 0));
+                        final center = geo!.coordinates;
+                        setState(() {
+                          lat = center.latitude;
+                          long = center.longitude;
+                          marker.add(
+                            Marker(
+                              draggable: true,
+                              markerId: const MarkerId('1'),
+                              position: center,
+                              onDragEnd: (LatLng v) {
+                                lat = v.latitude;
+                                long = v.longitude;
+                                getAddressAndcity();
+                              },
+                            ),
+                          );
+                        });
+                        getAddressAndcity();
+                        onMapCreated();
+                      }
                     },
                   ),
                   const SizedBox(
@@ -277,7 +367,8 @@ class _AddNewAddressState extends State<AddNewAddress> {
                             SizedBox(
                               height: 80,
                               child: TextFormFieldWidgets(
-                                contentPadding: EdgeInsets.symmetric(vertical: 25,horizontal: 10),
+                                  contentPadding: const EdgeInsets.symmetric(
+                                      vertical: 23, horizontal: 10),
                                   readOnly: true,
                                   hintText: street ?? 'StreetName',
                                   enabledBorderUnderline:
@@ -307,41 +398,40 @@ class _AddNewAddressState extends State<AddNewAddress> {
                             SizedBox(
                               height: 75,
                               child: TextFormFieldWidgets(
-                                contentPadding: const EdgeInsets.symmetric(vertical: 25,horizontal: 10),
-                                  controller: buildingNumber,
-                                  hintText: 'Building Number',
-                                  enabledBorderUnderline:
-                                      const UnderlineInputBorder(
-                                    borderSide: BorderSide(
-                                      width: 2, //<-- SEE HERE
-                                      color: Colors.black,
-                                    ),
-                                  ),
-                                  focusedBorderUnderline:
-                                      const UnderlineInputBorder(
-                                    borderSide: BorderSide(
-                                      width: 2, //<-- SEE HERE
-                                      color: Colors.black,
-                                    ),
-                                  ),
-                                  hintstyle: const TextStyle(
-                                    fontSize: 20,
-
-                                  ),
-                                  prefixIcon: const Icon(
-                                    Icons.add_location_alt,
+                                contentPadding: const EdgeInsets.symmetric(
+                                    vertical: 25, horizontal: 10),
+                                controller: buildingNumber,
+                                hintText: 'Building Number',
+                                enabledBorderUnderline:
+                                    const UnderlineInputBorder(
+                                  borderSide: BorderSide(
+                                    width: 2, //<-- SEE HERE
                                     color: Colors.black,
-                                    size: 35,
                                   ),
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return 'Please enter your BulidNumber';
-                                    }
-                                    return null;
-                                  },
                                 ),
+                                focusedBorderUnderline:
+                                    const UnderlineInputBorder(
+                                  borderSide: BorderSide(
+                                    width: 2, //<-- SEE HERE
+                                    color: Colors.black,
+                                  ),
+                                ),
+                                hintstyle: const TextStyle(
+                                  fontSize: 20,
+                                ),
+                                prefixIcon: const Icon(
+                                  Icons.add_location_alt,
+                                  color: Colors.black,
+                                  size: 35,
+                                ),
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please enter your BulidNumber';
+                                  }
+                                  return null;
+                                },
                               ),
-
+                            ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -349,7 +439,8 @@ class _AddNewAddressState extends State<AddNewAddress> {
                                 SizedBox(
                                   width: 150,
                                   child: TextFormFieldWidgets(
-                                   contentPadding: const EdgeInsets.symmetric(vertical: 25,horizontal: 10),
+                                    contentPadding: const EdgeInsets.symmetric(
+                                        vertical: 23, horizontal: 10),
                                     readOnly: true,
                                     inputBorder: InputBorder.none,
                                     hintText: city ?? 'city',
@@ -366,7 +457,8 @@ class _AddNewAddressState extends State<AddNewAddress> {
                                 SizedBox(
                                   width: 150,
                                   child: TextFormFieldWidgets(
-                                    contentPadding: const EdgeInsets.symmetric(vertical: 25,horizontal: 10),
+                                    contentPadding: const EdgeInsets.symmetric(
+                                        vertical: 23, horizontal: 10),
                                     validator: (value) {
                                       if (value == null || value.isEmpty) {
                                         return 'Please enter your Apartment Num';
@@ -415,10 +507,7 @@ class _AddNewAddressState extends State<AddNewAddress> {
                         ),
                         MaterialButtonWidgets(
                             onPressed: () async {
-                              postDataAddresses(lat, long, selectedOption, city,
-                                  street, name, buildingNumber, apartmentNum,
-                                  context: context);
-
+                              fetchAddresses();
                             },
                             height: 60,
                             textColor: Colors.white,

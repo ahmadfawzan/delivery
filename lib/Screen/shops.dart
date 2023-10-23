@@ -12,7 +12,12 @@ class Shops extends StatefulWidget {
   final int id;
   final List? addresses;
   final String? popMenuValue;
-  const Shops({Key? key, required this.id, required this.addresses,required this.popMenuValue})
+
+  const Shops(
+      {Key? key,
+      required this.id,
+      required this.addresses,
+      required this.popMenuValue})
       : super(key: key);
 
   @override
@@ -24,6 +29,7 @@ class _ShopsState extends State<Shops> {
   var lat;
   var long;
   List? shopsItemList;
+  String searchText = '';
 
   Future fetchLatAndLong() async {
     if (widget.addresses!.isEmpty) {
@@ -36,14 +42,11 @@ class _ShopsState extends State<Shops> {
               MaterialPageRoute(builder: (context) => const AddNewAddress()));
         },
         title: "NO Found Location",
-        body: const Padding(
-          padding: EdgeInsets.only(bottom: 10.0),
-          child: TextWidgets(
-            text: "Please Click Ok To Add New Loction",
-            fontSize: 15,
-            fontWeight: FontWeight.bold,
-            textAlign: TextAlign.center,
-          ),
+        body: const TextWidgets(
+          text: "Please Click Ok To Add New Loction",
+          fontSize: 15,
+          fontWeight: FontWeight.bold,
+          textAlign: TextAlign.center,
         ),
       ).show();
     } else {
@@ -56,7 +59,8 @@ class _ShopsState extends State<Shops> {
                       : element.type == 3
                           ? 'Other (${element.street})'
                           : '') ==
-              (popMenuValue ??widget.popMenuValue??
+              (popMenuValue ??
+                  widget.popMenuValue ??
                   (widget.addresses?[0].type == 1
                       ? "Home (${widget.addresses?[0].street.toString()})"
                       : widget.addresses?[0].type == 2
@@ -92,8 +96,12 @@ class _ShopsState extends State<Shops> {
       setState(() {
         final shops =
             shopsList.map((json) => ShopsList.fromJson(json)).toList();
-        shopsItemList =
-            shops.where((element) => element.category_id == widget.id).toList();
+        shopsItemList = shops
+            .where((element) =>
+                element.category_id == widget.id && searchText.isEmpty ||
+                element.shop_name_en.contains(searchText.toString()) &&
+                    searchText.isNotEmpty)
+            .toList();
       });
     } else {
       if (!mounted) return;
@@ -185,7 +193,8 @@ class _ShopsState extends State<Shops> {
                                   ? const TextWidgets(text: '')
                                   : Expanded(
                                       child: TextWidgets(
-                                      text: popMenuValue ??widget.popMenuValue??
+                                      text: popMenuValue ??
+                                          widget.popMenuValue ??
                                           (widget.addresses?[0].type == 1
                                               ? "Home (${widget.addresses?[0]!.street.toString()})"
                                               : widget.addresses?[0]!.type == 2
@@ -287,6 +296,12 @@ class _ShopsState extends State<Shops> {
                 height: 50,
                 color: Colors.white,
                 child: TextFormFieldWidgets(
+                  onChanged: (value) {
+                    setState(() {
+                      searchText = value;
+                      fetchLatAndLong();
+                    });
+                  },
                   hintText: 'Search',
                   prefixIcon: const Icon(
                     Icons.search_outlined,
@@ -324,23 +339,81 @@ class _ShopsState extends State<Shops> {
                                       const SizedBox(
                                         width: 25,
                                       ),
-                                      ImageNetworkWidget(
-                                        image:
-                                            'https://news.wasiljo.com/${shopsItemList?[index].license.toString()}',
-                                        height: 90,
-                                        width: 90,
-                                        fit: BoxFit.fitHeight,
-                                        errorbuilder: (BuildContext context,
-                                            Object exception,
-                                            StackTrace? stackTrace) {
-                                          return Image.asset(
-                                            'assets/images/image2.png',
-                                            fit: BoxFit.fitHeight,
-                                            height: 90,
-                                            width: 90,
-                                          );
-                                        },
-                                      ),
+                                      shopsItemList?[index].open == 1
+                                          ? ClipRRect(
+                                        borderRadius:BorderRadius.circular(10),
+                                            child: ImageNetworkWidget(
+                                                image:
+                                                    'https://news.wasiljo.com/${shopsItemList?[index].license.toString()}',
+                                                height: 90,
+                                                width: 90,
+                                                fit: BoxFit.fitHeight,
+                                                errorbuilder:
+                                                    (BuildContext context,
+                                                        Object exception,
+                                                        StackTrace? stackTrace) {
+                                                  return Image.asset(
+                                                    'assets/images/image2.png',
+                                                    fit: BoxFit.fitHeight,
+                                                    height: 90,
+                                                    width: 90,
+                                                  );
+                                                },
+                                              ),
+                                          )
+                                          : SizedBox(
+                                              width: 90,
+                                              height: 90,
+                                              child: Stack(
+                                                children: [
+                                                  ClipRRect(
+                                                    borderRadius:BorderRadius.circular(10),
+                                                    child: ImageNetworkWidget(
+                                                      image:
+                                                          'https://news.wasiljo.com/${shopsItemList?[index].license.toString()}',
+                                                      height: 90,
+                                                      width: 90,
+                                                      fit: BoxFit.fitHeight,
+                                                      errorbuilder:
+                                                          (BuildContext context,
+                                                              Object exception,
+                                                              StackTrace?
+                                                                  stackTrace) {
+                                                        return Image.asset(
+                                                          'assets/images/image2.png',
+                                                          fit: BoxFit.fitHeight,
+                                                          height: 90,
+                                                          width: 90,
+                                                        );
+                                                      },
+                                                    ),
+                                                  ),
+                                                  ClipRRect(
+                                                    borderRadius:BorderRadius.circular(10),
+                                                    child: const Opacity(
+                                                      opacity: 0.5,
+                                                      child: ModalBarrier(
+                                                          dismissible: false,
+                                                          color: Colors.black),
+                                                    ),
+                                                  ),
+                                                  Center(
+                                                    child: TextWidgets(
+                                                      text:
+                                                          shopsItemList?[index]
+                                                                      .open ==
+                                                                  0
+                                                              ? "Closed"
+                                                              : "Busy",
+                                                      color: Colors.white,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontSize: 15.5,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
                                       const SizedBox(
                                         width: 30,
                                       ),

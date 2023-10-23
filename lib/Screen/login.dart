@@ -28,7 +28,6 @@ class _LoginState extends State<Login> {
     setState(() {
       countryCode = CountryCode1.toString();
     });
-
   }
 
   @override
@@ -78,12 +77,13 @@ class _LoginState extends State<Login> {
                       width: 7,
                     ),
                     SizedBox(
-                      width: countryCode.length<5?245:237,
+                      width: countryCode.length < 5 ? 245 : 237,
                       height: 80,
                       child: Padding(
                         padding: const EdgeInsets.only(top: 9.0),
                         child: TextFormFieldWidgets(
-                          contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 10),
+                            contentPadding: const EdgeInsets.symmetric(
+                                vertical: 12, horizontal: 10),
                             hintText: 'Mobile Number',
                             controller: mobileNumber,
                             enabledBorder: OutlineInputBorder(
@@ -139,7 +139,8 @@ class _LoginState extends State<Login> {
                   height: 5,
                 ),
                 TextFormFieldWidgets(
-                  contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 10),
+                  contentPadding:
+                      const EdgeInsets.symmetric(vertical: 12, horizontal: 10),
                   hintText: 'Password',
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(5),

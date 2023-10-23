@@ -11,7 +11,7 @@ class TextWidgets extends StatefulWidget {
   final TextOverflow? textOverFlow;
   final TextAlign? textAlign;
 
-  const TextWidgets( {
+  const TextWidgets({
     Key? key,
     required this.text,
     this.fontSize,
@@ -35,9 +35,7 @@ class _TextWidgetsState extends State<TextWidgets> {
           fontSize: widget.fontSize,
           fontWeight: widget.fontWeight,
           color: widget.color,
-          decoration: widget.textDecoration
-
-      ),
+          decoration: widget.textDecoration),
       overflow: widget.textOverFlow,
       textAlign: widget.textAlign,
     );

@@ -35,9 +35,14 @@ class _ProfileState extends State<Profile> {
         'Authorization': 'Bearer $token',
       },
       body: {
-        "name": nameController.text.isEmpty ? name : nameController.text.toString(),
-        "email": emailController.text.isEmpty?email:emailController.text.toString(),
-        "mobile": mobileNumberController.text.isEmpty?mobileNumber:'962${mobileNumberController.text.toString()}',
+        "name":
+            nameController.text.isEmpty ? name : nameController.text.toString(),
+        "email": emailController.text.isEmpty
+            ? email
+            : emailController.text.toString(),
+        "mobile": mobileNumberController.text.isEmpty
+            ? mobileNumber
+            : '962${mobileNumberController.text.toString()}',
       },
     );
     var data = json.decode(response.body);
@@ -51,21 +56,27 @@ class _ProfileState extends State<Profile> {
         title: 'Success',
         body: const TextWidgets(
           text: 'Your account has been modified',
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+          textAlign: TextAlign.center,
         ),
       ).show();
     } else {
-      if (!mounted) return;
-      AwesomeDialog(
-        animType: AnimType.leftSlide,
-        dialogType: DialogType.success,
-        btnOkOnPress: () {},
-        title: 'Error',
-        body: TextWidgets(
-          text: '${data['error']}', fontSize: 18,
-          fontWeight: FontWeight.bold,
-        ),
-        context: context,
-      ).show();
+      if (mounted) {
+        AwesomeDialog(
+          animType: AnimType.leftSlide,
+          dialogType: DialogType.success,
+          btnOkOnPress: () {},
+          title: 'Error',
+          body: TextWidgets(
+            text: '${data['error']}',
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            textAlign: TextAlign.center,
+          ),
+          context: context,
+        ).show();
+      }
     }
   }
 
@@ -173,9 +184,10 @@ class _ProfileState extends State<Profile> {
                     height: 40,
                   ),
                   TextFormFieldWidgets(
-                      contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 10),
+                      contentPadding: const EdgeInsets.symmetric(
+                          vertical: 12, horizontal: 10),
                       labeltext: 'Name',
-                      hintText: name??"",
+                      hintText: name ?? "",
                       controller: nameController,
                       alignLabelWithHint: true,
                       enabledBorder: OutlineInputBorder(
@@ -212,9 +224,10 @@ class _ProfileState extends State<Profile> {
                     height: 20,
                   ),
                   TextFormFieldWidgets(
-                      contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 10),
+                      contentPadding: const EdgeInsets.symmetric(
+                          vertical: 12, horizontal: 10),
                       labeltext: 'Email',
-                      hintText: email??"",
+                      hintText: email ?? "",
                       controller: emailController,
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
@@ -289,9 +302,10 @@ class _ProfileState extends State<Profile> {
                     height: 20,
                   ),*/
                   TextFormFieldWidgets(
-                      contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 10),
+                      contentPadding: const EdgeInsets.symmetric(
+                          vertical: 12, horizontal: 10),
                       labeltext: 'Mobile Number',
-                      hintText: mobileNumber??"",
+                      hintText: mobileNumber ?? "",
                       labelstyle: const TextStyle(color: Color(0xff9B9B9B)),
                       hintstyle: const TextStyle(color: Color(0xff9B9B9B)),
                       controller: mobileNumberController,

@@ -25,7 +25,6 @@ Future FetchLogin(mobileNumber, countryCode, password,
   if (response.statusCode == 200) {
     sharedtoken.setString('token', data['data']['token']);
 
-
     Navigator.of(context)
         .push(MaterialPageRoute(builder: (context) => const HomePage()));
     AwesomeDialog(
@@ -35,8 +34,10 @@ Future FetchLogin(mobileNumber, countryCode, password,
       context: context,
       title: 'Success',
       body: TextWidgets(
-        text: 'You have been logged in successfully', fontSize: 18,
-        fontWeight: FontWeight.bold,textAlign: TextAlign.center,
+        text: 'You have been logged in successfully',
+        fontSize: 18,
+        fontWeight: FontWeight.bold,
+        textAlign: TextAlign.center,
       ),
     ).show();
   } else {
@@ -48,6 +49,9 @@ Future FetchLogin(mobileNumber, countryCode, password,
       title: 'Error',
       body: TextWidgets(
         text: '${data['error']}',
+        fontSize: 18,
+        fontWeight: FontWeight.bold,
+        textAlign: TextAlign.center,
       ),
     ).show();
   }
