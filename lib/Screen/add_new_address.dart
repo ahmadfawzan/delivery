@@ -58,49 +58,49 @@ class _AddNewAddressState extends State<AddNewAddress> {
         addresses = addressList.map((json) => Address.fromJson(json)).toList();
         addressesType = addresses
             ?.where((element) =>
-                element.type == 1 && selectedOption == 1 ||
-                selectedOption == 2 && element.type == 2)
+        element.type == 1 && selectedOption == 1 ||
+            selectedOption == 2 && element.type == 2)
             .toList();
       });
       if (mounted) {
         addressesType!.isEmpty
             ? postDataAddresses(lat, long, selectedOption, city, street, name,
-                buildingNumber, apartmentNum,
-                context: context)
+            buildingNumber, apartmentNum,
+            context: context)
             : AwesomeDialog(
-                context: context,
-                animType: AnimType.leftSlide,
-                dialogType: DialogType.info,
-                btnOkOnPress: () {
-                  UpdateAdress(
-                    context: context,
-                    addressesType: addressesType,
-                    lat: lat,
-                    long: long,
-                    name: name,
-                    street: street,
-                    buildingNumber: buildingNumber,
-                    city: city,
-                    apartmentNum: apartmentNum,
-                  );
-                },
-                btnCancelOnPress: () {},
-                title: selectedOption == 1
-                    ? 'change Address Home'
-                    : selectedOption == 2
-                        ? 'change Address Work'
-                        : '',
-                body: TextWidgets(
-                  text: selectedOption == 1
-                      ? "The Home address exists. Do you want to change it?"
-                      : selectedOption == 2
-                          ? "The Work address exists. Do you want to change it?"
-                          : "",
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  textAlign: TextAlign.center,
-                ),
-              ).show();
+          context: context,
+          animType: AnimType.leftSlide,
+          dialogType: DialogType.info,
+          btnOkOnPress: () {
+            UpdateAdress(
+              context: context,
+              addressesType: addressesType,
+              lat: lat,
+              long: long,
+              name: name,
+              street: street,
+              buildingNumber: buildingNumber,
+              city: city,
+              apartmentNum: apartmentNum,
+            );
+          },
+          btnCancelOnPress: () {},
+          title: selectedOption == 1
+              ? 'change Address Home'
+              : selectedOption == 2
+              ? 'change Address Work'
+              : '',
+          body: TextWidgets(
+            text: selectedOption == 1
+                ? "The Home address exists. Do you want to change it?"
+                : selectedOption == 2
+                ? "The Work address exists. Do you want to change it?"
+                : "",
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            textAlign: TextAlign.center,
+          ),
+        ).show();
       }
     } else {
       if (mounted) {
@@ -170,7 +170,7 @@ class _AddNewAddressState extends State<AddNewAddress> {
     List<Placemark> placemarks = await placemarkFromCoordinates(lat!, long!);
     setState(() {
       city =
-          placemarks[0].locality!.isEmpty ? 'No City' : placemarks[0].locality;
+      placemarks[0].locality!.isEmpty ? 'No City' : placemarks[0].locality;
       street = placemarks[0].street;
       name = placemarks[0].name;
     });
@@ -228,25 +228,25 @@ class _AddNewAddressState extends State<AddNewAddress> {
                 child: _kGooglePlex == null
                     ? const Text('')
                     : GoogleMap(
-                        gestureRecognizers: <Factory<
-                            OneSequenceGestureRecognizer>>{
-                          Factory<PanGestureRecognizer>(
-                              () => PanGestureRecognizer()),
-                          Factory<ScaleGestureRecognizer>(
-                              () => ScaleGestureRecognizer()),
-                          Factory<TapGestureRecognizer>(
-                              () => TapGestureRecognizer()),
-                          Factory<EagerGestureRecognizer>(
-                              () => EagerGestureRecognizer()),
-                        },
-                        initialCameraPosition: _kGooglePlex!,
-                        markers: marker,
-                        mapType: MapType.normal,
-                        onMapCreated: (GoogleMapController controller) {
-                          _controller = controller;
-                        },
-                        myLocationEnabled: true,
-                      ),
+                  gestureRecognizers: <Factory<
+                      OneSequenceGestureRecognizer>>{
+                    Factory<PanGestureRecognizer>(
+                            () => PanGestureRecognizer()),
+                    Factory<ScaleGestureRecognizer>(
+                            () => ScaleGestureRecognizer()),
+                    Factory<TapGestureRecognizer>(
+                            () => TapGestureRecognizer()),
+                    Factory<EagerGestureRecognizer>(
+                            () => EagerGestureRecognizer()),
+                  },
+                  initialCameraPosition: _kGooglePlex!,
+                  markers: marker,
+                  mapType: MapType.normal,
+                  onMapCreated: (GoogleMapController controller) {
+                    _controller = controller;
+                  },
+                  myLocationEnabled: true,
+                ),
               ),
               const SizedBox(
                 height: 7,
@@ -371,14 +371,14 @@ class _AddNewAddressState extends State<AddNewAddress> {
                                   readOnly: true,
                                   hintText: street ?? 'StreetName',
                                   enabledBorderUnderline:
-                                      const UnderlineInputBorder(
+                                  const UnderlineInputBorder(
                                     borderSide: BorderSide(
                                       width: 2, //<-- SEE HERE
                                       color: Colors.black,
                                     ),
                                   ),
                                   focusedBorderUnderline:
-                                      const UnderlineInputBorder(
+                                  const UnderlineInputBorder(
                                     borderSide: BorderSide(
                                       width: 2, //<-- SEE HERE
                                       color: Colors.black,
@@ -402,14 +402,14 @@ class _AddNewAddressState extends State<AddNewAddress> {
                                 controller: buildingNumber,
                                 hintText: 'Building Number',
                                 enabledBorderUnderline:
-                                    const UnderlineInputBorder(
+                                const UnderlineInputBorder(
                                   borderSide: BorderSide(
                                     width: 2, //<-- SEE HERE
                                     color: Colors.black,
                                   ),
                                 ),
                                 focusedBorderUnderline:
-                                    const UnderlineInputBorder(
+                                const UnderlineInputBorder(
                                   borderSide: BorderSide(
                                     width: 2, //<-- SEE HERE
                                     color: Colors.black,
