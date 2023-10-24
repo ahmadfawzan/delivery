@@ -8,6 +8,7 @@ import 'package:delivery/Utils/Ui/text_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shimmer/shimmer.dart';
 import '../Server/api_categories_response.dart';
 import '../Server/api_delete_account_response.dart';
 import '../Utils/Helper/list_data_address_api.dart';
@@ -28,6 +29,7 @@ class _HomePageState extends State<HomePage> {
   List? addresses;
   String? popMenuValue;
   var scaffoldKey = GlobalKey<ScaffoldState>();
+  bool isloading = true;
 
   Future fetchAddresses() async {
     SharedPreferences sharedtoken = await SharedPreferences.getInstance();
@@ -44,6 +46,7 @@ class _HomePageState extends State<HomePage> {
 
       setState(() {
         addresses = addressList.map((json) => Address.fromJson(json)).toList();
+        isloading = false;
       });
     } else {
       throw Exception('Failed to load Addresses');
@@ -141,7 +144,7 @@ class _HomePageState extends State<HomePage> {
                       dialogType: DialogType.info,
                       btnOkOnPress: () async {
                         SharedPreferences sharedtoken =
-                        await SharedPreferences.getInstance();
+                            await SharedPreferences.getInstance();
                         await sharedtoken.clear();
                         Navigator.of(context).pushReplacement(MaterialPageRoute(
                             builder: (context) => const Login()));
@@ -170,248 +173,340 @@ class _HomePageState extends State<HomePage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Builder(builder: (context) {
-                  return IconButton(
-                      onPressed: () => scaffoldKey.currentState?.openDrawer(),
-                      icon: const Icon(
-                        Icons.menu,
-                        size: 25,
-                      ));
+                  return isloading
+                      ? Shimmer.fromColors(
+                          baseColor: Colors.grey[300]!,
+                          highlightColor: Colors.grey[100]!,
+                          child: IconButton(
+                              onPressed: () =>
+                                  scaffoldKey.currentState?.openDrawer(),
+                              icon: const Icon(
+                                Icons.menu,
+                                size: 25,
+                              )),
+                        )
+                      : IconButton(
+                          onPressed: () =>
+                              scaffoldKey.currentState?.openDrawer(),
+                          icon: const Icon(
+                            Icons.menu,
+                            size: 25,
+                          ));
                 }),
-                IconButton(
-                  onPressed: () {},
-                  icon: const Icon(
-                    Icons.shopping_bag,
-                    color: Color(0xff4E5156),
-                    size: 25,
-                  ),
-                )
+                isloading
+                    ? Shimmer.fromColors(
+                        baseColor: Colors.grey[300]!,
+                        highlightColor: Colors.grey[100]!,
+                        child: IconButton(
+                          onPressed: () {},
+                          icon: const Icon(
+                            Icons.shopping_bag,
+                            color: Color(0xff4E5156),
+                            size: 25,
+                          ),
+                        ))
+                    : IconButton(
+                        onPressed: () {},
+                        icon: const Icon(
+                          Icons.shopping_bag,
+                          color: Color(0xff4E5156),
+                          size: 25,
+                        ),
+                      )
               ],
             ),
           ),
           const SizedBox(
             height: 7,
           ),
-          const Padding(
-            padding: EdgeInsets.only(right: 235.0),
-            child: TextWidgets(
-              text: "Delvering To",
-              fontSize: 13,
-              fontWeight: FontWeight.bold,
-              color: Colors.grey,
-            ),
-          ),
-          const SizedBox(
-            height: 5,
-          ),
-          Padding(
-            padding: const EdgeInsets.only(right: 158.0),
-            child: SizedBox(
-                width: 150,
-                height: 40,
-                child: PopupMenuButton<String>(
-                    color: const Color(0xffEBFAF5),
-                    onSelected: (value) {
-                      setState(() {
-                        popMenuValue = value;
-                      });
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 2.0, bottom: 12),
-                      child: Row(
-                        children: [
-                          addresses?.length == 0
-                              ? const Text('')
-                              : Expanded(
-                              child: TextWidgets(
-                                text: popMenuValue ??
-                                    (addresses?[0].type == 1
-                                        ? "Home (${addresses?[0].street.toString()})"
-                                        : addresses?[0].type == 2
-                                        ? "Work (${addresses?[0].street.toString()})"
-                                        : addresses?[0].type == 3
-                                        ? "Other (${addresses?[0].street.toString()})"
-                                        : ''),
-                                fontWeight: FontWeight.bold,
-                                textOverFlow: TextOverflow.ellipsis,
-                                fontSize: 15,
-                              )),
-                          const Icon(
-                            Icons.keyboard_arrow_down_outlined,
-                            color: Colors.green,
-                            size: 25,
-                          ),
-                        ],
+          isloading
+              ? Shimmer.fromColors(
+                  baseColor: Colors.grey[300]!,
+                  highlightColor: Colors.grey[100]!,
+                  child: const Padding(
+                    padding: EdgeInsets.only(right: 235.0),
+                    child: TextWidgets(
+                      text: "Delvering To",
+                      fontSize: 13,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.grey,
+                    ),
+                  ),
+                )
+              : const Padding(
+                  padding: EdgeInsets.only(right: 235.0),
+                  child: TextWidgets(
+                    text: "Delvering To",
+                    fontSize: 13,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.grey,
+                  ),
+                ),
+          isloading
+              ? Padding(
+                  padding: const EdgeInsets.only(right: 158.0),
+                  child: Shimmer.fromColors(
+                    baseColor: Colors.grey[300]!,
+                    highlightColor: Colors.grey[100]!,
+                    child: Container(
+                      height: 40,
+                      width: 150,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(5),
                       ),
                     ),
-                    itemBuilder: (context) => [
-                      ...?addresses?.map((item) {
-                        return PopupMenuItem<String>(
-                          value: item.type == 1
-                              ? "Home (${item.street.toString()})"
-                              : item.type == 2
-                              ? "Work (${item.street.toString()})"
-                              : "Other (${item.street.toString()})",
-                          child: Container(
-                            width: 190,
-                            padding: const EdgeInsets.only(right: 8.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.center,
+                  ),
+                )
+              : Padding(
+                  padding: const EdgeInsets.only(right: 160.0),
+                  child: SizedBox(
+                      width: 150,
+                      height: 40,
+                      child: PopupMenuButton<String>(
+                          color: const Color(0xffEBFAF5),
+                          onSelected: (value) {
+                            setState(() {
+                              popMenuValue = value;
+                            });
+                          },
+                          child: Padding(
+                            padding:
+                                const EdgeInsets.only(left: 2.0, bottom: 12),
+                            child: Row(
                               children: [
-                                SizedBox(height: 10,),
-                                TextWidgets(
-                                  text: item.type == 1
-                                      ? item.street.toString()
-                                      : item.type == 2
-                                      ? item.street.toString()
-                                      : item.street.toString(),
-                                  textOverFlow: TextOverflow.ellipsis,
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                                SizedBox(height: 6,),
-                                TextWidgets(
-                                  text: item.type == 1
-                                      ? '${item.city.toString()} - ${item.apartment_num.toString()}'
-                                      : item.type == 2
-                                      ? '${item.city.toString()} - ${item.apartment_num.toString()}'
-                                      : '${item.city.toString()} - ${item.apartment_num.toString()}',
-                                  textOverFlow: TextOverflow.ellipsis,
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                                SizedBox(height: 10,),
-                                Theme(
-                                  data: ThemeData(
-                                    dividerColor: Colors.black,
-                                  ),
-                                  child: const PopupMenuDivider(
-                                    height: 4,
-                                  ),
+                                addresses?.length == 0
+                                    ? const Text('')
+                                    : Expanded(
+                                        child: TextWidgets(
+                                        text: popMenuValue ??
+                                            (addresses?[0].type == 1
+                                                ? "Home (${addresses?[0].street.toString()})"
+                                                : addresses?[0].type == 2
+                                                    ? "Work (${addresses?[0].street.toString()})"
+                                                    : addresses?[0].type == 3
+                                                        ? "Other (${addresses?[0].street.toString()})"
+                                                        : ''),
+                                        fontWeight: FontWeight.bold,
+                                        textOverFlow: TextOverflow.ellipsis,
+                                        fontSize: 15,
+                                      )),
+                                const Icon(
+                                  Icons.keyboard_arrow_down_outlined,
+                                  color: Colors.green,
+                                  size: 25,
                                 ),
                               ],
                             ),
                           ),
-                        );
-                      }),
-                      PopupMenuItem(
-                        child: const TextWidgets(text: '+Add new address'),
-                        onTap: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) => const AddNewAddress(),
-                            ),
-                          );
-                        },
-                      )
-                    ])),
-          ),
+                          itemBuilder: (context) => [
+                                ...?addresses?.map((item) {
+                                  return PopupMenuItem<String>(
+                                    value: item.type == 1
+                                        ? "Home (${item.street.toString()})"
+                                        : item.type == 2
+                                            ? "Work (${item.street.toString()})"
+                                            : "Other (${item.street.toString()})",
+                                    child: Container(
+                                      width: 190,
+                                      padding:
+                                          const EdgeInsets.only(right: 8.0),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          const SizedBox(
+                                            height: 10,
+                                          ),
+                                          TextWidgets(
+                                            text: item.type == 1
+                                                ? item.street.toString()
+                                                : item.type == 2
+                                                    ? item.street.toString()
+                                                    : item.street.toString(),
+                                            textOverFlow: TextOverflow.ellipsis,
+                                            fontSize: 13,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                          const SizedBox(
+                                            height: 6,
+                                          ),
+                                          TextWidgets(
+                                            text: item.type == 1
+                                                ? '${item.city.toString()} - ${item.apartment_num.toString()}'
+                                                : item.type == 2
+                                                    ? '${item.city.toString()} - ${item.apartment_num.toString()}'
+                                                    : '${item.city.toString()} - ${item.apartment_num.toString()}',
+                                            textOverFlow: TextOverflow.ellipsis,
+                                            fontSize: 10,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                          const SizedBox(
+                                            height: 10,
+                                          ),
+                                          Theme(
+                                            data: ThemeData(
+                                              dividerColor: Colors.black,
+                                            ),
+                                            child: const PopupMenuDivider(
+                                              height: 4,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                }),
+                                PopupMenuItem(
+                                  child: const TextWidgets(
+                                      text: '+Add new address'),
+                                  onTap: () {
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            const AddNewAddress(),
+                                      ),
+                                    );
+                                  },
+                                )
+                              ])),
+                ),
           const SizedBox(
-            width: double.infinity,
-            height: 122,
-            child: ImageWidget(
-              image: 'assets/images/image6.png',
-              fit: BoxFit.cover,
-            ),
+            height: 10,
           ),
+          isloading
+              ? Shimmer.fromColors(
+                  baseColor: Colors.grey[300]!,
+                  highlightColor: Colors.grey[100]!,
+                  child: Container(
+                    height: 122,
+                    width: double.infinity,
+                    color: Colors.white,
+                  ),
+                )
+              : const SizedBox(
+                  width: double.infinity,
+                  height: 122,
+                  child: ImageWidget(
+                    image: 'assets/images/image6.png',
+                    fit: BoxFit.cover,
+                  ),
+                ),
           Expanded(
             child: FutureBuilder<List<Categories>>(
               future: fetchcategories,
-              builder: (context, snapshot) {
-                if (snapshot.hasError) {
-                  return const Center(
-                    child: TextWidgets(text: 'An error has occurred!'),
+              builder: (context, AsyncSnapshot<List<Categories>> snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Shimmer.fromColors(
+                    baseColor: Colors.grey[300]!,
+                    highlightColor: Colors.grey[100]!,
+                    child: SingleChildScrollView(
+                      child: StaggeredGridView.countBuilder(
+                        staggeredTileBuilder: (index) =>
+                            StaggeredTile.count(1, index.isEven ? 1.3 : 1.6),
+                        physics: const NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        scrollDirection: Axis.vertical,
+                        crossAxisCount: 2,
+                        crossAxisSpacing: 4,
+                        itemCount: 6,
+                        itemBuilder: (context, index) {
+                          return Card(
+                            elevation: 3,
+                            shadowColor: Colors.black,
+                            child: Container(
+                              height: 122,
+                              width: double.infinity,
+                              color: Colors.white,
+                            ),
+                          );
+                        },
+                      ),
+                    ),
                   );
-                } else if (snapshot.hasData) {
-                  return categoriesList(
-                      categories: snapshot.data!,
-                      addresses: addresses,
-                      popMenuValue: popMenuValue);
+                } else if (snapshot.hasError) {
+                  return Center(
+                    child: Text('Error: ${snapshot.error}'),
+                  );
+                } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                  return const Center(
+                    child: Text('No categories available'),
+                  );
                 } else {
-                  return const Text('');
+                  return SingleChildScrollView(
+                    child: StaggeredGridView.countBuilder(
+                      staggeredTileBuilder: (index) =>
+                          StaggeredTile.count(1, index.isEven ? 1.3 : 1.6),
+                      physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      scrollDirection: Axis.vertical,
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 4,
+                      itemCount: snapshot.data!.length,
+                      itemBuilder: (context, index) {
+                        return InkWell(
+                          onTap: () {
+                            int id = snapshot.data![index].id;
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => Shops(
+                                  id: id,
+                                  addresses: addresses,
+                                  popMenuValue: popMenuValue,
+                                ),
+                              ),
+                            );
+                          },
+                          child: Card(
+                            elevation: 3,
+                            shadowColor: Colors.black,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 25.0),
+                                  child: ImageNetworkWidget(
+                                    image:
+                                        'https://news.wasiljo.com/public/${snapshot.data![index].image}',
+                                    fit: BoxFit.fitWidth,
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(bottom: 12.0),
+                                  child: TextWidgets(
+                                    text: snapshot.data![index].title,
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  );
                 }
               },
             ),
           ),
-          Container(
-            width: double.infinity,
-            height: 55,
-            color: const Color(0xff14CB95),
-          )
+          isloading
+              ? Shimmer.fromColors(
+                  baseColor: Colors.grey[300]!,
+                  highlightColor: Colors.grey[100]!,
+                  child: Container(
+                    width: double.infinity,
+                    height: 55,
+                    color: const Color(0xff14CB95),
+                  ))
+              : Container(
+                  width: double.infinity,
+                  height: 55,
+                  color: const Color(0xff14CB95),
+                )
         ],
-      ),
-    );
-  }
-}
-
-class categoriesList extends StatefulWidget {
-  const categoriesList(
-      {super.key,
-        required this.categories,
-        required this.addresses,
-        required this.popMenuValue});
-
-  final List<Categories> categories;
-  final List? addresses;
-  final String? popMenuValue;
-
-  @override
-  State<categoriesList> createState() => _categoriesListState();
-}
-
-class _categoriesListState extends State<categoriesList> {
-  @override
-  Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: StaggeredGridView.countBuilder(
-        staggeredTileBuilder: (index) =>
-            StaggeredTile.count(1, index.isEven ? 1.3 : 1.6),
-        physics: const NeverScrollableScrollPhysics(),
-        shrinkWrap: true,
-        scrollDirection: Axis.vertical,
-        crossAxisCount: 2,
-        crossAxisSpacing: 4,
-        itemCount: widget.categories.length,
-        itemBuilder: (context, index) {
-          return InkWell(
-            onTap: () {
-              int id = widget.categories[index].id;
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => Shops(
-                    id: id,
-                    addresses: widget.addresses,
-                    popMenuValue: widget.popMenuValue,
-                  ),
-                ),
-              );
-            },
-            child: Card(
-              elevation: 3,
-              shadowColor: Colors.black,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(top: 25.0),
-                    child: ImageNetworkWidget(
-                      image:
-                      'https://news.wasiljo.com/public/${widget.categories[index].image}',
-                      fit: BoxFit.fitWidth,
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 12.0),
-                    child: TextWidgets(
-                        text: widget.categories[index].title,
-                        fontSize: 10,
-                        fontWeight: FontWeight.bold),
-                  )
-                ],
-              ),
-            ),
-          );
-        },
       ),
     );
   }

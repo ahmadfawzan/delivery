@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:shimmer/shimmer.dart';
 import '../Utils/Ui/material_button_widgets.dart';
 import '../Utils/Ui/text_form_field_widgets.dart';
 
@@ -24,6 +25,7 @@ class _ProfileState extends State<Profile> {
   final TextEditingController nameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController mobileNumberController = TextEditingController();
+  bool isloading = true;
 
   Future UpdateProfile() async {
     SharedPreferences sharedtoken = await SharedPreferences.getInstance();
@@ -99,6 +101,7 @@ class _ProfileState extends State<Profile> {
         name = ProfilList['name'];
         email = ProfilList['email'];
         mobileNumber = ProfilList['mobile'];
+        isloading = false;
       });
     } else {
       throw Exception('Failed to load Profile');
@@ -149,25 +152,50 @@ class _ProfileState extends State<Profile> {
               const SizedBox(
                 width: 15,
               ),
-              IconButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                icon: const Icon(
-                  Icons.arrow_back,
-                  color: Colors.grey,
-                  size: 25,
-                ),
-              ),
+              isloading
+                  ? Shimmer.fromColors(
+                      baseColor: Colors.grey[300]!,
+                      highlightColor: Colors.grey[100]!,
+                      child: IconButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        icon: const Icon(
+                          Icons.arrow_back,
+                          color: Colors.grey,
+                          size: 25,
+                        ),
+                      ),
+                    )
+                  : IconButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      icon: const Icon(
+                        Icons.arrow_back,
+                        color: Colors.grey,
+                        size: 25,
+                      ),
+                    ),
               const SizedBox(
                 width: 60,
               ),
-              const TextWidgets(
-                text: "Account Info",
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: Colors.grey,
-              ),
+              isloading
+                  ? Shimmer.fromColors(
+                      baseColor: Colors.grey[300]!,
+                      highlightColor: Colors.grey[100]!,
+                      child: const TextWidgets(
+                        text: 'Account Info',
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.grey,
+                      ))
+                  : const TextWidgets(
+                      text: "Account Info",
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.grey,
+                    ),
             ],
           ),
         ),
@@ -183,83 +211,109 @@ class _ProfileState extends State<Profile> {
                   const SizedBox(
                     height: 40,
                   ),
-                  TextFormFieldWidgets(
-                      contentPadding: const EdgeInsets.symmetric(
-                          vertical: 12, horizontal: 10),
-                      labeltext: 'Name',
-                      hintText: name ?? "",
-                      controller: nameController,
-                      alignLabelWithHint: true,
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: const BorderSide(color: Color(0xffBFBFBF)),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: const BorderSide(
-                          color: Color(0xffBFBFBF),
-                        ),
-                      ),
-                      errorBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: const BorderSide(
-                          color: Color(0xffBFBFBF),
-                        ),
-                      ),
-                      focusedErrorBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: const BorderSide(
-                          color: Color(0xffBFBFBF),
-                        ),
-                      ),
-                      labelstyle: const TextStyle(color: Color(0xff9B9B9B)),
-                      hintstyle: const TextStyle(color: Color(0xff9B9B9B)),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter your name';
-                        }
-                        return null;
-                      }),
+                  isloading
+                      ? Shimmer.fromColors(
+                          baseColor: Colors.grey[300]!,
+                          highlightColor: Colors.grey[100]!,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                            height: 50,
+                          ),
+                        )
+                      : TextFormFieldWidgets(
+                          contentPadding: const EdgeInsets.symmetric(
+                              vertical: 12, horizontal: 10),
+                          labeltext: 'Name',
+                          hintText: name ?? "",
+                          controller: nameController,
+                          alignLabelWithHint: true,
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide:
+                                const BorderSide(color: Color(0xffBFBFBF)),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: const BorderSide(
+                              color: Color(0xffBFBFBF),
+                            ),
+                          ),
+                          errorBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: const BorderSide(
+                              color: Color(0xffBFBFBF),
+                            ),
+                          ),
+                          focusedErrorBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: const BorderSide(
+                              color: Color(0xffBFBFBF),
+                            ),
+                          ),
+                          labelstyle: const TextStyle(color: Color(0xff9B9B9B)),
+                          hintstyle: const TextStyle(color: Color(0xff9B9B9B)),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter your name';
+                            }
+                            return null;
+                          }),
                   const SizedBox(
                     height: 20,
                   ),
-                  TextFormFieldWidgets(
-                      contentPadding: const EdgeInsets.symmetric(
-                          vertical: 12, horizontal: 10),
-                      labeltext: 'Email',
-                      hintText: email ?? "",
-                      controller: emailController,
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: const BorderSide(color: Color(0xffBFBFBF)),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: const BorderSide(
-                          color: Color(0xffBFBFBF),
-                        ),
-                      ),
-                      errorBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: const BorderSide(
-                          color: Color(0xffBFBFBF),
-                        ),
-                      ),
-                      focusedErrorBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: const BorderSide(
-                          color: Color(0xffBFBFBF),
-                        ),
-                      ),
-                      labelstyle: const TextStyle(color: Color(0xff9B9B9B)),
-                      hintstyle: const TextStyle(color: Color(0xff9B9B9B)),
-                      alignLabelWithHint: true,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter your Email';
-                        }
-                        return null;
-                      }),
+                  isloading
+                      ? Shimmer.fromColors(
+                          baseColor: Colors.grey[300]!,
+                          highlightColor: Colors.grey[100]!,
+                          child: Container(
+                            height: 50,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                          ),
+                        )
+                      : TextFormFieldWidgets(
+                          contentPadding: const EdgeInsets.symmetric(
+                              vertical: 12, horizontal: 10),
+                          labeltext: 'Email',
+                          hintText: email ?? "",
+                          controller: emailController,
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide:
+                                const BorderSide(color: Color(0xffBFBFBF)),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: const BorderSide(
+                              color: Color(0xffBFBFBF),
+                            ),
+                          ),
+                          errorBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: const BorderSide(
+                              color: Color(0xffBFBFBF),
+                            ),
+                          ),
+                          focusedErrorBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: const BorderSide(
+                              color: Color(0xffBFBFBF),
+                            ),
+                          ),
+                          labelstyle: const TextStyle(color: Color(0xff9B9B9B)),
+                          hintstyle: const TextStyle(color: Color(0xff9B9B9B)),
+                          alignLabelWithHint: true,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter your Email';
+                            }
+                            return null;
+                          }),
                   const SizedBox(
                     height: 20,
                   ),
@@ -301,85 +355,111 @@ class _ProfileState extends State<Profile> {
                   const SizedBox(
                     height: 20,
                   ),*/
-                  TextFormFieldWidgets(
-                      contentPadding: const EdgeInsets.symmetric(
-                          vertical: 12, horizontal: 10),
-                      labeltext: 'Mobile Number',
-                      hintText: mobileNumber ?? "",
-                      labelstyle: const TextStyle(color: Color(0xff9B9B9B)),
-                      hintstyle: const TextStyle(color: Color(0xff9B9B9B)),
-                      controller: mobileNumberController,
-                      alignLabelWithHint: true,
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(5),
-                        borderSide: const BorderSide(color: Color(0xffBFBFBF)),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(5),
-                        borderSide: const BorderSide(
-                          color: Color(0xffBFBFBF),
-                        ),
-                      ),
-                      errorBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(5),
-                        borderSide: const BorderSide(
-                          color: Color(0xffBFBFBF),
-                        ),
-                      ),
-                      focusedErrorBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(5),
-                        borderSide: const BorderSide(
-                          color: Color(0xffBFBFBF),
-                        ),
-                      ),
-                      validator: (value) {
-                        String validMobileNumber = r'(^[0-9]{9}$)';
-                        RegExp regExp = RegExp(validMobileNumber);
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter your Mobile Number';
-                        }
-                        if (!regExp.hasMatch(value)) {
-                          return 'Please enter 9 number only';
-                        }
-                        return null;
-                      }),
+                  isloading
+                      ? Shimmer.fromColors(
+                          baseColor: Colors.grey[300]!,
+                          highlightColor: Colors.grey[100]!,
+                          child: Container(
+                            height: 50,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                          ),
+                        )
+                      : TextFormFieldWidgets(
+                          contentPadding: const EdgeInsets.symmetric(
+                              vertical: 12, horizontal: 10),
+                          labeltext: 'Mobile Number',
+                          hintText: mobileNumber ?? "",
+                          labelstyle: const TextStyle(color: Color(0xff9B9B9B)),
+                          hintstyle: const TextStyle(color: Color(0xff9B9B9B)),
+                          controller: mobileNumberController,
+                          alignLabelWithHint: true,
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5),
+                            borderSide:
+                                const BorderSide(color: Color(0xffBFBFBF)),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5),
+                            borderSide: const BorderSide(
+                              color: Color(0xffBFBFBF),
+                            ),
+                          ),
+                          errorBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5),
+                            borderSide: const BorderSide(
+                              color: Color(0xffBFBFBF),
+                            ),
+                          ),
+                          focusedErrorBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5),
+                            borderSide: const BorderSide(
+                              color: Color(0xffBFBFBF),
+                            ),
+                          ),
+                          validator: (value) {
+                            String validMobileNumber = r'(^[0-9]{9}$)';
+                            RegExp regExp = RegExp(validMobileNumber);
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter your Mobile Number';
+                            }
+                            if (!regExp.hasMatch(value)) {
+                              return 'Please enter 9 number only';
+                            }
+                            return null;
+                          }),
                   const SizedBox(
                     height: 20,
                   ),
-                  Container(
-                    width: 150,
-                    child: MaterialButtonWidgets(
-                        onPressed: () {
-                          UpdateProfile();
-                        },
-                        height: 45,
-                        minWidth: double.infinity,
-                        textColor: Colors.white,
-                        color: const Color(0xff14CB95),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                        child: const Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            SizedBox(
-                              width: 19,
-                            ),
-                            TextWidgets(
-                                text: "Save",
-                                fontSize: 13,
-                                fontWeight: FontWeight.bold),
-                            SizedBox(
-                              width: 22,
-                            ),
-                            Icon(
-                              Icons.arrow_forward,
+                  isloading
+                      ? Shimmer.fromColors(
+                          baseColor: Colors.grey[300]!,
+                          highlightColor: Colors.grey[100]!,
+                          child: Container(
+                            height: 45,
+                            width: 150,
+                            decoration: BoxDecoration(
                               color: Colors.white,
-                              size: 15,
+                              borderRadius: BorderRadius.circular(5),
                             ),
-                          ],
-                        )),
-                  ),
+                          ),
+                        )
+                      : SizedBox(
+                          width: 150,
+                          child: MaterialButtonWidgets(
+                              onPressed: () {
+                                UpdateProfile();
+                              },
+                              height: 45,
+                              minWidth: double.infinity,
+                              textColor: Colors.white,
+                              color: const Color(0xff14CB95),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                              child: const Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  SizedBox(
+                                    width: 19,
+                                  ),
+                                  TextWidgets(
+                                      text: "Save",
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.bold),
+                                  SizedBox(
+                                    width: 22,
+                                  ),
+                                  Icon(
+                                    Icons.arrow_forward,
+                                    color: Colors.white,
+                                    size: 15,
+                                  ),
+                                ],
+                              )),
+                        ),
                 ],
               )),
         ),
