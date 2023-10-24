@@ -181,6 +181,7 @@ class _ShopsState extends State<Shops> {
                       width: 150,
                       height: 30,
                       child: PopupMenuButton<String>(
+                          color: const Color(0xffEBFAF5),
                           onSelected: (value) {
                             setState(() {
                               popMenuValue = value;
@@ -215,24 +216,65 @@ class _ShopsState extends State<Shops> {
                             ],
                           ),
                           itemBuilder: (context) => [
-                                ...?widget.addresses
-                                    ?.map((item) => PopupMenuItem<String>(
-                                          value: item.type == 1
-                                              ? "Home (${item.street.toString()})"
-                                              : item.type == 2
-                                                  ? "Work (${item.street.toString()})"
-                                                  : "Other (${item.street.toString()})",
-                                          child: TextWidgets(
+                                ...?widget.addresses?.map((item) {
+                                  return PopupMenuItem<String>(
+                                    value: item.type == 1
+                                        ? "Home (${item.street.toString()})"
+                                        : item.type == 2
+                                            ? "Work (${item.street.toString()})"
+                                            : "Other (${item.street.toString()})",
+                                    child: Container(
+                                      width: 190,
+                                      padding:
+                                          const EdgeInsets.only(right: 8.0),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                          TextWidgets(
                                             text: item.type == 1
-                                                ? "Home (${item.street.toString()})"
+                                                ? item.street.toString()
                                                 : item.type == 2
-                                                    ? "Work (${item.street.toString()})"
-                                                    : "Other (${item.street.toString()})",
+                                                    ? item.street.toString()
+                                                    : item.street.toString(),
                                             textOverFlow: TextOverflow.ellipsis,
-                                            fontSize: 15,
+                                            fontSize: 13,
                                             fontWeight: FontWeight.bold,
                                           ),
-                                        )),
+                                          SizedBox(
+                                            height: 6,
+                                          ),
+                                          TextWidgets(
+                                            text: item.type == 1
+                                                ? '${item.city.toString()} - ${item.apartment_num.toString()}'
+                                                : item.type == 2
+                                                    ? '${item.city.toString()} - ${item.apartment_num.toString()}'
+                                                    : '${item.city.toString()} - ${item.apartment_num.toString()}',
+                                            textOverFlow: TextOverflow.ellipsis,
+                                            fontSize: 10,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                          Theme(
+                                            data: ThemeData(
+                                              dividerColor: Colors.black,
+                                            ),
+                                            child: const PopupMenuDivider(
+                                              height: 4,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                }),
                                 PopupMenuItem(
                                   child: const TextWidgets(
                                       text: '+Add new address'),
@@ -341,17 +383,18 @@ class _ShopsState extends State<Shops> {
                                       ),
                                       shopsItemList?[index].open == 1
                                           ? ClipRRect(
-                                        borderRadius:BorderRadius.circular(10),
-                                            child: ImageNetworkWidget(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              child: ImageNetworkWidget(
                                                 image:
                                                     'https://news.wasiljo.com/${shopsItemList?[index].license.toString()}',
                                                 height: 90,
                                                 width: 90,
                                                 fit: BoxFit.fitHeight,
-                                                errorbuilder:
-                                                    (BuildContext context,
-                                                        Object exception,
-                                                        StackTrace? stackTrace) {
+                                                errorbuilder: (BuildContext
+                                                        context,
+                                                    Object exception,
+                                                    StackTrace? stackTrace) {
                                                   return Image.asset(
                                                     'assets/images/image2.png',
                                                     fit: BoxFit.fitHeight,
@@ -360,14 +403,16 @@ class _ShopsState extends State<Shops> {
                                                   );
                                                 },
                                               ),
-                                          )
+                                            )
                                           : SizedBox(
                                               width: 90,
                                               height: 90,
                                               child: Stack(
                                                 children: [
                                                   ClipRRect(
-                                                    borderRadius:BorderRadius.circular(10),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10),
                                                     child: ImageNetworkWidget(
                                                       image:
                                                           'https://news.wasiljo.com/${shopsItemList?[index].license.toString()}',
@@ -389,7 +434,9 @@ class _ShopsState extends State<Shops> {
                                                     ),
                                                   ),
                                                   ClipRRect(
-                                                    borderRadius:BorderRadius.circular(10),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10),
                                                     child: const Opacity(
                                                       opacity: 0.5,
                                                       child: ModalBarrier(

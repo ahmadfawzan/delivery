@@ -244,23 +244,56 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                     itemBuilder: (context) => [
-                          ...?addresses?.map((item) => PopupMenuItem<String>(
-                                value: item.type == 1
-                                    ? "Home (${item.street.toString()})"
-                                    : item.type == 2
-                                        ? "Work (${item.street.toString()})"
-                                        : "Other (${item.street.toString()})",
-                                child: TextWidgets(
-                                  text: item.type == 1
-                                      ? "Home (${item.street.toString()})"
-                                      : item.type == 2
-                                          ? "Work (${item.street.toString()})"
-                                          : "Other (${item.street.toString()})",
-                                  textOverFlow: TextOverflow.ellipsis,
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold,
+                          ...?addresses?.map((item) {
+                            return PopupMenuItem<String>(
+                              value: item.type == 1
+                                  ? "Home (${item.street.toString()})"
+                                  : item.type == 2
+                                      ? "Work (${item.street.toString()})"
+                                      : "Other (${item.street.toString()})",
+                                child: Container(
+                                  width: 190,
+                                  padding: const EdgeInsets.only(right: 8.0),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      SizedBox(height: 10,),
+                                      TextWidgets(
+                                        text: item.type == 1
+                                            ? item.street.toString()
+                                            : item.type == 2
+                                                ? item.street.toString()
+                                                : item.street.toString(),
+                                        textOverFlow: TextOverflow.ellipsis,
+                                        fontSize: 13,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                      SizedBox(height: 6,),
+                                      TextWidgets(
+                                        text: item.type == 1
+                                            ? '${item.city.toString()} - ${item.apartment_num.toString()}'
+                                            : item.type == 2
+                                            ? '${item.city.toString()} - ${item.apartment_num.toString()}'
+                                            : '${item.city.toString()} - ${item.apartment_num.toString()}',
+                                        textOverFlow: TextOverflow.ellipsis,
+                                        fontSize: 10,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                      SizedBox(height: 10,),
+                                      Theme(
+                                        data: ThemeData(
+                                          dividerColor: Colors.black,
+                                        ),
+                                        child: const PopupMenuDivider(
+                                          height: 4,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              )),
+                            );
+                          }),
                           PopupMenuItem(
                             child: const TextWidgets(text: '+Add new address'),
                             onTap: () {
