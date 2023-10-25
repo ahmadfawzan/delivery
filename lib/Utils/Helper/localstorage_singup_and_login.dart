@@ -7,7 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../Screen/homepage.dart';
 import '../../Server/api_login_response.dart';
 import '../Ui/text_widgets.dart';
-
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 Future localStorageSignUpUser(
     TextEditingController name,
     TextEditingController email,
@@ -80,13 +80,14 @@ Future localStorageLoginUser(TextEditingController mobileNumber,
 }
 
 Future localStorageCheck({required BuildContext context}) async {
-  SharedPreferences signUpUser = await SharedPreferences.getInstance();
-  String? token = signUpUser.getString('token') ?? "";
-  if (token.isNotEmpty) {
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => const HomePage()));
-  } else {
+  const storage = FlutterSecureStorage();
+  var token = await storage.read(key: 'token');
+
+  if (token == null || token.isEmpty) {
     Navigator.of(context)
         .push(MaterialPageRoute(builder: (context) => const AboutUs()));
+  } else {
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => const HomePage()));
   }
 }

@@ -5,6 +5,7 @@ import 'package:delivery/Utils/Ui/text_widgets.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 Future FetchLogin(mobileNumber, countryCode, password,
     {required BuildContext context}) async {
@@ -24,7 +25,8 @@ Future FetchLogin(mobileNumber, countryCode, password,
   var data = json.decode(response.body);
   if (response.statusCode == 200) {
     sharedtoken.setString('token', data['data']['token']);
-
+    const storage = FlutterSecureStorage();
+    await storage.write(key: 'token', value: data['data']['token']);
     Navigator.of(context)
         .push(MaterialPageRoute(builder: (context) => const HomePage()));
     AwesomeDialog(

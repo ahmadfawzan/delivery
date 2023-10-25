@@ -40,8 +40,9 @@ class _HomePageState extends State<HomePage> {
         'Authorization': 'Bearer $token',
       },
     );
+    final jsonRes = json.decode(response.body);
     if (response.statusCode == 200) {
-      final jsonRes = json.decode(response.body);
+
       final addressList = jsonRes['data']['addresses'] as List<dynamic>;
 
       setState(() {
@@ -49,7 +50,7 @@ class _HomePageState extends State<HomePage> {
         isloading = false;
       });
     } else {
-      throw Exception('Failed to load Addresses');
+      jsonRes('error');
     }
   }
 
@@ -398,7 +399,11 @@ class _HomePageState extends State<HomePage> {
             child: FutureBuilder<List<Categories>>(
               future: fetchcategories,
               builder: (context, AsyncSnapshot<List<Categories>> snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
+               if (snapshot.hasError) {
+                  return Center(
+                    child: Text('Error: ${snapshot.error}'),
+                  );
+                } if (!snapshot.hasData || snapshot.data!.isEmpty) {
                   return Shimmer.fromColors(
                     baseColor: Colors.grey[300]!,
                     highlightColor: Colors.grey[100]!,
@@ -426,14 +431,7 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                   );
-                } else if (snapshot.hasError) {
-                  return Center(
-                    child: Text('Error: ${snapshot.error}'),
-                  );
-                } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                  return const Center(
-                    child: Text('No categories available'),
-                  );
+
                 } else {
                   return SingleChildScrollView(
                     child: StaggeredGridView.countBuilder(
