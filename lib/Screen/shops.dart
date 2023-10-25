@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:shimmer/shimmer.dart';
 import '../Utils/Helper/list_data_shops_api.dart';
 import '../Utils/Ui/network_image.dart';
 import '../Utils/Ui/text_form_field_widgets.dart';
@@ -30,6 +31,7 @@ class _ShopsState extends State<Shops> {
   var long;
   List? shopsItemList;
   String searchText = '';
+  bool isloading = true;
 
   Future fetchLatAndLong() async {
     if (widget.addresses!.isEmpty) {
@@ -73,6 +75,7 @@ class _ShopsState extends State<Shops> {
           ?.map((e) => setState(() {
                 lat = e.latitude;
                 long = e.longitude;
+
               }))
           .toList();
       fetchShops();
@@ -94,6 +97,7 @@ class _ShopsState extends State<Shops> {
     if (response.statusCode == 200) {
       final shopsList = jsonRes['data']['shops'] as List<dynamic>;
       setState(() {
+        isloading = false;
         final shops =
             shopsList.map((json) => ShopsList.fromJson(json)).toList();
         shopsItemList = shops
@@ -363,15 +367,22 @@ class _ShopsState extends State<Shops> {
                 itemCount: shopsItemList?.length,
                 itemBuilder: (context, index) {
                   return SingleChildScrollView(
-                      child: shopsItemList == null
-                          ? const Text('')
-                          : Padding(
+                      child: Padding(
                               padding: const EdgeInsets.only(bottom: 3),
                               child: Container(
                                 width: double.infinity,
                                 color: Colors.white,
                                 height: 120,
-                                child: InkWell(
+                                child: isloading
+                                    ? Shimmer.fromColors(
+                                    baseColor: Colors.grey[350]!,
+                                    highlightColor: Colors.grey[100]!,
+                                    child: Container(
+                                      color: Colors.white,
+                                      height: 120,
+                                      width: double.infinity,
+                                    ))
+                                    : InkWell(
                                   splashColor: Colors.grey,
                                   onTap: () {},
                                   child: Row(
