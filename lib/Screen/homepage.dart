@@ -42,7 +42,6 @@ class _HomePageState extends State<HomePage> {
     );
     final jsonRes = json.decode(response.body);
     if (response.statusCode == 200) {
-
       final addressList = jsonRes['data']['addresses'] as List<dynamic>;
 
       setState(() {
@@ -399,11 +398,12 @@ class _HomePageState extends State<HomePage> {
             child: FutureBuilder<List<Categories>>(
               future: fetchcategories,
               builder: (context, AsyncSnapshot<List<Categories>> snapshot) {
-               if (snapshot.hasError) {
+                if (snapshot.hasError) {
                   return Center(
                     child: Text('Error: ${snapshot.error}'),
                   );
-                } if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                }
+                if (!snapshot.hasData || snapshot.data!.isEmpty) {
                   return Shimmer.fromColors(
                     baseColor: Colors.grey[300]!,
                     highlightColor: Colors.grey[100]!,
@@ -431,7 +431,6 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                   );
-
                 } else {
                   return SingleChildScrollView(
                     child: StaggeredGridView.countBuilder(
