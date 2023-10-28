@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:delivery/Screen/item_shop.dart';
 import 'package:http/http.dart' as http;
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
@@ -75,7 +76,6 @@ class _ShopsState extends State<Shops> {
           ?.map((e) => setState(() {
                 lat = e.latitude;
                 long = e.longitude;
-
               }))
           .toList();
       fetchShops();
@@ -368,172 +368,173 @@ class _ShopsState extends State<Shops> {
                 itemBuilder: (context, index) {
                   return SingleChildScrollView(
                       child: Padding(
-                              padding: const EdgeInsets.only(bottom: 3),
+                    padding: const EdgeInsets.only(bottom: 3),
+                    child: Container(
+                      width: double.infinity,
+                      color: Colors.white,
+                      height: 120,
+                      child: isloading
+                          ? Shimmer.fromColors(
+                              baseColor: Colors.grey[350]!,
+                              highlightColor: Colors.grey[100]!,
                               child: Container(
-                                width: double.infinity,
                                 color: Colors.white,
                                 height: 120,
-                                child: isloading
-                                    ? Shimmer.fromColors(
-                                    baseColor: Colors.grey[350]!,
-                                    highlightColor: Colors.grey[100]!,
-                                    child: Container(
-                                      color: Colors.white,
-                                      height: 120,
-                                      width: double.infinity,
-                                    ))
-                                    : InkWell(
-                                  splashColor: Colors.grey,
-                                  onTap: () {},
-                                  child: Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      const SizedBox(
-                                        width: 25,
-                                      ),
-                                      shopsItemList?[index].open == 1
-                                          ? ClipRRect(
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
-                                              child: ImageNetworkWidget(
-                                                image:
-                                                    'https://news.wasiljo.com/${shopsItemList?[index].license.toString()}',
+                                width: double.infinity,
+                              ))
+                          : InkWell(
+                              splashColor: Colors.grey,
+                              onTap: () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => ItemShop(
+                                          id: shopsItemList?[index].id,
+                                          addresses:widget.addresses,
+                                          popMenuValue : popMenuValue,
+                                          popMenuValue1 : widget.popMenuValue,
+                                        )));
+                              },
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  const SizedBox(
+                                    width: 25,
+                                  ),
+                                  shopsItemList?[index].open == 1
+                                      ? ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          child: ImageNetworkWidget(
+                                            image:
+                                                'https://news.wasiljo.com/${shopsItemList?[index].license.toString()}',
+                                            height: 90,
+                                            width: 90,
+                                            fit: BoxFit.fitHeight,
+                                            errorbuilder: (BuildContext context,
+                                                Object exception,
+                                                StackTrace? stackTrace) {
+                                              return Image.asset(
+                                                'assets/images/image2.png',
+                                                fit: BoxFit.fitHeight,
                                                 height: 90,
                                                 width: 90,
-                                                fit: BoxFit.fitHeight,
-                                                errorbuilder: (BuildContext
-                                                        context,
-                                                    Object exception,
-                                                    StackTrace? stackTrace) {
-                                                  return Image.asset(
-                                                    'assets/images/image2.png',
-                                                    fit: BoxFit.fitHeight,
-                                                    height: 90,
-                                                    width: 90,
-                                                  );
-                                                },
-                                              ),
-                                            )
-                                          : SizedBox(
-                                              width: 90,
-                                              height: 90,
-                                              child: Stack(
-                                                children: [
-                                                  ClipRRect(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            10),
-                                                    child: ImageNetworkWidget(
-                                                      image:
-                                                          'https://news.wasiljo.com/${shopsItemList?[index].license.toString()}',
+                                              );
+                                            },
+                                          ),
+                                        )
+                                      : SizedBox(
+                                          width: 90,
+                                          height: 90,
+                                          child: Stack(
+                                            children: [
+                                              ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                                child: ImageNetworkWidget(
+                                                  image:
+                                                      'https://news.wasiljo.com/${shopsItemList?[index].license.toString()}',
+                                                  height: 90,
+                                                  width: 90,
+                                                  fit: BoxFit.fitHeight,
+                                                  errorbuilder: (BuildContext
+                                                          context,
+                                                      Object exception,
+                                                      StackTrace? stackTrace) {
+                                                    return Image.asset(
+                                                      'assets/images/image2.png',
+                                                      fit: BoxFit.fitHeight,
                                                       height: 90,
                                                       width: 90,
-                                                      fit: BoxFit.fitHeight,
-                                                      errorbuilder:
-                                                          (BuildContext context,
-                                                              Object exception,
-                                                              StackTrace?
-                                                                  stackTrace) {
-                                                        return Image.asset(
-                                                          'assets/images/image2.png',
-                                                          fit: BoxFit.fitHeight,
-                                                          height: 90,
-                                                          width: 90,
-                                                        );
-                                                      },
-                                                    ),
-                                                  ),
-                                                  ClipRRect(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            10),
-                                                    child: const Opacity(
-                                                      opacity: 0.5,
-                                                      child: ModalBarrier(
-                                                          dismissible: false,
-                                                          color: Colors.black),
-                                                    ),
-                                                  ),
-                                                  Center(
-                                                    child: TextWidgets(
-                                                      text:
-                                                          shopsItemList?[index]
-                                                                      .open ==
-                                                                  0
-                                                              ? "Closed"
-                                                              : "Busy",
-                                                      color: Colors.white,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontSize: 15.5,
-                                                    ),
-                                                  ),
-                                                ],
+                                                    );
+                                                  },
+                                                ),
                                               ),
-                                            ),
-                                      const SizedBox(
-                                        width: 30,
-                                      ),
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          const SizedBox(
-                                            height: 10,
-                                          ),
-                                          TextWidgets(
-                                            text:
-                                                '${shopsItemList?[index].shop_name_en.toString()}',
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold,
-                                            color: const Color(0xff000000),
-                                          ),
-                                          const SizedBox(
-                                            height: 3,
-                                          ),
-                                          TextWidgets(
-                                            text:
-                                                '${shopsItemList?[index].address.toString()}',
-                                            fontSize: 11,
-                                            color: Colors.grey,
-                                          ),
-                                          const SizedBox(
-                                            height: 40,
-                                          ),
-                                          Row(
-                                            children: [
-                                              const Icon(
-                                                Icons.star,
-                                                color: Color(0xff15CB95),
-                                                size: 19,
+                                              ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                                child: const Opacity(
+                                                  opacity: 0.5,
+                                                  child: ModalBarrier(
+                                                      dismissible: false,
+                                                      color: Colors.black),
+                                                ),
                                               ),
-                                              const SizedBox(
-                                                width: 4,
+                                              Center(
+                                                child: TextWidgets(
+                                                  text: shopsItemList?[index]
+                                                              .open ==
+                                                          0
+                                                      ? "Closed"
+                                                      : "Busy",
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 15.5,
+                                                ),
                                               ),
-                                              TextWidgets(
-                                                text:
-                                                    '${shopsItemList?[index].rating.toString()}',
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                              const SizedBox(
-                                                width: 3,
-                                              ),
-                                              TextWidgets(
-                                                text:
-                                                    '(${shopsItemList?[index].total_rating.toString()}+ Ratings)',
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.grey,
-                                              )
                                             ],
+                                          ),
+                                        ),
+                                  const SizedBox(
+                                    width: 30,
+                                  ),
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
+                                      TextWidgets(
+                                        text:
+                                            '${shopsItemList?[index].shop_name_en.toString()}',
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                        color: const Color(0xff000000),
+                                      ),
+                                      const SizedBox(
+                                        height: 3,
+                                      ),
+                                      TextWidgets(
+                                        text:
+                                            '${shopsItemList?[index].address.toString()}',
+                                        fontSize: 11,
+                                        color: Colors.grey,
+                                      ),
+                                      const SizedBox(
+                                        height: 40,
+                                      ),
+                                      Row(
+                                        children: [
+                                          const Icon(
+                                            Icons.star,
+                                            color: Color(0xff15CB95),
+                                            size: 19,
+                                          ),
+                                          const SizedBox(
+                                            width: 4,
+                                          ),
+                                          TextWidgets(
+                                            text:
+                                                '${shopsItemList?[index].rating.toString()}',
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                          const SizedBox(
+                                            width: 3,
+                                          ),
+                                          TextWidgets(
+                                            text:
+                                                '(${shopsItemList?[index].total_rating.toString()}+ Ratings)',
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.grey,
                                           )
                                         ],
                                       )
                                     ],
-                                  ),
-                                ),
+                                  )
+                                ],
                               ),
-                            ));
+                            ),
+                    ),
+                  ));
                 }),
           ),
         ],

@@ -82,7 +82,6 @@ Future localStorageLoginUser(TextEditingController mobileNumber,
 Future localStorageCheck({required BuildContext context}) async {
   const storage = FlutterSecureStorage();
   var token = await storage.read(key: 'token');
-
   if (token == null || token.isEmpty) {
     Navigator.of(context)
         .push(MaterialPageRoute(builder: (context) => const AboutUs()));

@@ -6,6 +6,7 @@ class ShopsList {
   final int total_rating;
   final int category_id;
   final int open;
+  final int id;
   const ShopsList({
     required this.license,
     required this.shop_name_en,
@@ -14,10 +15,12 @@ class ShopsList {
     required this.total_rating,
     required this.category_id,
     required this.open,
+    required this.id,
   });
 
   factory ShopsList.fromJson(Map<String, dynamic> json) {
     return ShopsList(
+      id: json['id'] ?? '',
       license: json['license'] ?? '',
       shop_name_en: json['shop_name_en'] ?? '',
       address: json['address'] ?? '',
