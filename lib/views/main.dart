@@ -33,13 +33,10 @@ class MyApp extends StatelessWidget {
           page: () => HomePage(),
           binding:BindingsBuilder(() {
             CategorieBinding().dependencies();
-            /*AddressBinding().dependencies();*/
+            AddressBinding().dependencies();
           }),
         ),
       ],
     );
   }
 }
-
-
-

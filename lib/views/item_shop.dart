@@ -18,10 +18,10 @@ class ItemShop extends StatefulWidget {
 
   const ItemShop(
       {super.key,
-      required this.id,
-      required this.addresses,
-      required this.popMenuValue,
-      required this.popMenuValue1});
+        required this.id,
+        required this.addresses,
+        required this.popMenuValue,
+        required this.popMenuValue1});
 
   @override
   State<ItemShop> createState() => _ItemShopState();
@@ -45,12 +45,12 @@ class _ItemShopState extends State<ItemShop> {
       setState(() {
         isloading = false;
         final itemShops =
-            shopsList.map((json) => ItemShopsList.fromJson(json)).toList();
+        shopsList.map((json) => ItemShopsList.fromJson(json)).toList();
         itemShopsList = itemShops
             .where((element) =>
-                element.pivot?.shopId == widget.id && searchText.isEmpty ||
-                element.title!.en!.contains(searchText.toString()) &&
-                    searchText.isNotEmpty)
+        element.pivot?.shopId == widget.id && searchText.isEmpty ||
+            element.title!.en!.contains(searchText.toString()) &&
+                searchText.isNotEmpty)
             .toList();
       });
     } else {
@@ -143,24 +143,24 @@ class _ItemShopState extends State<ItemShop> {
                                 widget.addresses!.isEmpty
                                     ? const TextWidgets(text: '')
                                     : Expanded(
-                                        child: TextWidgets(
-                                        text: popMenuValue ??
-                                            widget.popMenuValue ??
-                                            widget.popMenuValue1 ??
-                                            (widget.addresses?[0].type == 1
-                                                ? "Home (${widget.addresses?[0]!.street.toString()})"
-                                                : widget.addresses?[0]!.type ==
-                                                        2
-                                                    ? "Work (${widget.addresses?[0]!.street.toString()})"
-                                                    : widget.addresses?[0]
-                                                                .type ==
-                                                            3
-                                                        ? "Other (${widget.addresses?[0]!.street.toString()})"
-                                                        : ''),
-                                        fontWeight: FontWeight.bold,
-                                        textOverFlow: TextOverflow.ellipsis,
-                                        fontSize: 15,
-                                      )),
+                                    child: TextWidgets(
+                                      text: popMenuValue ??
+                                          widget.popMenuValue ??
+                                          widget.popMenuValue1 ??
+                                          (widget.addresses?[0].type == 1
+                                              ? "Home (${widget.addresses?[0]!.street.toString()})"
+                                              : widget.addresses?[0]!.type ==
+                                              2
+                                              ? "Work (${widget.addresses?[0]!.street.toString()})"
+                                              : widget.addresses?[0]
+                                              .type ==
+                                              3
+                                              ? "Other (${widget.addresses?[0]!.street.toString()})"
+                                              : ''),
+                                      fontWeight: FontWeight.bold,
+                                      textOverFlow: TextOverflow.ellipsis,
+                                      fontSize: 15,
+                                    )),
                                 const Icon(
                                   Icons.keyboard_arrow_down_outlined,
                                   color: Colors.green,
@@ -169,80 +169,80 @@ class _ItemShopState extends State<ItemShop> {
                               ],
                             ),
                             itemBuilder: (context) => [
-                                  ...?widget.addresses?.map((item) {
-                                    return PopupMenuItem<String>(
-                                      value: item.type == 1
-                                          ? "Home (${item.street.toString()})"
-                                          : item.type == 2
-                                              ? "Work (${item.street.toString()})"
-                                              : "Other (${item.street.toString()})",
-                                      child: Container(
-                                        width: 190,
-                                        padding:
-                                            const EdgeInsets.only(right: 8.0),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            const SizedBox(
-                                              height: 10,
-                                            ),
-                                            TextWidgets(
-                                              text: item.type == 1
-                                                  ? item.street.toString()
-                                                  : item.type == 2
-                                                      ? item.street.toString()
-                                                      : item.street.toString(),
-                                              textOverFlow:
-                                                  TextOverflow.ellipsis,
-                                              fontSize: 13,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                            const SizedBox(
-                                              height: 6,
-                                            ),
-                                            TextWidgets(
-                                              text: item.type == 1
-                                                  ? '${item.city.toString()} - ${item.apartmentNum.toString()}'
-                                                  : item.type == 2
-                                                      ? '${item.city.toString()} - ${item.apartmentNum.toString()}'
-                                                      : '${item.city.toString()} - ${item.apartmentNum.toString()}',
-                                              textOverFlow:
-                                                  TextOverflow.ellipsis,
-                                              fontSize: 10,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                            const SizedBox(
-                                              height: 10,
-                                            ),
-                                            Theme(
-                                              data: ThemeData(
-                                                dividerColor: Colors.black,
-                                              ),
-                                              child: const PopupMenuDivider(
-                                                height: 4,
-                                              ),
-                                            ),
-                                          ],
+                              ...?widget.addresses?.map((item) {
+                                return PopupMenuItem<String>(
+                                  value: item.type == 1
+                                      ? "Home (${item.street.toString()})"
+                                      : item.type == 2
+                                      ? "Work (${item.street.toString()})"
+                                      : "Other (${item.street.toString()})",
+                                  child: Container(
+                                    width: 190,
+                                    padding:
+                                    const EdgeInsets.only(right: 8.0),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                      CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                      MainAxisAlignment.center,
+                                      children: [
+                                        const SizedBox(
+                                          height: 10,
                                         ),
-                                      ),
-                                    );
-                                  }),
-                                  PopupMenuItem(
-                                    child: const TextWidgets(
-                                        text: '+Add new address'),
-                                    onTap: () {
-                                      Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              const AddNewAddress(),
+                                        TextWidgets(
+                                          text: item.type == 1
+                                              ? item.street.toString()
+                                              : item.type == 2
+                                              ? item.street.toString()
+                                              : item.street.toString(),
+                                          textOverFlow:
+                                          TextOverflow.ellipsis,
+                                          fontSize: 13,
+                                          fontWeight: FontWeight.bold,
                                         ),
-                                      );
-                                    },
-                                  )
-                                ])),
+                                        const SizedBox(
+                                          height: 6,
+                                        ),
+                                        TextWidgets(
+                                          text: item.type == 1
+                                              ? '${item.city.toString()} - ${item.apartmentNum.toString()}'
+                                              : item.type == 2
+                                              ? '${item.city.toString()} - ${item.apartmentNum.toString()}'
+                                              : '${item.city.toString()} - ${item.apartmentNum.toString()}',
+                                          textOverFlow:
+                                          TextOverflow.ellipsis,
+                                          fontSize: 10,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                        const SizedBox(
+                                          height: 10,
+                                        ),
+                                        Theme(
+                                          data: ThemeData(
+                                            dividerColor: Colors.black,
+                                          ),
+                                          child: const PopupMenuDivider(
+                                            height: 4,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              }),
+                              PopupMenuItem(
+                                child: const TextWidgets(
+                                    text: '+Add new address'),
+                                onTap: () {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                      const AddNewAddress(),
+                                    ),
+                                  );
+                                },
+                              )
+                            ])),
                   ),
                   const SizedBox(
                     height: 30,
@@ -270,7 +270,7 @@ class _ItemShopState extends State<ItemShop> {
               children: [
                 Container(
                   padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                  const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
                   width: 176,
                   height: 50,
                   color: Colors.white,
@@ -288,7 +288,7 @@ class _ItemShopState extends State<ItemShop> {
                 ),
                 Container(
                   padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                  const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
                   width: 181,
                   height: 50,
                   color: Colors.white,
@@ -319,13 +319,13 @@ class _ItemShopState extends State<ItemShop> {
                   itemBuilder: (context, index) {
                     return SingleChildScrollView(
                         child: Padding(
-                      padding: const EdgeInsets.only(bottom: 3),
-                      child: Container(
-                        width: double.infinity,
-                        color: Colors.white,
-                        height: 120,
-                        child: isloading
-                            ? Shimmer.fromColors(
+                          padding: const EdgeInsets.only(bottom: 3),
+                          child: Container(
+                            width: double.infinity,
+                            color: Colors.white,
+                            height: 120,
+                            child: isloading
+                                ? Shimmer.fromColors(
                                 baseColor: Colors.grey[350]!,
                                 highlightColor: Colors.grey[100]!,
                                 child: Container(
@@ -333,143 +333,143 @@ class _ItemShopState extends State<ItemShop> {
                                   height: 120,
                                   width: double.infinity,
                                 ))
-                            : InkWell(
-                                splashColor: Colors.grey,
-                                onTap: () {},
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    const SizedBox(
-                                      width: 25,
+                                : InkWell(
+                              splashColor: Colors.grey,
+                              onTap: () {},
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  const SizedBox(
+                                    width: 25,
+                                  ),
+                                  itemShopsList?[index].quantity != 0
+                                      ? ClipRRect(
+                                    borderRadius:
+                                    BorderRadius.circular(10),
+                                    child: ImageNetworkWidget(
+                                      image:
+                                      'https://news.wasiljo.com/${itemShopsList?[index].imageUrl.toString()}',
+                                      height: 90,
+                                      width: 90,
+                                      fit: BoxFit.fitHeight,
+                                      errorbuilder:
+                                          (BuildContext context,
+                                          Object exception,
+                                          StackTrace? stackTrace) {
+                                        return Image.asset(
+                                          'assets/images/image2.png',
+                                          fit: BoxFit.fitHeight,
+                                          height: 90,
+                                          width: 90,
+                                        );
+                                      },
                                     ),
-                                    itemShopsList?[index].quantity != 0
-                                        ? ClipRRect(
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                            child: ImageNetworkWidget(
-                                              image:
-                                                  'https://news.wasiljo.com/${itemShopsList?[index].imageUrl.toString()}',
-                                              height: 90,
-                                              width: 90,
-                                              fit: BoxFit.fitHeight,
-                                              errorbuilder:
-                                                  (BuildContext context,
-                                                      Object exception,
-                                                      StackTrace? stackTrace) {
-                                                return Image.asset(
-                                                  'assets/images/image2.png',
-                                                  fit: BoxFit.fitHeight,
-                                                  height: 90,
-                                                  width: 90,
-                                                );
-                                              },
-                                            ),
-                                          )
-                                        : SizedBox(
-                                            width: 90,
-                                            height: 90,
-                                            child: Stack(
-                                              children: [
-                                                ClipRRect(
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
-                                                  child: ImageNetworkWidget(
-                                                    image:
-                                                        'https://news.wasiljo.com/${itemShopsList?[index].imageUrl.toString()}',
-                                                    height: 90,
-                                                    width: 90,
-                                                    fit: BoxFit.fitHeight,
-                                                    errorbuilder:
-                                                        (BuildContext context,
-                                                            Object exception,
-                                                            StackTrace?
-                                                                stackTrace) {
-                                                      return Image.asset(
-                                                        'assets/images/image2.png',
-                                                        fit: BoxFit.fitHeight,
-                                                        height: 90,
-                                                        width: 90,
-                                                      );
-                                                    },
-                                                  ),
-                                                ),
-                                                ClipRRect(
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
-                                                  child: const Opacity(
-                                                    opacity: 0.5,
-                                                    child: ModalBarrier(
-                                                        dismissible: false,
-                                                        color: Colors.black),
-                                                  ),
-                                                ),
-                                                Center(
-                                                  child: TextWidgets(
-                                                    text: itemShopsList?[index]
-                                                                .quantity == 0
-                                                        ? "Not Available"
-                                                        : "",
-                                                    color: Colors.white,
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 15.5,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                    const SizedBox(
-                                      width: 30,
-                                    ),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                  )
+                                      : SizedBox(
+                                    width: 90,
+                                    height: 90,
+                                    child: Stack(
                                       children: [
-                                        const SizedBox(
-                                          height: 10,
+                                        ClipRRect(
+                                          borderRadius:
+                                          BorderRadius.circular(10),
+                                          child: ImageNetworkWidget(
+                                            image:
+                                            'https://news.wasiljo.com/${itemShopsList?[index].imageUrl.toString()}',
+                                            height: 90,
+                                            width: 90,
+                                            fit: BoxFit.fitHeight,
+                                            errorbuilder:
+                                                (BuildContext context,
+                                                Object exception,
+                                                StackTrace?
+                                                stackTrace) {
+                                              return Image.asset(
+                                                'assets/images/image2.png',
+                                                fit: BoxFit.fitHeight,
+                                                height: 90,
+                                                width: 90,
+                                              );
+                                            },
+                                          ),
                                         ),
-                                        TextWidgets(
-                                          text:
-                                              '${itemShopsList?[index].title.en.toString()}',
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold,
-                                          color: const Color(0xff000000),
+                                        ClipRRect(
+                                          borderRadius:
+                                          BorderRadius.circular(10),
+                                          child: const Opacity(
+                                            opacity: 0.5,
+                                            child: ModalBarrier(
+                                                dismissible: false,
+                                                color: Colors.black),
+                                          ),
                                         ),
-                                        const SizedBox(
-                                          height: 3,
+                                        Center(
+                                          child: TextWidgets(
+                                            text: itemShopsList?[index]
+                                                .quantity == 0
+                                                ? "Not Available"
+                                                : "",
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 15.5,
+                                          ),
                                         ),
-                                        TextWidgets(
-                                          text:
-                                              '${itemShopsList?[index].description.en.toString()}',
-                                          fontSize: 11,
-                                          color: Colors.grey,
-                                        ),
-                                        const SizedBox(
-                                          height: 30,
-                                        ),
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            TextWidgets(
-                                              text:
-                                                  'Price : ${itemShopsList?[index].price.toString()}',
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                            TextWidgets(
-                                              text:
-                                                  'Quantity : ${itemShopsList?[index].quantity.toString()}',
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.black,
-                                            )
-                                          ],
-                                        )
                                       ],
-                                    )
-                                  ],
-                                ),
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    width: 30,
+                                  ),
+                                  Column(
+                                    crossAxisAlignment:
+                                    CrossAxisAlignment.start,
+                                    children: [
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
+                                      TextWidgets(
+                                        text:
+                                        '${itemShopsList?[index].title.en.toString()}',
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                        color: const Color(0xff000000),
+                                      ),
+                                      const SizedBox(
+                                        height: 3,
+                                      ),
+                                      TextWidgets(
+                                        text:
+                                        '${itemShopsList?[index].description.en.toString()}',
+                                        fontSize: 11,
+                                        color: Colors.grey,
+                                      ),
+                                      const SizedBox(
+                                        height: 30,
+                                      ),
+                                      Column(
+                                        crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                        children: [
+                                          TextWidgets(
+                                            text:
+                                            'Price : ${itemShopsList?[index].price.toString()}',
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                          TextWidgets(
+                                            text:
+                                            'Quantity : ${itemShopsList?[index].quantity.toString()}',
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.black,
+                                          )
+                                        ],
+                                      )
+                                    ],
+                                  )
+                                ],
                               ),
-                      ),
-                    ));
+                            ),
+                          ),
+                        ));
                   }),
             ),
           ],
