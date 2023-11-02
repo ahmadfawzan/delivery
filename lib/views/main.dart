@@ -36,6 +36,13 @@ class MyApp extends StatelessWidget {
             AddressBinding().dependencies();
           }),
         ),
+        GetPage(
+          name: "/shops",
+          page: () => const Shops(),
+          binding:BindingsBuilder(() {
+            AddressBinding().dependencies();
+          }),
+        ),
       ],
     );
   }

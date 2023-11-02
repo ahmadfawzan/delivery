@@ -25,8 +25,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final AddressController addressController = Get.find();
-
-  String? popMenuValue;
   var scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
@@ -203,7 +201,7 @@ class _HomePageState extends State<HomePage> {
                                 color: const Color(0xffEBFAF5),
                                 onSelected: (value) {
                                   setState(() {
-                                    popMenuValue = value;
+                                    addressController.popMenuValue = value;
                                   });
                                 },
                                 child: Padding(
@@ -212,10 +210,17 @@ class _HomePageState extends State<HomePage> {
                                   child: Row(
                                     children: [
                                       addressController.addressList.isEmpty
-                                          ? const Text('No Loction')
+                                          ? const TextWidgets(
+                                              text: 'No Loction',
+                                              fontWeight: FontWeight.bold,
+                                              textOverFlow:
+                                                  TextOverflow.ellipsis,
+                                              fontSize: 15,
+                                            )
                                           : Expanded(
                                               child: TextWidgets(
-                                              text: popMenuValue ??
+                                              text: addressController
+                                                      .popMenuValue ??
                                                   (addressController
                                                               .addressList[0]
                                                               .type ==
@@ -386,17 +391,7 @@ class _HomePageState extends State<HomePage> {
                               itemBuilder: (context, index) {
                                 return InkWell(
                                   onTap: () {
-                                    int? id = categorieController
-                                        .categorieList[index].id;
-                                    /*Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                        builder: (context) => Shops(
-                                          id: id,
-                                          popMenuValue: popMenuValue,
-
-                                        ),
-                                      ),
-                                    );*/
+                                    Get.toNamed('/shops');
                                   },
                                   child: Card(
                                     elevation: 3,

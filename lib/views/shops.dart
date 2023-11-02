@@ -1,4 +1,3 @@
-/*
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:awesome_dialog/awesome_dialog.dart';
@@ -12,23 +11,17 @@ import 'add_new_address.dart';
 import 'item_shop.dart';
 
 class Shops extends StatefulWidget {
-  final int? id;
-  final List? addresses;
-  final String? popMenuValue;
+
 
   const Shops(
-      {Key? key,
-        required this.id,
-        required this.addresses,
-        required this.popMenuValue})
-      : super(key: key);
+      {Key? key}) : super(key: key);
 
   @override
   State<Shops> createState() => _ShopsState();
 }
 
 class _ShopsState extends State<Shops> {
-  String? popMenuValue;
+ /* String? popMenuValue;
   var lat;
   var long;
   List? shopsItemList;
@@ -135,11 +128,11 @@ class _ShopsState extends State<Shops> {
 
     super.initState();
   }
-
+*/
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xffF2F2F2),
+    return const Scaffold(
+      /*backgroundColor: const Color(0xffF2F2F2),
       body: Column(
         children: [
           Container(
@@ -539,7 +532,7 @@ class _ShopsState extends State<Shops> {
                 }),
           ),
         ],
-      ),
+      ),*/
     );
   }
-}*/
+}

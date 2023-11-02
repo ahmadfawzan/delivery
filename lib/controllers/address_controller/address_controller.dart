@@ -6,8 +6,13 @@ class AddressController extends GetxController{
   var isLoading=true.obs;
   final RxList<Address> addressList = <Address>[].obs;
   final RxList<String> addressError = <String>[].obs;
+  String? popMenuValue;
   @override
   void onInit() {
+    if(addressList.isEmpty){
+      popMenuValue = null;
+      update();
+    }
     fetchAddress();
     super.onInit();
   }
