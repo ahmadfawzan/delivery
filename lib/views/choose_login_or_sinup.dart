@@ -1,8 +1,9 @@
-import 'package:delivery/view/signup.dart';
+
+import 'package:delivery/views/signup.dart';
 import 'package:flutter/material.dart';
-import '../widget/image_widgets.dart';
-import '../widget/material_button_widgets.dart';
-import '../widget/text_widgets.dart';
+import '../widgets/image_widgets.dart';
+import '../widgets/material_button_widgets.dart';
+import '../widgets/text_widgets.dart';
 import 'login.dart';
 
 class ChooseLoginOrSingup extends StatefulWidget {

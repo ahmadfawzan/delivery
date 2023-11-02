@@ -1,14 +1,12 @@
-// To parse this JSON data, do
-//
-//     final addresses = addressesFromJson(jsonString);
+
 
 import 'dart:convert';
 
-List<Addresses> addressesFromJson(List<dynamic> list) => List<Addresses>.from(list.map((x) => Addresses.fromJson(x)));
+List<Address> addressFromJson(List<dynamic> list) => List<Address>.from(list.map((x) => Address.fromJson(x)));
 
-String addressesToJson(List<Addresses> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+String addressToJson(List<Address> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
-class Addresses {
+class Address {
   int? id;
   String? longitude;
   String? latitude;
@@ -25,7 +23,7 @@ class Addresses {
   DateTime? createdAt;
   DateTime? updatedAt;
 
-  Addresses({
+  Address({
     this.id,
     this.longitude,
     this.latitude,
@@ -43,7 +41,7 @@ class Addresses {
     this.updatedAt,
   });
 
-  factory Addresses.fromJson(Map<String, dynamic> json) => Addresses(
+  factory Address.fromJson(Map<String, dynamic> json) => Address(
     id: json["id"],
     longitude: json["longitude"],
     latitude: json["latitude"],

@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:delivery/services/addresses/put_addresses/put_addresses.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -8,17 +7,17 @@ import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:search_map_place_updated/search_map_place_updated.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../model/address_model/address_model.dart';
-import '../services/addresses/post_addresses/post_addresses.dart';
-import '../widget/material_button_widgets.dart';
-import '../widget/text_form_field_widgets.dart';
+import '../models/address_model/address_model.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:http/http.dart' as http;
+import '../services/address/post_addresses/post_addresses.dart';
+import '../services/address/put_addresses/put_addresses.dart';
+import '../widgets/material_button_widgets.dart';
+import '../widgets/text_form_field_widgets.dart';
+import '../widgets/text_widgets.dart';
 
-import '../widget/text_widgets.dart';
-import 'homepage.dart';
 
 class AddNewAddress extends StatefulWidget {
   const AddNewAddress({super.key});

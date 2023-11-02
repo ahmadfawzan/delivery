@@ -1,11 +1,11 @@
 import 'package:country_code_picker/country_code_picker.dart';
-import 'package:delivery/widget/country_code_picker.dart';
-import 'package:delivery/widget/image_widgets.dart';
 import 'package:flutter/material.dart';
 import '../services/shared_preferences/shared_preferences.dart';
-import '../widget/material_button_widgets.dart';
-import '../widget/text_form_field_widgets.dart';
-import '../widget/text_widgets.dart';
+import '../widgets/country_code_picker.dart';
+import '../widgets/image_widgets.dart';
+import '../widgets/material_button_widgets.dart';
+import '../widgets/text_form_field_widgets.dart';
+import '../widgets/text_widgets.dart';
 import 'signup.dart';
 
 class Login extends StatefulWidget {
@@ -173,6 +173,7 @@ class _LoginState extends State<Login> {
                     if (value.length < 6) {
                       return 'Password length at least 6 character';
                     }
+                    return null;
                   },
                   controller: password,
                   prefixIcon: const Icon(

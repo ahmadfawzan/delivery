@@ -1,8 +1,9 @@
-import 'package:delivery/widget/image_widgets.dart';
+
 import 'package:flutter/material.dart';
-import '../model/aboutUs_list/aboutUs_list.dart';
-import '../widget/material_button_widgets.dart';
-import '../widget/text_widgets.dart';
+import '../models/aboutUs_list/aboutUs_list.dart';
+import '../widgets/image_widgets.dart';
+import '../widgets/material_button_widgets.dart';
+import '../widgets/text_widgets.dart';
 import 'choose_login_or_sinup.dart';
 
 class AboutUs extends StatefulWidget {

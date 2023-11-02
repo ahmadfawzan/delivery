@@ -4,9 +4,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:shimmer/shimmer.dart';
-import '../widget/material_button_widgets.dart';
-import '../widget/text_form_field_widgets.dart';
-import '../widget/text_widgets.dart';
+
+import '../widgets/material_button_widgets.dart';
+import '../widgets/text_form_field_widgets.dart';
+import '../widgets/text_widgets.dart';
 
 class Profile extends StatefulWidget {
   const Profile({

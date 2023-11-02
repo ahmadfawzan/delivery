@@ -6,8 +6,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../view/homepage.dart';
-import '../view/login.dart';
+import '../../views/homepage.dart';
+import '../../views/login.dart';
+
 
 
 Future<void> addUser(name, email, carNumber, mobileNumber, countryCode,

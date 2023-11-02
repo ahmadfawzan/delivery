@@ -1,13 +1,14 @@
 import 'dart:convert';
 import 'package:awesome_dialog/awesome_dialog.dart';
-import 'package:delivery/Screen/homepage.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import '../widget/text_widgets.dart';
 
-Future FetchLogin(mobileNumber, countryCode, password,
+import '../../../widgets/text_widgets.dart';
+
+Future PostLogin(mobileNumber, countryCode, password,
     {required BuildContext context}) async {
   SharedPreferences sharedtoken = await SharedPreferences.getInstance();
   Map<String, String> header = {
@@ -28,22 +29,7 @@ Future FetchLogin(mobileNumber, countryCode, password,
     const storage = FlutterSecureStorage();
     await storage.write(key: 'token', value: data['data']['token']);
     if (!context.mounted) return;
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => const HomePage()));
-    if (!context.mounted) return;
-    AwesomeDialog(
-      animType: AnimType.leftSlide,
-      dialogType: DialogType.success,
-      btnOkOnPress: () {},
-      context: context,
-      title: 'Success',
-      body: const TextWidgets(
-        text: 'You have been logged in successfully',
-        fontSize: 18,
-        fontWeight: FontWeight.bold,
-        textAlign: TextAlign.center,
-      ),
-    ).show();
+    Get.toNamed("/home");
   } else {
     if (!context.mounted) return;
     AwesomeDialog(

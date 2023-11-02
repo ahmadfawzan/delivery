@@ -1,10 +1,10 @@
 import 'dart:convert';
 
-List<Categories> categoriesFromJson(List<dynamic> list) => List<Categories>.from(list.map((x) => Categories.fromJson(x)));
+List<Categorie> categorieFromJson(List<dynamic> list) => List<Categorie>.from(list.map((x) => Categorie.fromJson(x)));
 
-String categoriesToJson(List<Categories> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+String categorieToJson(List<Categorie> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
-class Categories {
+class Categorie {
   int? id;
   Description? title;
   Description? description;
@@ -20,7 +20,7 @@ class Categories {
   DateTime? createdAt;
   DateTime? updatedAt;
 
-  Categories({
+  Categorie({
     this.id,
     this.title,
     this.description,
@@ -37,7 +37,7 @@ class Categories {
     this.updatedAt,
   });
 
-  factory Categories.fromJson(Map<String, dynamic> json) => Categories(
+  factory Categorie.fromJson(Map<String, dynamic> json) => Categorie(
     id: json["id"],
     title: Description.fromJson(json["title"]),
     description: Description.fromJson(json["description"]),

@@ -1,9 +1,11 @@
-import 'package:delivery/bindings/home_binding/home_binding.dart';
-import 'package:delivery/view/homepage.dart';
+import 'package:delivery/views/shops.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import '../bindings/address_binding/address_binding.dart';
+import '../bindings/categorie_binding/categorie_binding.dart';
 import '../services/fierbace/firebase_options.dart';
 import 'cart.dart';
+import 'homepage.dart';
 import 'splach_screen.dart';
 import 'package:get/get.dart';
 
@@ -26,8 +28,18 @@ class MyApp extends StatelessWidget {
       home: const SplachScreen(),
       getPages: [
         GetPage(name: "/cart", page: () => const Cart()),
-        GetPage(name: "/home", page: ()=>  HomePage(),binding: HomeBinding())
+        GetPage(
+          name: "/home",
+          page: () => HomePage(),
+          binding:BindingsBuilder(() {
+            CategorieBinding().dependencies();
+            /*AddressBinding().dependencies();*/
+          }),
+        ),
       ],
     );
   }
 }
+
+
+

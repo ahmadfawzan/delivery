@@ -1,44 +1,63 @@
 import 'dart:convert';
 import 'package:awesome_dialog/awesome_dialog.dart';
-import 'package:delivery/controllers/categories_controllers/categories_controllers.dart';
-import 'package:delivery/view/profile.dart';
-import 'package:delivery/view/shops.dart';
+import 'package:delivery/services/user/delete_user/delete_user.dart';
+import 'package:delivery/views/profile.dart';
+import 'package:delivery/views/shops.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
-import '../model/address_model/address_model.dart';
-import '../model/categories_model/categories_model.dart';
-import '../services/categories/get_categories/get_categories.dart';
-import '../services/user/delete_user/delete_user.dart';
-import '../widget/image_widgets.dart';
-import '../widget/network_image.dart';
-import '../widget/text_widgets.dart';
+import '../controllers/categorie_controller/categorie_controller.dart';
+import '../models/address_model/address_model.dart';
+import '../widgets/image_widgets.dart';
+import '../widgets/network_image.dart';
+import '../widgets/text_widgets.dart';
 import 'add_new_address.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+
 import 'login.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({super.key});
 
-  CategoriesControllers categoriesControllers = Get.find();
+  CategorieController categorieController = Get.find();
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-
+  List? addresses;
   String? popMenuValue;
   var scaffoldKey = GlobalKey<ScaffoldState>();
   bool isloading = true;
 
+  Future fetchAddresses() async {
+    SharedPreferences sharedtoken = await SharedPreferences.getInstance();
+    String? token = sharedtoken.getString('token');
+    final response = await http.get(
+      Uri.parse('https://news.wasiljo.com/public/api/v1/user/addresses'),
+      headers: {
+        'Authorization': 'Bearer $token',
+      },
+    );
+    final jsonRes = json.decode(response.body);
+    if (response.statusCode == 200) {
+      final addressList = jsonRes['data']['addresses'] as List<dynamic>;
 
+      setState(() {
+        addresses = addressList.map((json) => Address.fromJson(json)).toList();
+        isloading = false;
+      });
+    } else {
+      jsonRes('error');
+    }
+  }
 
   @override
   void initState() {
+    fetchAddresses();
     super.initState();
   }
 
@@ -125,8 +144,6 @@ class _HomePageState extends State<HomePage> {
                         SharedPreferences sharedtoken =
                             await SharedPreferences.getInstance();
                         await sharedtoken.clear();
-                        const storage = FlutterSecureStorage();
-                        await storage.deleteAll();
                         Navigator.of(context).pushReplacement(MaterialPageRoute(
                             builder: (context) => const Login()));
                       },
@@ -376,95 +393,98 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
           Expanded(
-              child: isloading
-                  ? Shimmer.fromColors(
-                      baseColor: Colors.grey[300]!,
-                      highlightColor: Colors.grey[100]!,
-                      child: SingleChildScrollView(
-                        child: StaggeredGridView.countBuilder(
-                          staggeredTileBuilder: (index) =>
-                              StaggeredTile.count(1, index.isEven ? 1.3 : 1.6),
-                          physics: const NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          scrollDirection: Axis.vertical,
-                          crossAxisCount: 2,
-                          crossAxisSpacing: 4,
-                          itemCount: 6,
-                          itemBuilder: (context, index) {
-                            return Card(
-                              elevation: 3,
-                              shadowColor: Colors.black,
-                              child: Container(
-                                height: 122,
-                                width: double.infinity,
-                                color: Colors.white,
+              child: GetBuilder<CategorieController>(
+                  init: CategorieController(),
+                  builder: (categorieController) {
+                    return categorieController.isLoading.value
+                        ? Shimmer.fromColors(
+                            baseColor: Colors.grey[300]!,
+                            highlightColor: Colors.grey[100]!,
+                            child: SingleChildScrollView(
+                              child: StaggeredGridView.countBuilder(
+                                staggeredTileBuilder: (index) =>
+                                    StaggeredTile.count(
+                                        1, index.isEven ? 1.3 : 1.6),
+                                physics: const NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                scrollDirection: Axis.vertical,
+                                crossAxisCount: 2,
+                                crossAxisSpacing: 4,
+                                itemCount: 6,
+                                itemBuilder: (context, index) {
+                                  return Card(
+                                    elevation: 3,
+                                    shadowColor: Colors.black,
+                                    child: Container(
+                                      height: 122,
+                                      width: double.infinity,
+                                      color: Colors.white,
+                                    ),
+                                  );
+                                },
                               ),
-                            );
-                          },
-                        ),
-                      ),
-                    )
-                  : GetBuilder<CategoriesControllers>(
-                      init: CategoriesControllers(),
-                      builder: (categoriesControllers) => SingleChildScrollView(
-                        child: StaggeredGridView.countBuilder(
-                          staggeredTileBuilder: (index) =>
-                              StaggeredTile.count(1, index.isEven ? 1.3 : 1.6),
-                          physics: const NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          scrollDirection: Axis.vertical,
-                          crossAxisCount: 2,
-                          crossAxisSpacing: 4,
-                          itemCount:
-                              categoriesControllers.categoriesList.length,
-                          itemBuilder: (context, index) {
-                            return InkWell(
-                              onTap: () {
-                                int? id = categoriesControllers
-                                    .categoriesList[index].id;
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (context) => Shops(
-                                      id: id,
-                                      addresses: addresses,
-                                      popMenuValue: popMenuValue,
+                            ),
+                          )
+                        : SingleChildScrollView(
+                            child: StaggeredGridView.countBuilder(
+                              staggeredTileBuilder: (index) =>
+                                  StaggeredTile.count(
+                                      1, index.isEven ? 1.3 : 1.6),
+                              physics: const NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              scrollDirection: Axis.vertical,
+                              crossAxisCount: 2,
+                              crossAxisSpacing: 4,
+                              itemCount:
+                                  categorieController.categorieList.length,
+                              itemBuilder: (context, index) {
+                                return InkWell(
+                                  onTap: () {
+                                    int? id = categorieController
+                                        .categorieList[index].id;
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (context) => Shops(
+                                          id: id,
+                                          popMenuValue: popMenuValue, addresses: addresses,
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  child: Card(
+                                    elevation: 3,
+                                    shadowColor: Colors.black,
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(top: 25.0),
+                                          child: ImageNetworkWidget(
+                                            image:
+                                                'https://news.wasiljo.com/${categorieController.categorieList[index].imageUrl}',
+                                            fit: BoxFit.fitWidth,
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              bottom: 12.0),
+                                          child: TextWidgets(
+                                            text:
+                                                '${categorieController.categorieList[index].title?.en}',
+                                            fontSize: 10,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        )
+                                      ],
                                     ),
                                   ),
                                 );
                               },
-                              child: Card(
-                                elevation: 3,
-                                shadowColor: Colors.black,
-                                child: Column(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 25.0),
-                                      child: ImageNetworkWidget(
-                                        image:
-                                            'https://news.wasiljo.com/${categoriesControllers.categoriesList[index].imageUrl}',
-                                        fit: BoxFit.fitWidth,
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding:
-                                          const EdgeInsets.only(bottom: 12.0),
-                                      child: TextWidgets(
-                                        text:
-                                            '${categoriesControllers.categoriesList[index].title?.en}',
-                                        fontSize: 10,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-                    )),
+                            ),
+                          );
+                  })),
           isloading
               ? Shimmer.fromColors(
                   baseColor: Colors.grey[300]!,

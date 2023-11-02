@@ -3,10 +3,9 @@ import 'package:http/http.dart' as http;
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
-import '../model/item_shops_model/item_shops_model.dart';
-import '../widget/network_image.dart';
-import '../widget/text_form_field_widgets.dart';
-import '../widget/text_widgets.dart';
+
+import '../widgets/network_image.dart';
+import '../widgets/text_widgets.dart';
 import 'add_new_address.dart';
 
 class Cart extends StatefulWidget {

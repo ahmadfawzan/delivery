@@ -1,24 +1,29 @@
 import 'package:get/get.dart';
-import '../../model/categories_model/categories_model.dart';
-import '../../services/categories/get_categories/get_categories.dart';
+import '../../models/categorie_model/categorie_model.dart';
+import '../../services/categorie/get_categorie/get_categorie.dart';
 
-class CategoriesController extends GetxController {
-  final RxList<Categories> categoriesList = <Categories>[].obs;
-  final RxList<String> categoriesError = <String>[].obs;
+
+class CategorieController extends GetxController {
+  var isLoading=true.obs;
+  final RxList<Categorie> categorieList = <Categorie>[].obs;
+  final RxList<String> categorieError = <String>[].obs;
+  int ? id;
+  String? popMenuValue;
   @override
   void onInit() {
-    fetchCategories();
+    fetchCategorie();
     super.onInit();
   }
-  void fetchCategories() async{
+  void fetchCategorie() async{
     try{
-      var categories= await RemoteServicesCategories.fetchCategories();
-      categoriesList.value =categories;
-      categoriesError.clear();
+      var categorie= await RemoteServicesCategorie.fetchCategorie();
+      categorieList.value =categorie;
+      categorieError.clear();
     }catch(error){
-      categoriesError.add(error.toString());
+      categorieError.add(error.toString());
     }finally{
       update();
+      isLoading(false);
     }
 
   }

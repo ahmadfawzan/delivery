@@ -3,9 +3,9 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../Screen/signup.dart';
-import '../widget/text_widgets.dart';
 
+import '../../../views/signup.dart';
+import '../../../widgets/text_widgets.dart';
 Future DeleteUser({required BuildContext context}) async {
   SharedPreferences sharedtoken = await SharedPreferences.getInstance();
   String? token = sharedtoken.getString('token');

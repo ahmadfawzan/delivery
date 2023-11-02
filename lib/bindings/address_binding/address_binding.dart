@@ -1,10 +1,10 @@
 import 'package:get/get.dart';
-import '../../controllers/addresses_controller/addresses_controller.dart';
+import '../../controllers/address_controller/address_controller.dart';
 
-class AddressesBinding implements Bindings{
+class AddressBinding implements Bindings{
   @override
   void dependencies() {
-    Get.put(AddressesController(),permanent: true);
+    Get.put(AddressController(),permanent: true);
   }
 
 }

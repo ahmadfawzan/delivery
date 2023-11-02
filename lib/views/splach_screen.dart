@@ -1,8 +1,7 @@
 import 'dart:async';
-import 'package:delivery/widget/image_widgets.dart';
 import 'package:flutter/material.dart';
-
 import '../services/shared_preferences/shared_preferences.dart';
+import '../widgets/image_widgets.dart';
 
 class SplachScreen extends StatefulWidget {
   const SplachScreen({Key? key}) : super(key: key);

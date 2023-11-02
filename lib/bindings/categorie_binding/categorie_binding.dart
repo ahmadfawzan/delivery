@@ -1,9 +1,10 @@
 import 'package:get/get.dart';
-import '../../controllers/categories_controller/categories_controller.dart';
+import '../../controllers/categorie_controller/categorie_controller.dart';
 
-class HomeBinding implements Bindings{
+
+class CategorieBinding implements Bindings{
   @override
   void dependencies() {
-  Get.put(CategoriesController(),permanent: true);
+  Get.put(CategorieController(),permanent: true);
   }
 }

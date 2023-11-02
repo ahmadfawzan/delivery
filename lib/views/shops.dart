@@ -3,10 +3,10 @@ import 'package:http/http.dart' as http;
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
-import '../model/shops_model/shops_model.dart';
-import '../widget/network_image.dart';
-import '../widget/text_form_field_widgets.dart';
-import '../widget/text_widgets.dart';
+import '../models/shop_model/shop_model.dart';
+import '../widgets/network_image.dart';
+import '../widgets/text_form_field_widgets.dart';
+import '../widgets/text_widgets.dart';
 import 'add_new_address.dart';
 import 'item_shop.dart';
 
@@ -30,7 +30,7 @@ class _ShopsState extends State<Shops> {
   String? popMenuValue;
   var lat;
   var long;
-  List? shopsList1;
+  List? shopsItemList;
   String searchText = '';
   bool isloading = true;
 
@@ -95,11 +95,12 @@ class _ShopsState extends State<Shops> {
     final response = await http.get(uri);
     final jsonRes = json.decode(response.body);
     if (response.statusCode == 200) {
-      final shops = jsonRes['data']['shops'] as List<dynamic>;
+      final shopsList = jsonRes['data']['shops'] as List<dynamic>;
       setState(() {
         isloading = false;
-        final shopsList = shops.map((json) => ShopsList.fromJson(json)).toList();
-        shopsList1 = shopsList
+        final shops =
+            shopsList.map((json) => ShopsList.fromJson(json)).toList();
+        shopsItemList = shops
             .where((element) =>
                 element.categoryId == widget.id && searchText.isEmpty ||
                 element.shopNameEn!.contains(searchText.toString()) &&
@@ -236,7 +237,7 @@ class _ShopsState extends State<Shops> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
                                         children: [
-                                          SizedBox(
+                                          const SizedBox(
                                             height: 10,
                                           ),
                                           TextWidgets(
@@ -249,7 +250,7 @@ class _ShopsState extends State<Shops> {
                                             fontSize: 13,
                                             fontWeight: FontWeight.bold,
                                           ),
-                                          SizedBox(
+                                          const SizedBox(
                                             height: 6,
                                           ),
                                           TextWidgets(
@@ -262,7 +263,7 @@ class _ShopsState extends State<Shops> {
                                             fontSize: 10,
                                             fontWeight: FontWeight.bold,
                                           ),
-                                          SizedBox(
+                                          const SizedBox(
                                             height: 10,
                                           ),
                                           Theme(
@@ -363,7 +364,7 @@ class _ShopsState extends State<Shops> {
                 padding: const EdgeInsets.only(top: 7),
                 scrollDirection: Axis.vertical,
                 shrinkWrap: true,
-                itemCount: shopsList1?.length,
+                itemCount: shopsItemList?.length,
                 itemBuilder: (context, index) {
                   return SingleChildScrollView(
                       child: Padding(
@@ -386,10 +387,10 @@ class _ShopsState extends State<Shops> {
                               onTap: () {
                                 Navigator.of(context).push(MaterialPageRoute(
                                     builder: (context) => ItemShop(
-                                          id: shopsList1?[index].id,
-                                          addresses:widget.addresses,
-                                          popMenuValue : popMenuValue,
-                                          popMenuValue1 : widget.popMenuValue,
+                                          id: shopsItemList?[index].id,
+                                          addresses: widget.addresses,
+                                          popMenuValue: popMenuValue,
+                                          popMenuValue1: widget.popMenuValue,
                                         )));
                               },
                               child: Row(
@@ -398,13 +399,13 @@ class _ShopsState extends State<Shops> {
                                   const SizedBox(
                                     width: 25,
                                   ),
-                                  shopsList1?[index].open == 1
+                                  shopsItemList?[index].open == 1
                                       ? ClipRRect(
                                           borderRadius:
                                               BorderRadius.circular(10),
                                           child: ImageNetworkWidget(
                                             image:
-                                                'https://news.wasiljo.com/${shopsList1?[index].license.toString()}',
+                                                'https://news.wasiljo.com/${shopsItemList?[index].license.toString()}',
                                             height: 90,
                                             width: 90,
                                             fit: BoxFit.fitHeight,
@@ -430,7 +431,7 @@ class _ShopsState extends State<Shops> {
                                                     BorderRadius.circular(10),
                                                 child: ImageNetworkWidget(
                                                   image:
-                                                      'https://news.wasiljo.com/${shopsList1?[index].license.toString()}',
+                                                      'https://news.wasiljo.com/${shopsItemList?[index].license.toString()}',
                                                   height: 90,
                                                   width: 90,
                                                   fit: BoxFit.fitHeight,
@@ -459,7 +460,7 @@ class _ShopsState extends State<Shops> {
                                               ),
                                               Center(
                                                 child: TextWidgets(
-                                                  text: shopsList1?[index]
+                                                  text: shopsItemList?[index]
                                                               .open ==
                                                           0
                                                       ? "Closed"
@@ -484,7 +485,7 @@ class _ShopsState extends State<Shops> {
                                       ),
                                       TextWidgets(
                                         text:
-                                            '${shopsList1?[index].shopNameEn.toString()}',
+                                            '${shopsItemList?[index].shopNameEn.toString()}',
                                         fontSize: 20,
                                         fontWeight: FontWeight.bold,
                                         color: const Color(0xff000000),
@@ -494,7 +495,7 @@ class _ShopsState extends State<Shops> {
                                       ),
                                       TextWidgets(
                                         text:
-                                            '${shopsList1?[index].address.toString()}',
+                                            '${shopsItemList?[index].address.toString()}',
                                         fontSize: 11,
                                         color: Colors.grey,
                                       ),
@@ -513,7 +514,7 @@ class _ShopsState extends State<Shops> {
                                           ),
                                           TextWidgets(
                                             text:
-                                                '${shopsList1?[index].rating.toString()}',
+                                                '${shopsItemList?[index].rating.toString()}',
                                             fontWeight: FontWeight.bold,
                                           ),
                                           const SizedBox(
@@ -521,7 +522,7 @@ class _ShopsState extends State<Shops> {
                                           ),
                                           TextWidgets(
                                             text:
-                                                '(${shopsList1?[index].totalRating.toString()}+ Ratings)',
+                                                '(${shopsItemList?[index].totalRating.toString()}+ Ratings)',
                                             fontWeight: FontWeight.bold,
                                             color: Colors.grey,
                                           )

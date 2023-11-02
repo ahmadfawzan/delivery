@@ -1,24 +1,27 @@
-import 'package:delivery/services/addresses/get_addresses/get_addresses.dart';
 import 'package:get/get.dart';
-import '../../model/address_model/address_model.dart';
+import '../../models/address_model/address_model.dart';
+import '../../services/address/get_address/get_address.dart';
 
-class AddressesController extends GetxController{
-  final RxList<Addresses> addressesList = <Addresses>[].obs;
-  final RxList<String> addressesError = <String>[].obs;
+class AddressController extends GetxController{
+  var isLoading=true.obs;
+  final RxList<Address> addressList = <Address>[].obs;
+  final RxList<String> addressError = <String>[].obs;
   @override
   void onInit() {
-    fetchAddresses();
+    fetchAddress();
     super.onInit();
   }
-  void fetchAddresses() async{
+  void fetchAddress() async{
     try {
-      var addresses = await RemoteServicesAddresses.fetchAddresses();
-      addressesList.value = addresses;
-      addressesError.clear();
+      var address = await RemoteServicesAddress.fetchAddress();
+      addressList.assignAll(address);
+      addressList.refresh();
+      addressError.clear();
     } catch (error) {
-      addressesError.add(error.toString());
+      addressError.add(error.toString());
     } finally {
       update();
+      isLoading(false);
     }
 
   }

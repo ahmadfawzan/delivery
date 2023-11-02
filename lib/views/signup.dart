@@ -1,16 +1,16 @@
 import 'package:country_code_picker/country_code_picker.dart';
-import 'package:delivery/widget/country_code_picker.dart';
-import 'package:delivery/widget/image_widgets.dart';
-import 'package:delivery/widget/material_button_widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import '../services/shared_preferences/shared_preferences.dart';
-import '../widget/text_form_field_widgets.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-import '../widget/text_widgets.dart';
+import '../widgets/country_code_picker.dart';
+import '../widgets/image_widgets.dart';
+import '../widgets/material_button_widgets.dart';
+import '../widgets/text_form_field_widgets.dart';
+import '../widgets/text_widgets.dart';
 import 'login.dart';
 
 class SignUp extends StatefulWidget {

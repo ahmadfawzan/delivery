@@ -1,12 +1,12 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../services/user/post_user/post_login_user.dart';
-import '../../view/about_us.dart';
-import '../../view/homepage.dart';
-import '../../view/login.dart';
-import '../../view/signup.dart';
-import '../../widget/text_widgets.dart';
+import '../../views/about_us.dart';
+import '../../views/login.dart';
+import '../../views/signup.dart';
+import '../../widgets/text_widgets.dart';
+import '../user/post_user/post_login_user.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 Future localStorageSignUpUser(
     TextEditingController name,
@@ -91,8 +91,6 @@ Future localStorageCheck({required BuildContext context}) async {
     Navigator.of(context)
         .push(MaterialPageRoute(builder: (context) => const AboutUs()));
   } else {
-    if (!context.mounted) return;
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => const HomePage()));
+    Get.toNamed("/home");
   }
 }
