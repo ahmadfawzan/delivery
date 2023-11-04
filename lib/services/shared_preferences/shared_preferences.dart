@@ -84,8 +84,8 @@ Future localStorageLoginUser(TextEditingController mobileNumber,
 }
 
 Future localStorageCheck({required BuildContext context}) async {
-  const storage = FlutterSecureStorage();
-  var token = await storage.read(key: 'token');
+  SharedPreferences sharedtoken = await SharedPreferences.getInstance();
+  String? token = sharedtoken.getString('token');
   if (token == null || token.isEmpty) {
     if (!context.mounted) return;
     Navigator.of(context)

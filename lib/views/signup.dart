@@ -32,7 +32,6 @@ class _SignUpState extends State<SignUp> {
   late List register = [];
 
   void FetchRegister({required BuildContext context}) async {
-    SharedPreferences sharedtoken = await SharedPreferences.getInstance();
     Map<String, String> header = {
       'Accept': 'application/json',
       'Content-Type': 'application/json'
@@ -53,7 +52,6 @@ class _SignUpState extends State<SignUp> {
 
     var data = json.decode(response.body);
     if (response.statusCode == 200) {
-      sharedtoken.setString('token', data['data']['token']);
       localStorageSignUpUser(
           name, email, mobileNumber, password, dropDownValue, countryCode,
           context: context);

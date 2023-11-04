@@ -20,7 +20,7 @@ class ShopController extends GetxController{
   void fetchShop() async{
     try {
       var shop = await RemoteServicesShop.fetchShop();
-      shopList.value= shop;
+      shopList.value= shop.where((element) => element.categoryId == categorieController.id && searchText.isEmpty).toList();
       shopError.clear();
     } catch (error) {
       shopError.add(error.toString());

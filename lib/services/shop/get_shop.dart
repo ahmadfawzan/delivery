@@ -8,7 +8,6 @@ import 'package:http/http.dart' as http;
 
 class RemoteServicesShop {
   static Future<List<Shop>> fetchShop() async {
-
     final AddressController addressController = Get.find();
     if (addressController.addressList.isNotEmpty) {
       String? lat;
@@ -52,29 +51,7 @@ class RemoteServicesShop {
         throw Exception(data['error']);
       }
   }else{
-      throw Exception(Get.defaultDialog(
-        title: 'NO Found Location',
-        content: const TextWidgets(
-          text: 'Please Click Ok To Add New Location',
-          fontSize: 15,
-          fontWeight: FontWeight.bold,
-          textAlign: TextAlign.center,
-        ),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Get.toNamed("/addNewAddress");
-              Get.back();
-            },
-            child: const TextWidgets(
-              text: 'ok',
-              fontSize: 15,
-              fontWeight: FontWeight.bold,
-              textAlign: TextAlign.center,
-            ),
-          ),
-        ],
-      ));
+      throw Exception('No Loction');
 
     }
 }}

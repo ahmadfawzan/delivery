@@ -10,7 +10,6 @@ import '../../../views/signup.dart';
 import '../../../widgets/text_widgets.dart';
 Future DeleteUser({required BuildContext context}) async {
   final AddressController addressController = Get.find();
-  final ShopController shopController = Get.put<ShopController>(ShopController());
   SharedPreferences sharedtoken = await SharedPreferences.getInstance();
   String? token = sharedtoken.getString('token');
   final response = await http.post(
@@ -28,7 +27,7 @@ Future DeleteUser({required BuildContext context}) async {
       dialogType: DialogType.success,
       btnOkOnPress: () async {
         addressController.addressList.clear();
-        shopController.shopList.clear();
+        addressController.popMenuValue=null;
         await sharedtoken.clear();
         Navigator.of(context).pushReplacement(
             MaterialPageRoute(builder: (context) => const SignUp()));

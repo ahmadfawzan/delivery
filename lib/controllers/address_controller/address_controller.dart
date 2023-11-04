@@ -9,10 +9,6 @@ class AddressController extends GetxController{
   String? popMenuValue;
   @override
   void onInit() {
-    if(addressList.isEmpty){
-      popMenuValue = null;
-      update();
-    }
     fetchAddress();
     super.onInit();
   }
