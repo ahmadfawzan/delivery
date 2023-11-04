@@ -19,7 +19,7 @@ class AddressController extends GetxController{
   void fetchAddress() async{
     try {
       var address = await RemoteServicesAddress.fetchAddress();
-      addressList.value=(address);
+      addressList.value=address;
       addressError.clear();
     } catch (error) {
       addressError.add(error.toString());

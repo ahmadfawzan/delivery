@@ -1,8 +1,10 @@
-import 'package:delivery/views/shops.dart';
+import 'package:delivery/views/add_new_address.dart';
+import 'package:delivery/views/shop.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import '../bindings/address_binding/address_binding.dart';
 import '../bindings/categorie_binding/categorie_binding.dart';
+import '../bindings/shop_binding/shop_binding.dart';
 import '../services/fierbace/firebase_options.dart';
 import 'cart.dart';
 import 'homepage.dart';
@@ -38,10 +40,15 @@ class MyApp extends StatelessWidget {
         ),
         GetPage(
           name: "/shops",
-          page: () => const Shops(),
+          page: () =>   const Shops(),
           binding:BindingsBuilder(() {
-            AddressBinding().dependencies();
+            ShopBinding().dependencies();
           }),
+        ),
+        GetPage(
+          name: "/addNewAddress",
+          page: () =>  const AddNewAddress(),
+
         ),
       ],
     );

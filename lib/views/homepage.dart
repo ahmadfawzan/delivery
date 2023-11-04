@@ -231,7 +231,7 @@ class _HomePageState extends State<HomePage> {
                                                                       0]
                                                                   .type ==
                                                               2
-                                                          ? "Work ($addressController.addressList[0].street.toString()})"
+                                                          ? "Work (${addressController.addressList[0].street.toString()})"
                                                           : addressController
                                                                       .addressList[
                                                                           0]
@@ -321,12 +321,7 @@ class _HomePageState extends State<HomePage> {
                                         child: const TextWidgets(
                                             text: '+Add new address'),
                                         onTap: () {
-                                          Navigator.of(context).push(
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  const AddNewAddress(),
-                                            ),
-                                          );
+                                       Get.toNamed("/addNewAddress");
                                         },
                                       )
                                     ])),
@@ -391,6 +386,7 @@ class _HomePageState extends State<HomePage> {
                               itemBuilder: (context, index) {
                                 return InkWell(
                                   onTap: () {
+                                    categorieController.id=categorieController.categorieList[index].id;
                                     Get.toNamed('/shops');
                                   },
                                   child: Card(

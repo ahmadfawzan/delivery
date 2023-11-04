@@ -1,11 +1,16 @@
 import 'dart:convert';
 import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../../controllers/address_controller/address_controller.dart';
+import '../../../controllers/shop_controller/shop_controller.dart';
 import '../../../views/signup.dart';
 import '../../../widgets/text_widgets.dart';
 Future DeleteUser({required BuildContext context}) async {
+  final AddressController addressController = Get.find();
+  final ShopController shopController = Get.put<ShopController>(ShopController());
   SharedPreferences sharedtoken = await SharedPreferences.getInstance();
   String? token = sharedtoken.getString('token');
   final response = await http.post(
@@ -17,12 +22,14 @@ Future DeleteUser({required BuildContext context}) async {
 
   var data = json.decode(response.body);
   if (response.statusCode == 200) {
-    await sharedtoken.clear();
     if (!context.mounted) return;
     AwesomeDialog(
       animType: AnimType.leftSlide,
       dialogType: DialogType.success,
-      btnOkOnPress: () {
+      btnOkOnPress: () async {
+        addressController.addressList.clear();
+        shopController.shopList.clear();
+        await sharedtoken.clear();
         Navigator.of(context).pushReplacement(
             MaterialPageRoute(builder: (context) => const SignUp()));
       },
