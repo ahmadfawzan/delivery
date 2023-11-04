@@ -1,3 +1,4 @@
+/*
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:awesome_dialog/awesome_dialog.dart';
@@ -21,7 +22,6 @@ class Shops extends StatefulWidget {
 }
 
 class _ShopsState extends State<Shops> {
- /* String? popMenuValue;
   var lat;
   var long;
   List? shopsItemList;
@@ -29,51 +29,7 @@ class _ShopsState extends State<Shops> {
   bool isloading = true;
 
   Future fetchLatAndLong() async {
-    if (widget.addresses!.isEmpty) {
-      AwesomeDialog(
-        context: context,
-        animType: AnimType.leftSlide,
-        dialogType: DialogType.error,
-        btnOkOnPress: () {
-          Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => const AddNewAddress()));
-        },
-        title: "NO Found Location",
-        body: const TextWidgets(
-          text: "Please Click Ok To Add New Loction",
-          fontSize: 15,
-          fontWeight: FontWeight.bold,
-          textAlign: TextAlign.center,
-        ),
-      ).show();
-    } else {
-      List? address = widget.addresses
-          ?.where((element) =>
-      (element.type == 1
-          ? 'Home (${element.street})'
-          : element.type == 2
-          ? 'Work (${element.street})'
-          : element.type == 3
-          ? 'Other (${element.street})'
-          : '') ==
-          (popMenuValue ??
-              widget.popMenuValue ??
-              (widget.addresses?[0].type == 1
-                  ? "Home (${widget.addresses?[0].street.toString()})"
-                  : widget.addresses?[0].type == 2
-                  ? "Work (${widget.addresses?[0].street.toString()})"
-                  : widget.addresses?[0].type == 3
-                  ? "Other (${widget.addresses?[0].street.toString()})"
-                  : '')))
-          .toList();
-      address
-          ?.map((e) => setState(() {
-        lat = e.latitude;
-        long = e.longitude;
-      }))
-          .toList();
-      fetchShops();
-    }
+
   }
 
   Future fetchShops() async {
@@ -96,7 +52,7 @@ class _ShopsState extends State<Shops> {
         shopsList.map((json) => ShopsList.fromJson(json)).toList();
         shopsItemList = shops
             .where((element) =>
-        element.categoryId == widget.id && searchText.isEmpty ||
+        element.categoryId ==  && searchText.isEmpty ||
             element.shopNameEn!.contains(searchText.toString()) &&
                 searchText.isNotEmpty)
             .toList();
@@ -128,11 +84,11 @@ class _ShopsState extends State<Shops> {
 
     super.initState();
   }
-*/
+
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      /*backgroundColor: const Color(0xffF2F2F2),
+    return Scaffold(
+      backgroundColor: const Color(0xffF2F2F2),
       body: Column(
         children: [
           Container(
@@ -532,7 +488,7 @@ class _ShopsState extends State<Shops> {
                 }),
           ),
         ],
-      ),*/
+      ),
     );
   }
-}
+}*/
