@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
-import '../../controllers/shop_controller/shop_controller.dart';
-import '../../models/item_shop_model/item_shop_model.dart';
+import '../../../controllers/shop_controller/shop_controller.dart';
+import '../../../models/item_shop_model/item_shop_model.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 class RemoteServicesItemShop {

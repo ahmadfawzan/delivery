@@ -1,8 +1,8 @@
 import 'package:delivery/widgets/text_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../controllers/address_controller/address_controller.dart';
-import '../../models/shop_model/shop_model.dart';
+import '../../../controllers/address_controller/address_controller.dart';
+import '../../../models/shop_model/shop_model.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 

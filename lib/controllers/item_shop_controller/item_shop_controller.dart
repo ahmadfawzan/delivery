@@ -1,7 +1,7 @@
 import 'package:delivery/controllers/shop_controller/shop_controller.dart';
 import 'package:get/get.dart';
 import '../../models/item_shop_model/item_shop_model.dart';
-import '../../services/item_shop/get_item_shop.dart';
+import '../../services/item_shop/get_item_shop/get_item_shop.dart';
 
 class ItemShopController extends GetxController{
   final ShopController shopController = Get.find();

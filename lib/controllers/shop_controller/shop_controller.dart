@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 import '../../models/shop_model/shop_model.dart';
-import '../../services/shop/get_shop.dart';
+import '../../services/shop/get_shop/get_shop.dart';
 import '../categorie_controller/categorie_controller.dart';
 
 class ShopController extends GetxController{
