@@ -4,10 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import '../bindings/address_binding/address_binding.dart';
 import '../bindings/categorie_binding/categorie_binding.dart';
+import '../bindings/item_shop_binding/item_shop_binding.dart';
 import '../bindings/shop_binding/shop_binding.dart';
 import '../services/fierbace/firebase_options.dart';
 import 'cart.dart';
 import 'homepage.dart';
+import 'item_shop.dart';
 import 'splach_screen.dart';
 import 'package:get/get.dart';
 
@@ -49,6 +51,13 @@ class MyApp extends StatelessWidget {
           name: "/addNewAddress",
           page: () =>  const AddNewAddress(),
 
+        ),
+        GetPage(
+          name: "/itemShop",
+          page: () =>  const ItemShop(),
+          binding:BindingsBuilder(() {
+            ItemShopBinding().dependencies();
+          }),
         ),
       ],
     );

@@ -386,6 +386,7 @@ class _HomePageState extends State<HomePage> {
                               itemBuilder: (context, index) {
                                 return InkWell(
                                   onTap: () {
+                                    categorieController.title= categorieController.categorieList[index].title?.en;
                                     categorieController.id=categorieController.categorieList[index].id;
                                     Get.toNamed('/shops');
                                   },

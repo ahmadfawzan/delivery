@@ -8,9 +8,9 @@ class ShopController extends GetxController{
   var isLoading=true.obs;
   final RxList<Shop> shopList = <Shop>[].obs;
   final RxList<String> shopError = <String>[].obs;
-  List shopsItemList=[].obs;
+  List shopSearch=[].obs;
   RxString searchText = ''.obs;
-
+  int? id;
   @override
   void onInit() {
     fetchShop();
@@ -32,7 +32,7 @@ class ShopController extends GetxController{
 
 
   Future SearchShop() async {
-    shopsItemList = shopList
+    shopSearch = shopList
         .where((element) =>
     element.categoryId == categorieController.id &&
         searchText.isEmpty ||

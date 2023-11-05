@@ -1,4 +1,10 @@
-class ItemShopsList {
+import 'dart:convert';
+
+List<ItemShop> itemShopFromJson(List<dynamic> list) => List<ItemShop>.from(list.map((x) => ItemShop.fromJson(x)));
+
+String itemShopToJson(List<ItemShop> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+
+class ItemShop {
   int? id;
   Title? title;
   Title? description;
@@ -14,7 +20,7 @@ class ItemShopsList {
   String? updatedAt;
   Pivot? pivot;
 
-  ItemShopsList(
+  ItemShop(
       {this.id,
         this.title,
         this.description,
@@ -30,7 +36,7 @@ class ItemShopsList {
         this.updatedAt,
         this.pivot});
 
-  ItemShopsList.fromJson(Map<String, dynamic> json) {
+  ItemShop.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     title = json['title'] != null ? Title.fromJson(json['title']) : null;
     description = json['description'] != null
