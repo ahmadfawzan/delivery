@@ -12,21 +12,20 @@ class CartController extends GetxController {
 
   void addItemToCart() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    List? savedItems;
+    List<String>? savedItems;
     if (itemCart.isNotEmpty) {
-      prefs.setStringList(
-          'cartItems', itemCart.map((item) => json.encode(item)).toList());
+      prefs.setStringList('cartItems', itemCart.map((item) => json.encode(item)).toList());
       savedItems = prefs.getStringList('cartItems');
-      numberOfItem.value = savedItems!.length;
-      itemsList.value = savedItems.map((item) {
+      numberOfItem.value =  numberOfItem.value = savedItems?.length ?? 0;
+      itemsList.value = savedItems!.map((item) {
         try {
           isLoading.value = false;
           return json.decode(item) as Map<String, dynamic>;
         } catch (e) {
           return null;
-        }
+        }finally{update();}
       }).toList();
-      update();
+
     } else {
       savedItems = prefs.getStringList('cartItems');
       numberOfItem.value = savedItems!.length;
@@ -37,21 +36,22 @@ class CartController extends GetxController {
             return json.decode(item) as Map<String, dynamic>;
           } catch (e) {
             return null;
-          }
+          }finally{update();}
         }).toList();
       }
-      update();
     }
 
   }
   void increment(int index) {
     counter[index]++;
+    print(counter);
     update();
   }
 
   void decrement(int index) {
     if (counter[index] > 0) {
       counter[index]--;
+      print(counter);
       update();
     }
   }

@@ -692,7 +692,7 @@ class _ShopsState extends State<Shops> {
                                               ))
                                           : shopController.shopList[index]
                                           .open ==
-                                          1
+                                         1
                                           ? InkWell(
                                               splashColor: Colors.grey,
                                               onTap: () {

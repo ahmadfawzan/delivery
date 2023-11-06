@@ -516,149 +516,196 @@ class _ItemShopState extends State<ItemShop> {
                                           const SizedBox(
                                             width: 12,
                                           ),
-                                          GetBuilder<CartController>(
-                                            init: CartController(),
-                                            builder: (cartController) =>
-                                                Padding(
-                                              padding: const EdgeInsets.only(
-                                                  top: 65.0),
-                                              child: MaterialButtonWidgets(
-                                                onPressed: () async {
-                                                  final existingItem = cartController
-                                                      .itemCart
-                                                      .where((element) =>
-                                                          element != null &&
-                                                              element['id']
-                                                                      .toString() ==
+                                          GetBuilder(
+                                              init: CartController(),
+                                              builder: (cartController) =>
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            top: 65.0),
+                                                    child: GetBuilder(
+                                                      init: ShopController(),
+                                                      builder: (shopController) =>
+                                                          MaterialButtonWidgets(
+                                                        onPressed: () async {
+                                                          itemShopController
+                                                              .fetchItemShop();
+                                                          SharedPreferences
+                                                              prefs =
+                                                              await SharedPreferences
+                                                                  .getInstance();
+                                                          List<String>?
+                                                              savedItems =
+                                                              prefs.getStringList(
+                                                                  'cartItems');
+                                                          final existingItem =
+                                                              savedItems?.where(
+                                                                  (element) {
+                                                            try {
+                                                              final Map<String,
+                                                                      dynamic>
+                                                                  itemMap =
+                                                                  json.decode(
+                                                                      element);
+                                                              final int itemId =
+                                                                  int.tryParse(itemMap[
+                                                                              'id']
+                                                                          .toString()) ??
+                                                                      0;
+                                                              return itemId ==
                                                                   itemShopController
                                                                       .itemShopList[
                                                                           index]
-                                                                      .id
-                                                                      .toString() ||
-                                                          element?['id']
-                                                                  .toString() ==
-                                                              itemShopController
-                                                                  .itemShopList[
+                                                                      .id;
+                                                            } catch (e) {
+                                                              return false;
+                                                            }
+                                                          });
+                                                          if (existingItem !=
+                                                                  null &&
+                                                              existingItem
+                                                                  .isNotEmpty) {
+                                                            if (mounted) {
+                                                              AwesomeDialog(
+                                                                animType: AnimType
+                                                                    .leftSlide,
+                                                                dialogType:
+                                                                    DialogType
+                                                                        .error,
+                                                                btnOkOnPress:
+                                                                    () {},
+                                                                btnCancelOnPress:
+                                                                    () {},
+                                                                title:
+                                                                    'Item is already in the cart!',
+                                                                body:
+                                                                    const TextWidgets(
+                                                                  text:
+                                                                      'Item is already in the cart!',
+                                                                  fontSize: 18,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                  textAlign:
+                                                                      TextAlign
+                                                                          .center,
+                                                                ),
+                                                                context:
+                                                                    context,
+                                                              ).show();
+                                                            }
+                                                          } else {
+                                                            cartController
+                                                                .itemCart
+                                                                .add({
+                                                              "id": itemShopController
+                                                                  .itemShopSearch[
                                                                       index]
-                                                                  .id
-                                                                  .toString())
-                                                      .toList();
-                                                  if (existingItem.isNotEmpty) {
-                                                    if (mounted) {
-                                                      AwesomeDialog(
-                                                        animType:
-                                                            AnimType.leftSlide,
-                                                        dialogType:
-                                                            DialogType.error,
-                                                        btnOkOnPress: () {},
-                                                        btnCancelOnPress: () {},
-                                                        title:
-                                                            'Item is already in the cart!',
-                                                        body: const TextWidgets(
-                                                          text:
-                                                              'Item is already in the cart!',
-                                                          fontSize: 18,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          textAlign:
-                                                              TextAlign.center,
+                                                                  .id,
+                                                              "imageUrl":
+                                                                  itemShopController
+                                                                      .itemShopSearch[
+                                                                          index]
+                                                                      .imageUrl,
+                                                              "title": [
+                                                                {
+                                                                  "en": itemShopController
+                                                                      .itemShopSearch[
+                                                                          index]
+                                                                      .title!
+                                                                      .en,
+                                                                  "ar": itemShopController
+                                                                      .itemShopSearch[
+                                                                          index]
+                                                                      .title!
+                                                                      .ar,
+                                                                }
+                                                              ],
+                                                              "description": [
+                                                                {
+                                                                  "en": itemShopController
+                                                                      .itemShopSearch[
+                                                                          index]
+                                                                      .description!
+                                                                      .en,
+                                                                  "ar": itemShopController
+                                                                      .itemShopSearch[
+                                                                          index]
+                                                                      .description!
+                                                                      .ar,
+                                                                }
+                                                              ],
+                                                              "price":
+                                                                  itemShopController
+                                                                      .itemShopSearch[
+                                                                          index]
+                                                                      .price,
+                                                              "quantity":
+                                                                  itemShopController
+                                                                      .itemShopSearch[
+                                                                          index]
+                                                                      .quantity,
+                                                            });
+                                                            int numberOfElements =
+                                                                index += 1;
+                                                            cartController
+                                                                .counter
+                                                                .addAll(List.generate(
+                                                                    numberOfElements,
+                                                                    (index) =>
+                                                                        0));
+                                                            cartController
+                                                                .addItemToCart();
+                                                            if (mounted) {
+                                                              AwesomeDialog(
+                                                                animType: AnimType
+                                                                    .leftSlide,
+                                                                dialogType:
+                                                                    DialogType
+                                                                        .success,
+                                                                btnOkOnPress:
+                                                                    () {},
+                                                                btnCancelOnPress:
+                                                                    () {},
+                                                                title:
+                                                                    'Item added to the cart!',
+                                                                body:
+                                                                    const TextWidgets(
+                                                                  text:
+                                                                      'Item added to the cart!',
+                                                                  fontSize: 18,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                  textAlign:
+                                                                      TextAlign
+                                                                          .center,
+                                                                ),
+                                                                context:
+                                                                    context,
+                                                              ).show();
+                                                            }
+                                                          }
+                                                        },
+                                                        height: 30,
+                                                        textColor: Colors.white,
+                                                        color: const Color(
+                                                            0xff15CB95),
+                                                        shape:
+                                                            RoundedRectangleBorder(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(5),
                                                         ),
-                                                        context: context,
-                                                      ).show();
-                                                    }
-                                                  } else {
-                                                    cartController.itemCart
-                                                        .add({
-                                                      "id": itemShopController
-                                                          .itemShopSearch[index]
-                                                          .id,
-                                                      "imageUrl":
-                                                          itemShopController
-                                                              .itemShopSearch[
-                                                                  index]
-                                                              .imageUrl,
-                                                      "title": [
-                                                        {
-                                                          "en": itemShopController
-                                                              .itemShopSearch[
-                                                                  index]
-                                                              .title!
-                                                              .en,
-                                                          "ar": itemShopController
-                                                              .itemShopSearch[
-                                                                  index]
-                                                              .title!
-                                                              .ar,
-                                                        }
-                                                      ],
-                                                      "description": [
-                                                        {
-                                                          "en": itemShopController
-                                                              .itemShopSearch[
-                                                                  index]
-                                                              .description!
-                                                              .en,
-                                                          "ar": itemShopController
-                                                              .itemShopSearch[
-                                                                  index]
-                                                              .description!
-                                                              .ar,
-                                                        }
-                                                      ],
-                                                      "price":
-                                                          itemShopController
-                                                              .itemShopSearch[
-                                                                  index]
-                                                              .price,
-                                                      "quantity":
-                                                          itemShopController
-                                                              .itemShopSearch[
-                                                                  index]
-                                                              .quantity,
-                                                    });
-                                                    int numberOfElements = index+=1;
-                                                    cartController.counter.addAll(List.generate(numberOfElements, (index) => 0));
-                                                    cartController
-                                                        .addItemToCart();
-                                                    if (mounted) {
-                                                      AwesomeDialog(
-                                                        animType:
-                                                            AnimType.leftSlide,
-                                                        dialogType:
-                                                            DialogType.success,
-                                                        btnOkOnPress: () {},
-                                                        btnCancelOnPress: () {},
-                                                        title:
-                                                            'Item added to the cart!',
-                                                        body: const TextWidgets(
-                                                          text:
-                                                              'Item added to the cart!',
-                                                          fontSize: 18,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          textAlign:
-                                                              TextAlign.center,
-                                                        ),
-                                                        context: context,
-                                                      ).show();
-                                                    }
-                                                  }
-                                                },
-                                                height: 30,
-                                                textColor: Colors.white,
-                                                color: const Color(0xff15CB95),
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(5),
-                                                ),
-                                                child: const TextWidgets(
-                                                    text: "Add To Cart",
-                                                    fontSize: 12,
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              ),
-                                            ),
-                                          )
+                                                        child: const TextWidgets(
+                                                            text: "Add To Cart",
+                                                            fontSize: 12,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                      ),
+                                                    ),
+                                                  ))
                                         ],
                                       ),
                                     ),
@@ -854,190 +901,199 @@ class _ItemShopState extends State<ItemShop> {
                                                 const SizedBox(
                                                   width: 12,
                                                 ),
-                                                GetBuilder<CartController>(
+                                                GetBuilder(
                                                   init: CartController(),
                                                   builder: (cartController) =>
                                                       Padding(
                                                     padding:
                                                         const EdgeInsets.only(
                                                             top: 65.0),
-                                                    child:
-                                                        MaterialButtonWidgets(
-                                                      onPressed: () async {
-                                                        SharedPreferences
-                                                            prefs =
-                                                            await SharedPreferences
-                                                                .getInstance();
-                                                        List? Items =
-                                                            prefs.getStringList(
-                                                                'cartItems');
-                                                        final existingItem = Items
-                                                                ?.map((item) {
-                                                          try {
-                                                            return json.decode(
-                                                                    item)
-                                                                as Map<String,
-                                                                    dynamic>;
-                                                          } catch (e) {
-                                                            return null;
-                                                          }
-                                                        })
-                                                            .where((element) =>
-                                                                element !=
-                                                                        null &&
-                                                                    element['id']
-                                                                            .toString() ==
-                                                                        itemShopController
-                                                                            .itemShopList[
-                                                                                index]
-                                                                            .id
-                                                                            .toString() ||
-                                                                element?['id']
-                                                                        .toString() ==
-                                                                    itemShopController
-                                                                        .itemShopList[
-                                                                            index]
-                                                                        .id
-                                                                        .toString())
-                                                            .toList();
-                                                        if (existingItem !=
-                                                                null &&
-                                                            existingItem
-                                                                .isNotEmpty) {
-                                                          if (mounted) {
-                                                            AwesomeDialog(
-                                                              animType: AnimType
-                                                                  .leftSlide,
-                                                              dialogType:
-                                                                  DialogType
-                                                                      .error,
-                                                              btnOkOnPress:
-                                                                  () {},
-                                                              btnCancelOnPress:
-                                                                  () {},
-                                                              title:
-                                                                  'Item is already in the cart!',
-                                                              body:
-                                                                  const TextWidgets(
-                                                                text:
-                                                                    'Item is already in the cart!',
-                                                                fontSize: 18,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                                textAlign:
-                                                                    TextAlign
-                                                                        .center,
-                                                              ),
-                                                              context: context,
-                                                            ).show();
-                                                          }
-                                                        } else {
-                                                          cartController
-                                                              .itemCart
-                                                              .add({
-                                                            "id": itemShopController
-                                                                .itemShopList[
-                                                                    index]
-                                                                .id
-                                                                .toString(),
-                                                            "imageUrl":
-                                                                itemShopController
-                                                                    .itemShopList[
-                                                                        index]
-                                                                    .imageUrl,
-                                                            "title": [
-                                                              {
-                                                                "en": itemShopController
-                                                                    .itemShopList[
-                                                                        index]
-                                                                    .title!
-                                                                    .en,
-                                                                "ar": itemShopController
-                                                                    .itemShopList[
-                                                                        index]
-                                                                    .title!
-                                                                    .ar,
-                                                              }
-                                                            ],
-                                                            "description": [
-                                                              {
-                                                                "en": itemShopController
-                                                                    .itemShopList[
-                                                                        index]
-                                                                    .description!
-                                                                    .en,
-                                                                "ar": itemShopController
-                                                                    .itemShopList[
-                                                                        index]
-                                                                    .description!
-                                                                    .ar,
-                                                              }
-                                                            ],
-                                                            "price":
-                                                                itemShopController
-                                                                    .itemShopList[
-                                                                        index]
-                                                                    .price,
-                                                            "quantity":
-                                                                itemShopController
-                                                                    .itemShopList[
-                                                                        index]
-                                                                    .quantity,
+                                                    child: GetBuilder(
+                                                      init: ShopController(),
+                                                      builder: (shopController) =>
+                                                          MaterialButtonWidgets(
+                                                        onPressed: () async {
+                                                          itemShopController
+                                                              .fetchItemShop();
+                                                          SharedPreferences
+                                                              prefs =
+                                                              await SharedPreferences
+                                                                  .getInstance();
+                                                          List<String>?
+                                                              savedItems =
+                                                              prefs.getStringList(
+                                                                  'cartItems');
+                                                          final existingItem =
+                                                              savedItems?.where(
+                                                                  (element) {
+                                                            try {
+                                                              final Map<String,
+                                                                      dynamic>
+                                                                  itemMap =
+                                                                  json.decode(
+                                                                      element);
+                                                              final int itemId =
+                                                                  int.tryParse(itemMap[
+                                                                              'id']
+                                                                          .toString()) ??
+                                                                      0;
+                                                              return itemId ==
+                                                                  itemShopController
+                                                                      .itemShopList[
+                                                                          index]
+                                                                      .id;
+                                                            } catch (e) {
+                                                              return false;
+                                                            }
                                                           });
+                                                          if (existingItem !=
+                                                                  null &&
+                                                              existingItem
+                                                                  .isNotEmpty) {
+                                                            if (mounted) {
+                                                              AwesomeDialog(
+                                                                animType: AnimType
+                                                                    .leftSlide,
+                                                                dialogType:
+                                                                    DialogType
+                                                                        .error,
+                                                                btnOkOnPress:
+                                                                    () {},
+                                                                btnCancelOnPress:
+                                                                    () {},
+                                                                title:
+                                                                    'Item is already in the cart!',
+                                                                body:
+                                                                    const TextWidgets(
+                                                                  text:
+                                                                      'Item is already in the cart!',
+                                                                  fontSize: 18,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                  textAlign:
+                                                                      TextAlign
+                                                                          .center,
+                                                                ),
+                                                                context:
+                                                                    context,
+                                                              ).show();
+                                                            }
+                                                          } else {
+                                                            cartController
+                                                                .itemCart
+                                                                .add({
+                                                              "id": itemShopController
+                                                                  .itemShopList[
+                                                                      index]
+                                                                  .id
+                                                                  .toString(),
+                                                              "imageUrl":
+                                                                  itemShopController
+                                                                      .itemShopList[
+                                                                          index]
+                                                                      .imageUrl,
+                                                              "title": [
+                                                                {
+                                                                  "en": itemShopController
+                                                                      .itemShopList[
+                                                                          index]
+                                                                      .title!
+                                                                      .en,
+                                                                  "ar": itemShopController
+                                                                      .itemShopList[
+                                                                          index]
+                                                                      .title!
+                                                                      .ar,
+                                                                }
+                                                              ],
+                                                              "description": [
+                                                                {
+                                                                  "en": itemShopController
+                                                                      .itemShopList[
+                                                                          index]
+                                                                      .description!
+                                                                      .en,
+                                                                  "ar": itemShopController
+                                                                      .itemShopList[
+                                                                          index]
+                                                                      .description!
+                                                                      .ar,
+                                                                }
+                                                              ],
+                                                              "price":
+                                                                  itemShopController
+                                                                      .itemShopList[
+                                                                          index]
+                                                                      .price,
+                                                              "quantity":
+                                                                  itemShopController
+                                                                      .itemShopList[
+                                                                          index]
+                                                                      .quantity,
+                                                            });
 
-                                                          int numberOfElements = index+=1;
-                                                          cartController.counter.addAll(List.generate(numberOfElements, (index) => 0));
-                                                          cartController
-                                                              .addItemToCart();
-                                                          if (mounted) {
-                                                            AwesomeDialog(
-                                                              animType: AnimType
-                                                                  .leftSlide,
-                                                              dialogType:
-                                                                  DialogType
-                                                                      .success,
-                                                              btnOkOnPress:
-                                                                  () {},
-                                                              btnCancelOnPress:
-                                                                  () {},
-                                                              title:
-                                                                  'Item added to the cart!',
-                                                              body:
-                                                                  const TextWidgets(
-                                                                text:
+                                                            int numberOfElements =
+                                                                index += 1;
+                                                            cartController
+                                                                .counter
+                                                                .addAll(List.generate(
+                                                                    numberOfElements,
+                                                                    (index) =>
+                                                                        0));
+                                                            cartController
+                                                                .addItemToCart();
+                                                            if (mounted) {
+                                                              AwesomeDialog(
+                                                                animType: AnimType
+                                                                    .leftSlide,
+                                                                dialogType:
+                                                                    DialogType
+                                                                        .success,
+                                                                btnOkOnPress:
+                                                                    () {},
+                                                                btnCancelOnPress:
+                                                                    () {},
+                                                                title:
                                                                     'Item added to the cart!',
-                                                                fontSize: 18,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                                textAlign:
-                                                                    TextAlign
-                                                                        .center,
-                                                              ),
-                                                              context: context,
-                                                            ).show();
+                                                                body:
+                                                                    const TextWidgets(
+                                                                  text:
+                                                                      'Item added to the cart!',
+                                                                  fontSize: 18,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                  textAlign:
+                                                                      TextAlign
+                                                                          .center,
+                                                                ),
+                                                                context:
+                                                                    context,
+                                                              ).show();
+                                                            }
                                                           }
-                                                        }
-                                                      },
-                                                      height: 30,
-                                                      textColor: Colors.white,
-                                                      color: const Color(
-                                                          0xff15CB95),
-                                                      shape:
-                                                          RoundedRectangleBorder(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(5),
+                                                        },
+                                                        height: 30,
+                                                        textColor: Colors.white,
+                                                        color: const Color(
+                                                            0xff15CB95),
+                                                        shape:
+                                                            RoundedRectangleBorder(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(5),
+                                                        ),
+                                                        child: const TextWidgets(
+                                                            text: "Add To Cart",
+                                                            fontSize: 12,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
                                                       ),
-                                                      child: const TextWidgets(
-                                                          text: "Add To Cart",
-                                                          fontSize: 12,
-                                                          fontWeight:
-                                                              FontWeight.bold),
                                                     ),
                                                   ),
-                                                ),
+                                                )
                                               ],
                                             ),
                                     ),
