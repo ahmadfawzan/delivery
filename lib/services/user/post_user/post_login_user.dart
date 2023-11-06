@@ -29,7 +29,7 @@ Future PostLogin(mobileNumber, countryCode, password,
     const storage = FlutterSecureStorage();
     await storage.write(key: 'token', value: data['data']['token']);
     if (!context.mounted) return;
-    Get.toNamed("/home");
+    Get.offAllNamed('/home');
   } else {
     if (!context.mounted) return;
     AwesomeDialog(

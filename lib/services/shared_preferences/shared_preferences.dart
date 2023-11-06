@@ -91,6 +91,6 @@ Future localStorageCheck({required BuildContext context}) async {
     Navigator.of(context)
         .push(MaterialPageRoute(builder: (context) => const AboutUs()));
   } else {
-    Get.toNamed("/home");
+    Get.offAllNamed('/home');
   }
 }

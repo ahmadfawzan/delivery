@@ -3,6 +3,7 @@ import 'package:delivery/views/shop.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import '../bindings/address_binding/address_binding.dart';
+import '../bindings/cart_binding/cart_binding.dart';
 import '../bindings/categorie_binding/categorie_binding.dart';
 import '../bindings/item_shop_binding/item_shop_binding.dart';
 import '../bindings/shop_binding/shop_binding.dart';
@@ -31,13 +32,13 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       home: const SplachScreen(),
       getPages: [
-        GetPage(name: "/cart", page: () => const Cart()),
         GetPage(
           name: "/home",
           page: () => HomePage(),
           binding:BindingsBuilder(() {
             CategorieBinding().dependencies();
             AddressBinding().dependencies();
+            CartBinding().dependencies();
           }),
         ),
         GetPage(
@@ -58,6 +59,11 @@ class MyApp extends StatelessWidget {
           binding:BindingsBuilder(() {
             ItemShopBinding().dependencies();
           }),
+
+        ),
+        GetPage(
+          name: "/cart",
+          page: () =>  const Cart(),
         ),
       ],
     );

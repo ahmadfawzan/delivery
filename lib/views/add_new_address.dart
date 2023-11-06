@@ -106,7 +106,7 @@ class _AddNewAddressState extends State<AddNewAddress> {
       if (mounted) {
         AwesomeDialog(
           animType: AnimType.leftSlide,
-          dialogType: DialogType.success,
+          dialogType: DialogType.error,
           btnOkOnPress: () {},
           title: 'Error',
           body: TextWidgets(

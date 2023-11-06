@@ -1,9 +1,12 @@
 import 'dart:convert';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 
+import '../controllers/cart_controller/cart_controller.dart';
 import '../widgets/network_image.dart';
 import '../widgets/text_widgets.dart';
 import 'add_new_address.dart';
@@ -23,8 +26,34 @@ class _CartState extends State<Cart> {
   List? itemShopsList;
   String searchText = '';
   bool isloading = true;
+  List<Map<String, dynamic>?> itemsList=[];
+  final CartController cartController = Get.find();
+  Future<void> getSavedCartItems() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    List? savedItems = prefs.getStringList('cartItems');
 
+    if (savedItems != null) {
+      setState(() {
+        itemsList = savedItems
+            .map((item) {
+          try {
+            isloading = false;
+            return json.decode(item) as Map<String, dynamic>;
+          } catch (e) {
+            return null;
+          }
+        })
+            .toList();
+      });
 
+    }
+  }
+
+  @override
+  void initState() {
+    getSavedCartItems();
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,6 +62,7 @@ class _CartState extends State<Cart> {
         padding: const EdgeInsets.only(top: 20.0),
         color: Colors.white,
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+
           IconButton(
               onPressed: () => {Navigator.of(context).pop()},
               icon: const Icon(
@@ -44,7 +74,7 @@ class _CartState extends State<Cart> {
                 padding: const EdgeInsets.only(left: 5),
                 scrollDirection: Axis.vertical,
                 shrinkWrap: true,
-                itemCount: itemShopsList?.length,
+                itemCount: itemsList.length,
                 itemBuilder: (context, index) {
                   return SingleChildScrollView(
                     child: Container(
@@ -65,12 +95,12 @@ class _CartState extends State<Cart> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          itemShopsList?[index].quantity != 0
+                          itemsList[index]?["quantity"] != 0
                               ? ClipRRect(
                             borderRadius: BorderRadius.circular(10),
                             child: ImageNetworkWidget(
                               image:
-                              'https://news.wasiljo.com/${itemShopsList?[index].image_url.toString()}',
+                              'https://news.wasiljo.com/${itemsList[index]?["imageUrl"]}',
                               height: 110,
                               width: 110,
                               fit: BoxFit.fitWidth,
@@ -96,7 +126,7 @@ class _CartState extends State<Cart> {
                                   BorderRadius.circular(10),
                                   child: ImageNetworkWidget(
                                     image:
-                                    'https://news.wasiljo.com/${itemShopsList?[index].image_url.toString()}',
+                                    'https://news.wasiljo.com/${itemsList[index]?["image_url"]}',
                                     height: 110,
                                     width: 110,
                                     fit: BoxFit.fitWidth,
@@ -125,8 +155,8 @@ class _CartState extends State<Cart> {
                                 ),
                                 Center(
                                   child: TextWidgets(
-                                    text: itemShopsList?[index]
-                                        .quantity ==
+                                    text: itemsList[index]?["quantity"]
+                                         ==
                                         0
                                         ? "Not Available"
                                         : "",
@@ -146,7 +176,7 @@ class _CartState extends State<Cart> {
                               children: [
                                 TextWidgets(
                                   text:
-                                  '${itemShopsList?[index].title.toString()}',
+                                  '${itemsList[index]?['title'][index]['en']}',
                                   fontSize: 17,
                                   fontWeight: FontWeight.bold,
                                   color: const Color(0xff000000),
@@ -156,7 +186,7 @@ class _CartState extends State<Cart> {
                                 ),
                                 TextWidgets(
                                   text:
-                                  '${itemShopsList?[index].description.toString()}',
+                                  '${itemsList[index]?['description'][index]['en']}',
                                   fontSize: 11,
                                   color: Colors.grey,
                                 ),
@@ -165,7 +195,7 @@ class _CartState extends State<Cart> {
                                 ),
                                 TextWidgets(
                                   text:
-                                  '${itemShopsList?[index].price.toString()}JD',
+                                  '${itemsList[index]?['price']}JD',
                                   fontSize: 15,
                                   fontWeight: FontWeight.bold,
                                   color: const Color(0xff000000),

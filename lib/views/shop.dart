@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 import '../controllers/address_controller/address_controller.dart';
+import '../controllers/cart_controller/cart_controller.dart';
 import '../controllers/shop_controller/shop_controller.dart';
 import '../widgets/network_image.dart';
 import '../widgets/text_form_field_widgets.dart';
@@ -17,7 +18,7 @@ class Shops extends StatefulWidget {
 class _ShopsState extends State<Shops> {
   final AddressController addressController = Get.find();
   final ShopController shopController = Get.find();
-
+  final CartController cartController = Get.find();
   @override
   void initState() {
     shopController.fetchShop();
@@ -54,14 +55,43 @@ class _ShopsState extends State<Shops> {
                             size: 25,
                           ));
                     }),
-                    IconButton(
-                      onPressed: () {},
-                      icon: const Icon(
-                        Icons.shopping_bag,
-                        color: Color(0xff4E5156),
-                        size: 25,
-                      ),
-                    )
+                    GetBuilder<CartController>(
+                        init: CartController(),
+                        builder: (cartController) {
+                          return Stack(
+                            children: [
+                              IconButton(
+                                onPressed: () {
+                                  Get.toNamed("/cart");
+                                },
+                                icon: const Icon(
+                                  Icons.shopping_bag,
+                                  color: Color(0xff4E5156),
+                                  size: 25,
+                                ),
+                              ),
+                              Positioned(
+                                right: 4,
+                                top: 2,
+                                child: Container(
+                                  padding: const EdgeInsets.all(4),
+                                  decoration: const BoxDecoration(
+                                    color: Color(0xff14CB95),
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: Text(
+                                    '${cartController.numberOfItem}',
+                                    style: const TextStyle(
+                                      fontSize: 15,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          );
+                        })
                   ],
                 ),
                 const SizedBox(
@@ -662,7 +692,7 @@ class _ShopsState extends State<Shops> {
                                               ))
                                           : shopController.shopList[index]
                                           .open ==
-                                          1
+                                          0
                                           ? InkWell(
                                               splashColor: Colors.grey,
                                               onTap: () {

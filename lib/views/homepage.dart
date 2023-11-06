@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 import '../controllers/address_controller/address_controller.dart';
+import '../controllers/cart_controller/cart_controller.dart';
 import '../controllers/categorie_controller/categorie_controller.dart';
 import '../widgets/image_widgets.dart';
 import '../widgets/network_image.dart';
@@ -26,6 +27,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final AddressController addressController = Get.find();
   var scaffoldKey = GlobalKey<ScaffoldState>();
+  final CartController cartController = Get.find();
 
   @override
   void initState() {
@@ -118,6 +120,7 @@ class _HomePageState extends State<HomePage> {
                         await sharedtoken.clear();
                         Navigator.of(context).pushReplacement(MaterialPageRoute(
                             builder: (context) => const Login()));
+                        cartController.numberOfItem.value = 0;
                       },
                       btnCancelOnPress: () {},
                       title: "LogOut",
@@ -150,14 +153,43 @@ class _HomePageState extends State<HomePage> {
                         size: 25,
                       ));
                 }),
-                IconButton(
-                  onPressed: () {},
-                  icon: const Icon(
-                    Icons.shopping_bag,
-                    color: Color(0xff4E5156),
-                    size: 25,
-                  ),
-                )
+                GetBuilder<CartController>(
+                    init: CartController(),
+                    builder: (cartController) {
+                      return Stack(
+                        children: [
+                          IconButton(
+                            onPressed: () {
+                              Get.toNamed("/cart");
+                            },
+                            icon: const Icon(
+                              Icons.shopping_bag,
+                              color: Color(0xff4E5156),
+                              size: 25,
+                            ),
+                          ),
+                          Positioned(
+                            right: 4,
+                            top: 2,
+                            child: Container(
+                              padding: const EdgeInsets.all(4),
+                              decoration: const BoxDecoration(
+                                color: Color(0xff14CB95),
+                                shape: BoxShape.circle,
+                              ),
+                              child: Text(
+                                '${cartController.numberOfItem}',
+                                style: const TextStyle(
+                                  fontSize: 15,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      );
+                    })
               ],
             ),
           ),
@@ -321,7 +353,7 @@ class _HomePageState extends State<HomePage> {
                                         child: const TextWidgets(
                                             text: '+Add new address'),
                                         onTap: () {
-                                       Get.toNamed("/addNewAddress");
+                                          Get.toNamed("/addNewAddress");
                                         },
                                       )
                                     ])),
@@ -386,8 +418,11 @@ class _HomePageState extends State<HomePage> {
                               itemBuilder: (context, index) {
                                 return InkWell(
                                   onTap: () {
-                                    categorieController.title= categorieController.categorieList[index].title?.en;
-                                    categorieController.id=categorieController.categorieList[index].id;
+                                    categorieController.title =
+                                        categorieController
+                                            .categorieList[index].title?.en;
+                                    categorieController.id = categorieController
+                                        .categorieList[index].id;
                                     Get.toNamed('/shops');
                                   },
                                   child: Card(

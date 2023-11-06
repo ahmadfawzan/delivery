@@ -1,10 +1,16 @@
+import 'dart:convert';
+
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:delivery/controllers/item_shop_controller/item_shop_controller.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 import '../controllers/address_controller/address_controller.dart';
+import '../controllers/cart_controller/cart_controller.dart';
 import '../controllers/categorie_controller/categorie_controller.dart';
 import '../controllers/shop_controller/shop_controller.dart';
+import '../widgets/material_button_widgets.dart';
 import '../widgets/network_image.dart';
 import '../widgets/text_form_field_widgets.dart';
 import '../widgets/text_widgets.dart';
@@ -24,6 +30,7 @@ class _ItemShopState extends State<ItemShop> {
   final ItemShopController itemShopController = Get.find();
   final ShopController shopController = Get.find();
   final CategorieController categorieController = Get.find();
+  final CartController cartController = Get.find();
 
   @override
   void initState() {
@@ -61,16 +68,43 @@ class _ItemShopState extends State<ItemShop> {
                               size: 25,
                             ));
                       }),
-                      IconButton(
-                        onPressed: () {
-                          Get.toNamed('/cart');
-                        },
-                        icon: const Icon(
-                          Icons.shopping_bag,
-                          color: Color(0xff4E5156),
-                          size: 25,
-                        ),
-                      )
+                      GetBuilder<CartController>(
+                          init: CartController(),
+                          builder: (cartController) {
+                            return Stack(
+                              children: [
+                                IconButton(
+                                  onPressed: () {
+                                    Get.toNamed("/cart");
+                                  },
+                                  icon: const Icon(
+                                    Icons.shopping_bag,
+                                    color: Color(0xff4E5156),
+                                    size: 25,
+                                  ),
+                                ),
+                                Positioned(
+                                  right: 4,
+                                  top: 2,
+                                  child: Container(
+                                    padding: const EdgeInsets.all(4),
+                                    decoration: const BoxDecoration(
+                                      color: Color(0xff14CB95),
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: Text(
+                                      '${cartController.numberOfItem}',
+                                      style: const TextStyle(
+                                        fontSize: 15,
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            );
+                          })
                     ],
                   ),
                   const SizedBox(
@@ -478,6 +512,161 @@ class _ItemShopState extends State<ItemShop> {
                                                 color: Colors.black,
                                               )
                                             ],
+                                          ),
+                                          const SizedBox(
+                                            width: 12,
+                                          ),
+                                          GetBuilder<CartController>(
+                                            init: CartController(),
+                                            builder: (cartController) =>
+                                                Padding(
+                                              padding: const EdgeInsets.only(
+                                                  top: 65.0),
+                                              child: MaterialButtonWidgets(
+                                                onPressed: () async {
+                                                  SharedPreferences prefs =
+                                                      await SharedPreferences
+                                                          .getInstance();
+                                                  List? Items =
+                                                      prefs.getStringList(
+                                                          'cartItems');
+                                                  final existingItem = Items
+                                                          ?.map((item) {
+                                                    try {
+                                                      return json.decode(item)
+                                                          as Map<String,
+                                                              dynamic>;
+                                                    } catch (e) {
+                                                      return null;
+                                                    }
+                                                  })
+                                                      .where((element) =>
+                                                          element != null &&
+                                                              element['id']
+                                                                      .toString() ==
+                                                                  itemShopController
+                                                                      .itemShopList[
+                                                                          index]
+                                                                      .id
+                                                                      .toString() ||
+                                                          element?['id']
+                                                                  .toString() ==
+                                                              itemShopController
+                                                                  .itemShopList[
+                                                                      index]
+                                                                  .id
+                                                                  .toString())
+                                                      .toList();
+                                                  if (existingItem != null &&
+                                                      existingItem.isNotEmpty) {
+                                                    if (mounted) {
+                                                      AwesomeDialog(
+                                                        animType:
+                                                            AnimType.leftSlide,
+                                                        dialogType:
+                                                            DialogType.error,
+                                                        btnOkOnPress: () {},
+                                                        btnCancelOnPress: () {},
+                                                        title:
+                                                            'Item is already in the cart!',
+                                                        body: const TextWidgets(
+                                                          text:
+                                                              'Item is already in the cart!',
+                                                          fontSize: 18,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                        ),
+                                                        context: context,
+                                                      ).show();
+                                                    }
+                                                  } else {
+                                                    cartController.itemCart
+                                                        .add({
+                                                      "id": itemShopController
+                                                          .itemShopSearch[index]
+                                                          .id,
+                                                      "imageUrl":
+                                                          itemShopController
+                                                              .itemShopSearch[
+                                                                  index]
+                                                              .imageUrl,
+                                                      "title": [
+                                                        {
+                                                          "en": itemShopController
+                                                              .itemShopSearch[
+                                                                  index]
+                                                              .title!
+                                                              .en,
+                                                          "ar": itemShopController
+                                                              .itemShopSearch[
+                                                                  index]
+                                                              .title!
+                                                              .ar,
+                                                        }
+                                                      ],
+                                                      "description": [
+                                                        {
+                                                          "en": itemShopController
+                                                              .itemShopSearch[
+                                                                  index]
+                                                              .description!
+                                                              .en,
+                                                          "ar": itemShopController
+                                                              .itemShopSearch[
+                                                                  index]
+                                                              .description!
+                                                              .ar,
+                                                        }
+                                                      ],
+                                                      "price":
+                                                          itemShopController
+                                                              .itemShopSearch[
+                                                                  index]
+                                                              .price,
+                                                      "quantity":itemShopController.itemShopSearch[index].quantity,
+                                                    });
+                                                    cartController
+                                                        .addItemToCart();
+                                                    if (mounted) {
+                                                      AwesomeDialog(
+                                                        animType:
+                                                            AnimType.leftSlide,
+                                                        dialogType:
+                                                            DialogType.success,
+                                                        btnOkOnPress: () {},
+                                                        btnCancelOnPress: () {},
+                                                        title:
+                                                            'Item added to the cart!',
+                                                        body: const TextWidgets(
+                                                          text:
+                                                              'Item added to the cart!',
+                                                          fontSize: 18,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                        ),
+                                                        context: context,
+                                                      ).show();
+                                                    }
+                                                  }
+                                                },
+                                                height: 30,
+                                                textColor: Colors.white,
+                                                color: const Color(0xff15CB95),
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(5),
+                                                ),
+                                                child: const TextWidgets(
+                                                    text: "Add To Cart",
+                                                    fontSize: 12,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                            ),
                                           )
                                         ],
                                       ),
@@ -492,22 +681,22 @@ class _ItemShopState extends State<ItemShop> {
                               itemCount: itemShopController.itemShopList.length,
                               itemBuilder: (context, index) {
                                 return SingleChildScrollView(
-                                    child: Padding(
-                                  padding: const EdgeInsets.only(bottom: 3),
-                                  child: Container(
-                                    width: double.infinity,
-                                    color: Colors.white,
-                                    height: 120,
-                                    child: itemShopController.isLoading.value
-                                        ? Shimmer.fromColors(
-                                            baseColor: Colors.grey[350]!,
-                                            highlightColor: Colors.grey[100]!,
-                                            child: Container(
-                                              color: Colors.white,
-                                              height: 120,
-                                              width: double.infinity,
-                                            ))
-                                        :  Row(
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(bottom: 3),
+                                    child: Container(
+                                      width: double.infinity,
+                                      color: Colors.white,
+                                      height: 120,
+                                      child: itemShopController.isLoading.value
+                                          ? Shimmer.fromColors(
+                                              baseColor: Colors.grey[350]!,
+                                              highlightColor: Colors.grey[100]!,
+                                              child: Container(
+                                                color: Colors.white,
+                                                height: 120,
+                                                width: double.infinity,
+                                              ))
+                                          : Row(
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.center,
                                               children: [
@@ -670,10 +859,190 @@ class _ItemShopState extends State<ItemShop> {
                                                       color: Colors.black,
                                                     )
                                                   ],
-                                                )
+                                                ),
+                                                const SizedBox(
+                                                  width: 12,
+                                                ),
+                                                GetBuilder<CartController>(
+                                                  init: CartController(),
+                                                  builder: (cartController) =>
+                                                      Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            top: 65.0),
+                                                    child:
+                                                        MaterialButtonWidgets(
+                                                      onPressed: () async {
+                                                        SharedPreferences
+                                                            prefs =
+                                                            await SharedPreferences
+                                                                .getInstance();
+                                                        List? Items =
+                                                            prefs.getStringList(
+                                                                'cartItems');
+                                                        final existingItem = Items
+                                                                ?.map((item) {
+                                                          try {
+                                                            return json.decode(
+                                                                    item)
+                                                                as Map<String,
+                                                                    dynamic>;
+                                                          } catch (e) {
+                                                            return null;
+                                                          }
+                                                        })
+                                                            .where((element) =>
+                                                                element !=
+                                                                        null &&
+                                                                    element['id']
+                                                                            .toString() ==
+                                                                        itemShopController
+                                                                            .itemShopList[
+                                                                                index]
+                                                                            .id
+                                                                            .toString() ||
+                                                                element?['id']
+                                                                        .toString() ==
+                                                                    itemShopController
+                                                                        .itemShopList[
+                                                                            index]
+                                                                        .id
+                                                                        .toString())
+                                                            .toList();
+                                                        if (existingItem !=
+                                                                null &&
+                                                            existingItem
+                                                                .isNotEmpty) {
+                                                          if (mounted) {
+                                                            AwesomeDialog(
+                                                              animType: AnimType
+                                                                  .leftSlide,
+                                                              dialogType:
+                                                                  DialogType
+                                                                      .error,
+                                                              btnOkOnPress:
+                                                                  () {},
+                                                              btnCancelOnPress:
+                                                                  () {},
+                                                              title:
+                                                                  'Item is already in the cart!',
+                                                              body:
+                                                                  const TextWidgets(
+                                                                text:
+                                                                    'Item is already in the cart!',
+                                                                fontSize: 18,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                                textAlign:
+                                                                    TextAlign
+                                                                        .center,
+                                                              ),
+                                                              context: context,
+                                                            ).show();
+                                                          }
+                                                        } else {
+                                                          cartController
+                                                              .itemCart
+                                                              .add({
+                                                            "id": itemShopController
+                                                                .itemShopList[
+                                                                    index]
+                                                                .id
+                                                                .toString(),
+                                                            "imageUrl":
+                                                                itemShopController
+                                                                    .itemShopList[
+                                                                        index]
+                                                                    .imageUrl,
+                                                            "title": [
+                                                              {
+                                                                "en": itemShopController
+                                                                    .itemShopList[
+                                                                        index]
+                                                                    .title!
+                                                                    .en,
+                                                                "ar":  itemShopController
+                                                                    .itemShopList[
+                                                                        index]
+                                                                    .title!
+                                                                    .ar,
+                                                              }
+                                                            ],
+                                                            "description": [
+                                                              {
+                                                               "en" :itemShopController
+                                                                    .itemShopList[
+                                                                        index]
+                                                                    .description!
+                                                                    .en,
+                                                                "ar" :   itemShopController
+                                                                    .itemShopList[
+                                                                        index]
+                                                                    .description!
+                                                                    .ar,
+                                                              }
+                                                            ],
+                                                            "price":
+                                                                itemShopController
+                                                                    .itemShopList[
+                                                                        index]
+                                                                    .price,
+                                                            "quantity":itemShopController.itemShopList[index].quantity,
+                                                          });
+                                                          cartController
+                                                              .addItemToCart();
+                                                          if (mounted) {
+                                                            AwesomeDialog(
+                                                              animType: AnimType
+                                                                  .leftSlide,
+                                                              dialogType:
+                                                                  DialogType
+                                                                      .success,
+                                                              btnOkOnPress:
+                                                                  () {},
+                                                              btnCancelOnPress:
+                                                                  () {},
+                                                              title:
+                                                                  'Item added to the cart!',
+                                                              body:
+                                                                  const TextWidgets(
+                                                                text:
+                                                                    'Item added to the cart!',
+                                                                fontSize: 18,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                                textAlign:
+                                                                    TextAlign
+                                                                        .center,
+                                                              ),
+                                                              context: context,
+                                                            ).show();
+                                                          }
+                                                        }
+                                                      },
+                                                      height: 30,
+                                                      textColor: Colors.white,
+                                                      color: const Color(
+                                                          0xff15CB95),
+                                                      shape:
+                                                          RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(5),
+                                                      ),
+                                                      child: const TextWidgets(
+                                                          text: "Add To Cart",
+                                                          fontSize: 12,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    ),
+                                                  ),
+                                                ),
                                               ],
                                             ),
-                                          ),
+                                    ),
                                   ),
                                 );
                               }),
