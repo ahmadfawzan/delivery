@@ -616,6 +616,8 @@ class _ItemShopState extends State<ItemShop> {
                                                                   index]
                                                               .quantity,
                                                     });
+                                                    int numberOfElements = index+=1;
+                                                    cartController.counter.addAll(List.generate(numberOfElements, (index) => 0));
                                                     cartController
                                                         .addItemToCart();
                                                     if (mounted) {
@@ -983,6 +985,9 @@ class _ItemShopState extends State<ItemShop> {
                                                                         index]
                                                                     .quantity,
                                                           });
+
+                                                          int numberOfElements = index+=1;
+                                                          cartController.counter.addAll(List.generate(numberOfElements, (index) => 0));
                                                           cartController
                                                               .addItemToCart();
                                                           if (mounted) {
