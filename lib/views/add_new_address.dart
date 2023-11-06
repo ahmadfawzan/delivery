@@ -146,7 +146,7 @@ class _AddNewAddressState extends State<AddNewAddress> {
     per = await Geolocator.checkPermission();
     if (per == LocationPermission.denied) {
       per = await Geolocator.requestPermission();
-      Navigator.of(context).pop();
+      Get.back();
     }
     return per;
   }

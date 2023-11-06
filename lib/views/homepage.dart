@@ -32,6 +32,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     addressController.fetchAddress();
+    cartController.addItemToCart();
     super.initState();
   }
 
@@ -153,7 +154,7 @@ class _HomePageState extends State<HomePage> {
                         size: 25,
                       ));
                 }),
-                GetBuilder<CartController>(
+                GetBuilder(
                     init: CartController(),
                     builder: (cartController) {
                       return Stack(

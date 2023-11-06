@@ -524,22 +524,8 @@ class _ItemShopState extends State<ItemShop> {
                                                   top: 65.0),
                                               child: MaterialButtonWidgets(
                                                 onPressed: () async {
-                                                  SharedPreferences prefs =
-                                                      await SharedPreferences
-                                                          .getInstance();
-                                                  List? Items =
-                                                      prefs.getStringList(
-                                                          'cartItems');
-                                                  final existingItem = Items
-                                                          ?.map((item) {
-                                                    try {
-                                                      return json.decode(item)
-                                                          as Map<String,
-                                                              dynamic>;
-                                                    } catch (e) {
-                                                      return null;
-                                                    }
-                                                  })
+                                                  final existingItem = cartController
+                                                      .itemCart
                                                       .where((element) =>
                                                           element != null &&
                                                               element['id']
@@ -557,8 +543,7 @@ class _ItemShopState extends State<ItemShop> {
                                                                   .id
                                                                   .toString())
                                                       .toList();
-                                                  if (existingItem != null &&
-                                                      existingItem.isNotEmpty) {
+                                                  if (existingItem.isNotEmpty) {
                                                     if (mounted) {
                                                       AwesomeDialog(
                                                         animType:
@@ -625,7 +610,11 @@ class _ItemShopState extends State<ItemShop> {
                                                               .itemShopSearch[
                                                                   index]
                                                               .price,
-                                                      "quantity":itemShopController.itemShopSearch[index].quantity,
+                                                      "quantity":
+                                                          itemShopController
+                                                              .itemShopSearch[
+                                                                  index]
+                                                              .quantity,
                                                     });
                                                     cartController
                                                         .addItemToCart();
@@ -962,7 +951,7 @@ class _ItemShopState extends State<ItemShop> {
                                                                         index]
                                                                     .title!
                                                                     .en,
-                                                                "ar":  itemShopController
+                                                                "ar": itemShopController
                                                                     .itemShopList[
                                                                         index]
                                                                     .title!
@@ -971,12 +960,12 @@ class _ItemShopState extends State<ItemShop> {
                                                             ],
                                                             "description": [
                                                               {
-                                                               "en" :itemShopController
+                                                                "en": itemShopController
                                                                     .itemShopList[
                                                                         index]
                                                                     .description!
                                                                     .en,
-                                                                "ar" :   itemShopController
+                                                                "ar": itemShopController
                                                                     .itemShopList[
                                                                         index]
                                                                     .description!
@@ -988,7 +977,11 @@ class _ItemShopState extends State<ItemShop> {
                                                                     .itemShopList[
                                                                         index]
                                                                     .price,
-                                                            "quantity":itemShopController.itemShopList[index].quantity,
+                                                            "quantity":
+                                                                itemShopController
+                                                                    .itemShopList[
+                                                                        index]
+                                                                    .quantity,
                                                           });
                                                           cartController
                                                               .addItemToCart();
