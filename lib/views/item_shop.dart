@@ -598,6 +598,9 @@ class _ItemShopState extends State<ItemShop> {
                                                               ).show();
                                                             }
                                                           } else {
+                                                            if( cartController.itemCart.isEmpty){
+                                                              cartController.counter.clear();
+                                                            }
                                                             cartController
                                                                 .itemCart
                                                                 .add({
@@ -982,6 +985,9 @@ class _ItemShopState extends State<ItemShop> {
                                                               ).show();
                                                             }
                                                           } else {
+                                                            if( cartController.itemCart.isEmpty){
+                                                              cartController.counter.clear();
+                                                            }
                                                             cartController
                                                                 .itemCart
                                                                 .add({
