@@ -11,7 +11,6 @@ import '../controllers/categorie_controller/categorie_controller.dart';
 import '../widgets/image_widgets.dart';
 import '../widgets/network_image.dart';
 import '../widgets/text_widgets.dart';
-import 'add_new_address.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'login.dart';
 
@@ -116,9 +115,9 @@ class _HomePageState extends State<HomePage> {
                       animType: AnimType.leftSlide,
                       dialogType: DialogType.info,
                       btnOkOnPress: () async {
-                        SharedPreferences sharedtoken =
+                        SharedPreferences prefs =
                             await SharedPreferences.getInstance();
-                        await sharedtoken.clear();
+                        await prefs.clear();
                         Navigator.of(context).pushReplacement(MaterialPageRoute(
                             builder: (context) => const Login()));
                         cartController.numberOfItem.value = 0;

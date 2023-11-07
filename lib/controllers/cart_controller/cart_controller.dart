@@ -10,6 +10,7 @@ class CartController extends GetxController {
   RxList<int> counter = <int>[].obs;
   RxList<Map<String, dynamic>?> itemsList = <Map<String, dynamic>?>[].obs;
 
+
   void addItemToCart() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     List<String>? savedItems;
@@ -61,5 +62,19 @@ class CartController extends GetxController {
       total += counter[i] * (itemsList[i]?['price'] ?? 0);
     }
     return total;
+  }
+
+  Future<void> saveCounterValues() async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setStringList('counter', counter.map((value) => value.toString()).toList());
+    update();
+  }
+
+  Future<void> retrieveCounterValues() async {
+    final prefs = await SharedPreferences.getInstance();
+    final counterStrings = prefs.getStringList('counter') ?? [];
+    final counterValues = counterStrings.map((str) => int.parse(str)).toList();
+    counter.assignAll(counterValues);
+    update();
   }
 }

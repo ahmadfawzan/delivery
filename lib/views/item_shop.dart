@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:delivery/controllers/item_shop_controller/item_shop_controller.dart';
 import 'package:get/get.dart';
@@ -465,53 +464,57 @@ class _ItemShopState extends State<ItemShop> {
                                           const SizedBox(
                                             width: 30,
                                           ),
-                                          Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              const SizedBox(
-                                                height: 10,
-                                              ),
-                                              TextWidgets(
-                                                text: itemShopController
-                                                    .itemShopSearch[index]
-                                                    .title!
-                                                    .en!
-                                                    .toString(),
-                                                fontSize: 20,
-                                                fontWeight: FontWeight.bold,
-                                                color: const Color(0xff000000),
-                                              ),
-                                              const SizedBox(
-                                                height: 3,
-                                              ),
-                                              TextWidgets(
-                                                text: itemShopController
-                                                    .itemShopSearch[index]
-                                                    .description
-                                                    .en
-                                                    .toString(),
-                                                fontSize: 11,
-                                                color: Colors.grey,
-                                              ),
-                                              const SizedBox(
-                                                height: 30,
-                                              ),
-                                              TextWidgets(
-                                                text:
-                                                    'Price : ${itemShopController.itemShopSearch[index].price}',
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                              const SizedBox(
-                                                height: 3,
-                                              ),
-                                              TextWidgets(
-                                                text:
-                                                    'Quantity : ${itemShopController.itemShopSearch[index].quantity}',
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.black,
-                                              )
-                                            ],
+                                          SizedBox(
+                                            width: 100,
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                const SizedBox(
+                                                  height: 10,
+                                                ),
+                                                TextWidgets(
+                                                  text: itemShopController
+                                                      .itemShopSearch[index]
+                                                      .title!
+                                                      .en!
+                                                      .toString(),
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.bold,
+                                                  textOverFlow: TextOverflow.ellipsis,
+                                                  color: const Color(0xff000000),
+                                                ),
+                                                const SizedBox(
+                                                  height: 3,
+                                                ),
+                                                TextWidgets(
+                                                  text: itemShopController
+                                                      .itemShopSearch[index]
+                                                      .description
+                                                      .en
+                                                      .toString(),
+                                                  fontSize: 11,
+                                                  color: Colors.grey,
+                                                ),
+                                                const SizedBox(
+                                                  height: 30,
+                                                ),
+                                                TextWidgets(
+                                                  text:
+                                                      'Price : ${itemShopController.itemShopSearch[index].price}',
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                                const SizedBox(
+                                                  height: 3,
+                                                ),
+                                                TextWidgets(
+                                                  text:
+                                                      'Quantity : ${itemShopController.itemShopSearch[index].quantity}',
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.black,
+                                                )
+                                              ],
+                                            ),
                                           ),
                                           const SizedBox(
                                             width: 12,
@@ -646,16 +649,11 @@ class _ItemShopState extends State<ItemShop> {
                                                                           index]
                                                                       .quantity,
                                                             });
-                                                            int numberOfElements =
-                                                                index += 1;
+                                                            cartController.addItemToCart();
                                                             cartController
                                                                 .counter
-                                                                .addAll(List.generate(
-                                                                    numberOfElements,
-                                                                    (index) =>
-                                                                        0));
-                                                            cartController
-                                                                .addItemToCart();
+                                                                .add(0);
+                                                            cartController.saveCounterValues();
                                                             if (mounted) {
                                                               AwesomeDialog(
                                                                 animType: AnimType
@@ -846,57 +844,61 @@ class _ItemShopState extends State<ItemShop> {
                                                 const SizedBox(
                                                   width: 30,
                                                 ),
-                                                Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    const SizedBox(
-                                                      height: 10,
-                                                    ),
-                                                    TextWidgets(
-                                                      text: itemShopController
-                                                          .itemShopList[index]
-                                                          .title!
-                                                          .en
-                                                          .toString(),
-                                                      fontSize: 20,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      color: const Color(
-                                                          0xff000000),
-                                                    ),
-                                                    const SizedBox(
-                                                      height: 3,
-                                                    ),
-                                                    TextWidgets(
-                                                      text: itemShopController
-                                                          .itemShopList[index]
-                                                          .description!
-                                                          .en
-                                                          .toString(),
-                                                      fontSize: 11,
-                                                      color: Colors.grey,
-                                                    ),
-                                                    const SizedBox(
-                                                      height: 30,
-                                                    ),
-                                                    TextWidgets(
-                                                      text:
-                                                          'Price : ${itemShopController.itemShopList[index].price}',
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                    ),
-                                                    const SizedBox(
-                                                      height: 3,
-                                                    ),
-                                                    TextWidgets(
-                                                      text:
-                                                          'Quantity : ${itemShopController.itemShopList[index].quantity.toString()}',
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      color: Colors.black,
-                                                    )
-                                                  ],
+                                                SizedBox(
+                                                  width: 100,
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment.start,
+                                                    children: [
+                                                      const SizedBox(
+                                                        height: 10,
+                                                      ),
+                                                      TextWidgets(
+                                                        text: itemShopController
+                                                            .itemShopList[index]
+                                                            .title!
+                                                            .en
+                                                            .toString(),
+                                                        fontSize: 20,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        textOverFlow: TextOverflow.ellipsis,
+                                                        color: const Color(
+                                                            0xff000000),
+                                                      ),
+                                                      const SizedBox(
+                                                        height: 3,
+                                                      ),
+                                                      TextWidgets(
+                                                        text: itemShopController
+                                                            .itemShopList[index]
+                                                            .description!
+                                                            .en
+                                                            .toString(),
+                                                        fontSize: 11,
+                                                        color: Colors.grey,
+                                                      ),
+                                                      const SizedBox(
+                                                        height: 30,
+                                                      ),
+                                                      TextWidgets(
+                                                        text:
+                                                            'Price : ${itemShopController.itemShopList[index].price}',
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      ),
+                                                      const SizedBox(
+                                                        height: 3,
+                                                      ),
+                                                      TextWidgets(
+                                                        text:
+                                                            'Quantity : ${itemShopController.itemShopList[index].quantity.toString()}',
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        color: Colors.black,
+                                                      )
+                                                    ],
+                                                  ),
                                                 ),
                                                 const SizedBox(
                                                   width: 12,
@@ -1032,17 +1034,11 @@ class _ItemShopState extends State<ItemShop> {
                                                                           index]
                                                                       .quantity,
                                                             });
-
-                                                            int numberOfElements =
-                                                                index += 1;
+                                                            cartController.addItemToCart();
                                                             cartController
                                                                 .counter
-                                                                .addAll(List.generate(
-                                                                    numberOfElements,
-                                                                    (index) =>
-                                                                        0));
-                                                            cartController
-                                                                .addItemToCart();
+                                                                .add(0);
+                                                            cartController.saveCounterValues();
                                                             if (mounted) {
                                                               AwesomeDialog(
                                                                 animType: AnimType
