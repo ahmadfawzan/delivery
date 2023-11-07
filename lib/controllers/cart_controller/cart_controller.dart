@@ -16,7 +16,7 @@ class CartController extends GetxController {
     if (itemCart.isNotEmpty) {
       prefs.setStringList('cartItems', itemCart.map((item) => json.encode(item)).toList());
       savedItems = prefs.getStringList('cartItems');
-      numberOfItem.value =  numberOfItem.value = savedItems?.length ?? 0;
+      numberOfItem.value = savedItems?.length ?? 0;
       itemsList.value = savedItems!.map((item) {
         try {
           isLoading.value = false;
@@ -28,8 +28,8 @@ class CartController extends GetxController {
 
     } else {
       savedItems = prefs.getStringList('cartItems');
-      numberOfItem.value = savedItems!.length;
-      if (savedItems.isNotEmpty) {
+      numberOfItem.value = savedItems?.length ?? 0;
+      if (savedItems != null && savedItems.isNotEmpty) {
         itemsList.value = savedItems.map((item) {
           try {
             isLoading.value = false;
@@ -44,16 +44,22 @@ class CartController extends GetxController {
   }
   void increment(int index) {
     counter[index]++;
-    print(counter);
     update();
   }
 
   void decrement(int index) {
     if (counter[index] > 0) {
       counter[index]--;
-      print(counter);
       update();
     }
   }
 
+
+  double calculateTotal() {
+    double total = 0;
+    for (int i = 0; i < counter.length; i++) {
+      total += counter[i] * (itemsList[i]?['price'] ?? 0);
+    }
+    return total;
+  }
 }
