@@ -479,9 +479,8 @@ class _ItemShopState extends State<ItemShop> {
                                                       .title!
                                                       .en!
                                                       .toString(),
-                                                  fontSize: 20,
+                                                  fontSize: 15,
                                                   fontWeight: FontWeight.bold,
-                                                  textOverFlow: TextOverflow.ellipsis,
                                                   color: const Color(0xff000000),
                                                 ),
                                                 const SizedBox(
@@ -862,10 +861,9 @@ class _ItemShopState extends State<ItemShop> {
                                                             .title!
                                                             .en
                                                             .toString(),
-                                                        fontSize: 20,
+                                                        fontSize: 15,
                                                         fontWeight:
                                                             FontWeight.bold,
-                                                        textOverFlow: TextOverflow.ellipsis,
                                                         color: const Color(
                                                             0xff000000),
                                                       ),

@@ -55,6 +55,15 @@ class CartController extends GetxController {
     }
   }
 
+  double calculateOneItems(int index) {
+    if (index < 0 || index >= counter.length || index >= itemsList.length) {
+      return 0;
+    }
+    double total = 0;
+    total += counter[index] * (itemsList[index]?['price']??0);
+    return total;
+  }
+
 
   double calculateTotal() {
     double total = 0;

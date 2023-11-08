@@ -204,13 +204,17 @@ class _CartState extends State<Cart> {
                                                   const SizedBox(
                                                     height: 5,
                                                   ),
-                                                  TextWidgets(
-                                                    text:
-                                                        '${cartController.itemsList[index]?['price']}JD',
-                                                    fontSize: 15,
-                                                    fontWeight: FontWeight.bold,
-                                                    color:
-                                                        const Color(0xff000000),
+                                                  SizedBox(
+                                                    width: 70,
+                                                    child: TextWidgets(
+                                                      text:
+                                                      '${cartController.calculateOneItems(index)!=0?cartController.calculateOneItems(index).toDouble():cartController.itemsList[index]!['price'].toString()}JD',
+                                                      fontSize: 15,
+                                                      fontWeight: FontWeight.bold,
+                                                      color:
+                                                          const Color(0xff000000),
+                                                      textOverFlow: TextOverflow.ellipsis,
+                                                    ),
                                                   ),
                                                 ],
                                               ),
