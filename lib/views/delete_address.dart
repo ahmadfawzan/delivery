@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:shimmer/shimmer.dart';
 import '../controllers/address_controller/address_controller.dart';
 import '../controllers/cart_controller/cart_controller.dart';
+import '../services/address/delete_address/delete_address.dart';
 import '../widgets/material_button_widgets.dart';
 
 class DeleteAddress extends StatefulWidget {
@@ -188,7 +189,22 @@ class _DeleteAddressState extends State<DeleteAddress> {
                                                             animType: AnimType.leftSlide,
                                                             dialogType: DialogType.info,
                                                             btnOkOnPress: () {
-
+                                                              RemoteServicesAddress.fetchAddress(context:context,id:addressController.addressList[index].id,mounted:mounted);
+                                                              if (!mounted) return;
+                                                              AwesomeDialog(
+                                                                context: context,
+                                                                animType: AnimType.leftSlide,
+                                                                dialogType: DialogType.success,
+                                                                btnOkOnPress: () {},
+                                                                btnCancelOnPress: () {},
+                                                                title: "Delete Address",
+                                                                body: const TextWidgets(
+                                                                  text: "Deleted Address successfully",
+                                                                  fontSize: 18,
+                                                                  fontWeight: FontWeight.bold,
+                                                                  textAlign: TextAlign.center,
+                                                                ),
+                                                              ).show();
                                                             },
                                                             btnCancelOnPress: () {},
                                                             title: "Delete Address",
