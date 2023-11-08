@@ -557,7 +557,7 @@ class _ItemShopState extends State<ItemShop> {
                                                                       0;
                                                               return itemId ==
                                                                   itemShopController
-                                                                      .itemShopList[
+                                                                      .itemShopSearch[
                                                                           index]
                                                                       .id;
                                                             } catch (e) {
