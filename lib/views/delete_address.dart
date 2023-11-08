@@ -18,9 +18,10 @@ class DeleteAddress extends StatefulWidget {
 class _DeleteAddressState extends State<DeleteAddress> {
   final AddressController addressController = Get.find();
   final CartController cartController = Get.find();
-
+  late BuildContext context1;
   @override
   Widget build(BuildContext context) {
+    context1=context;
     return GetBuilder(
         init: AddressController(),
         builder: (addressController) => Scaffold(
@@ -185,11 +186,11 @@ class _DeleteAddressState extends State<DeleteAddress> {
                                                         onPressed: () async {
                                                           if (!mounted) return;
                                                           AwesomeDialog(
-                                                            context: context,
+                                                            context: context1,
                                                             animType: AnimType.leftSlide,
                                                             dialogType: DialogType.info,
                                                             btnOkOnPress: () {
-                                                              RemoteServicesAddress.fetchAddress(context:context,id:addressController.addressList[index].id,mounted:mounted);
+                                                              RemoteServicesAddress.fetchAddress(context:context1,id:addressController.addressList[index].id,mounted:mounted);
                                                               if (!mounted) return;
                                                               AwesomeDialog(
                                                                 context: context,

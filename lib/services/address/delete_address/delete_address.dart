@@ -20,10 +20,8 @@ class RemoteServicesAddress {
     );
     final data = json.decode(response.body);
     if (response.statusCode == 200) {
+      addressController.popMenuValue = null;
       addressController.fetchAddress();
-      if(addressController.addressList.isNotEmpty){
-        addressController.popMenuValue = null;
-      }
     } else {
       if (!mounted) return;
       AwesomeDialog(
