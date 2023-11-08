@@ -2,12 +2,12 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../views/about_us.dart';
-import '../../views/login.dart';
-import '../../views/signup.dart';
-import '../../widgets/text_widgets.dart';
-import '../user/post_user/post_login_user.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import '../../../services/user/post_user/post_login_user.dart';
+import '../../../views/about_us.dart';
+import '../../../views/login.dart';
+import '../../../views/signup.dart';
+import '../../../widgets/text_widgets.dart';
+
 Future localStorageSignUpUser(
     TextEditingController name,
     TextEditingController email,

@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import '../services/shared_preferences/shared_preferences.dart';
+import '../utils/Helper/shared_preferences/shared_preferences.dart';
 import '../widgets/image_widgets.dart';
 
 class SplachScreen extends StatefulWidget {

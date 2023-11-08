@@ -1,11 +1,9 @@
 import 'package:country_code_picker/country_code_picker.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import '../services/shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
+import '../utils/Helper/shared_preferences/shared_preferences.dart';
 import '../widgets/country_code_picker.dart';
 import '../widgets/image_widgets.dart';
 import '../widgets/material_button_widgets.dart';
@@ -26,7 +24,6 @@ class _SignUpState extends State<SignUp> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController name = TextEditingController();
   final TextEditingController email = TextEditingController();
-
   final TextEditingController mobileNumber = TextEditingController();
   final TextEditingController password = TextEditingController();
   late List register = [];
@@ -676,7 +673,6 @@ class _SignUpState extends State<SignUp> {
                                   if (_formKey.currentState!.validate()) {
                                     FetchRegister(context: context);
                                   }
-                                  ;
                                 },
                                 height: 50,
                                 minWidth: double.infinity,
