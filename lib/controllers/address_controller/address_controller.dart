@@ -27,7 +27,7 @@ class AddressController extends GetxController {
     }
   }
 
-  void putAddress(data) async {
+  void changePopMenuValueWhenPutAddress(data) async {
     var addressData = data['data']['Address'];
     addressData['type'] == 1
         ? popMenuValue = "Home (${addressData["street"].toString()})"

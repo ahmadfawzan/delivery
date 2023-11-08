@@ -41,7 +41,7 @@ Future PutAddresses({
   var data = json.decode(response.body);
   if (response.statusCode == 200) {
     if (addressController.popMenuValue != null && addressController.popMenuValue!.isNotEmpty) {
-      addressController.putAddress(data);
+      addressController.changePopMenuValueWhenPutAddress(data);
     }
     if (!context.mounted) return;
     AwesomeDialog(
