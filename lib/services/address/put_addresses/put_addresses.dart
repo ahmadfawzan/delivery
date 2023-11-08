@@ -1,10 +1,10 @@
 import 'dart:convert';
-import 'dart:ui';
 import 'package:awesome_dialog/awesome_dialog.dart';
-import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
-
+import '../../../controllers/address_controller/address_controller.dart';
 import '../../../widgets/text_widgets.dart';
 
 Future PutAddresses({
@@ -18,6 +18,7 @@ Future PutAddresses({
   city,
   apartmentNum,
 }) async {
+  final AddressController addressController = Get.find();
   SharedPreferences sharedtoken = await SharedPreferences.getInstance();
   String? token = sharedtoken.getString('token');
   final response = await http.put(
@@ -31,8 +32,7 @@ Future PutAddresses({
       "latitude": "${lat ?? addressesType[0].latitude}",
       "name": name ?? addressesType[0].name,
       "street": street ?? addressesType[0].street,
-      "building_number":
-          buildingNumber.text ?? addressesType[0].buildingNumber,
+      "building_number": buildingNumber.text ?? addressesType[0].buildingNumber,
       "city": city ?? addressesType[0].city,
       "apartment_num": apartmentNum.text ?? addressesType[0].apartmentNum,
     },
@@ -40,6 +40,9 @@ Future PutAddresses({
 
   var data = json.decode(response.body);
   if (response.statusCode == 200) {
+    if (addressController.popMenuValue != null && addressController.popMenuValue!.isNotEmpty) {
+      addressController.putAddress(data);
+    }
     if (!context.mounted) return;
     AwesomeDialog(
       animType: AnimType.leftSlide,

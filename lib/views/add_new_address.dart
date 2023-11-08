@@ -148,7 +148,7 @@ class _AddNewAddressState extends State<AddNewAddress> {
       per = await Geolocator.requestPermission();
       Get.back();
     }
-    return per;
+    getLatAndLogn();
   }
 
   Future<void> getLatAndLogn() async {
@@ -199,7 +199,6 @@ class _AddNewAddressState extends State<AddNewAddress> {
   @override
   void initState() {
     getPer();
-    getLatAndLogn();
     super.initState();
   }
 

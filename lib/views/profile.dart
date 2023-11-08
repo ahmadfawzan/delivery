@@ -1,10 +1,12 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:shimmer/shimmer.dart';
 
+import '../controllers/cart_controller/cart_controller.dart';
 import '../widgets/material_button_widgets.dart';
 import '../widgets/text_form_field_widgets.dart';
 import '../widgets/text_widgets.dart';
@@ -27,7 +29,7 @@ class _ProfileState extends State<Profile> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController mobileNumberController = TextEditingController();
   bool isloading = true;
-
+  final CartController cartController = Get.find();
   Future UpdateProfile() async {
     SharedPreferences sharedtoken = await SharedPreferences.getInstance();
     String? token = sharedtoken.getString('token');
@@ -197,6 +199,83 @@ class _ProfileState extends State<Profile> {
                       fontWeight: FontWeight.bold,
                       color: Colors.grey,
                     ),
+              const SizedBox(
+                width: 60,
+              ),
+              isloading
+                  ? Shimmer.fromColors(
+                      baseColor: Colors.grey[300]!,
+                      highlightColor: Colors.grey[100]!,
+                      child: Stack(
+                        children: [
+                          IconButton(
+                            onPressed: () {
+                              Get.toNamed("/cart");
+                            },
+                            icon: const Icon(
+                              Icons.shopping_bag,
+                              color: Colors.grey,
+                              size: 25,
+                            ),
+                          ),
+                          Positioned(
+                            right: 4,
+                            top: 2,
+                            child: Container(
+                              padding: const EdgeInsets.all(4),
+                              decoration: const BoxDecoration(
+                                color: Colors.grey,
+                                shape: BoxShape.circle,
+                              ),
+                              child: const Text(
+                                '0',
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ))
+                  : GetBuilder(
+                      init: CartController(),
+                      builder: (cartController) {
+                        return Stack(
+                          children: [
+                            IconButton(
+                              onPressed: () {
+                                Get.toNamed("/cart");
+                              },
+                              icon: const Icon(
+                                Icons.shopping_bag,
+                                color: Colors.grey,
+                                size: 25,
+                              ),
+                            ),
+                            Positioned(
+                              right: 4,
+                              top: 2,
+                              child: Container(
+                                padding: const EdgeInsets.all(4),
+                                decoration: const BoxDecoration(
+                                  color: Color(0xff14CB95),
+                                  shape: BoxShape.circle,
+                                ),
+                                child: Text(
+                                  '${cartController.numberOfItem}',
+                                  style: const TextStyle(
+                                    fontSize: 15,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        );
+                      })
             ],
           ),
         ),

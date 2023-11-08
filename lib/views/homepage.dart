@@ -99,6 +99,22 @@ class _HomePageState extends State<HomePage> {
                 ListTile(
                   minLeadingWidth: 10,
                   leading: const Icon(
+                    Icons.delete,
+                    size: 25,
+                    color: Colors.white,
+                  ),
+                  title: const TextWidgets(
+                    text: 'Delete Address',
+                    fontSize: 16,
+                    color: Colors.white,
+                  ),
+                  onTap: (){
+                    Get.toNamed('deleteAddress');
+                  },
+                ),
+                ListTile(
+                  minLeadingWidth: 10,
+                  leading: const Icon(
                     Icons.login_outlined,
                     size: 25,
                     color: Colors.white,

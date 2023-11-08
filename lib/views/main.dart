@@ -1,4 +1,5 @@
 import 'package:delivery/views/add_new_address.dart';
+import 'package:delivery/views/delete_address.dart';
 import 'package:delivery/views/shop.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -64,6 +65,10 @@ class MyApp extends StatelessWidget {
         GetPage(
           name: "/cart",
           page: () =>  const Cart(),
+        ),
+        GetPage(
+          name: "/deleteAddress",
+          page: () =>  const DeleteAddress(),
         ),
       ],
     );
