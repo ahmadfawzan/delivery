@@ -67,7 +67,7 @@ class CartController extends GetxController {
 
   double calculateTotal() {
     double total = 0;
-    for (int i = 0; i < counter.length; i++) {
+    for (int i = 0; i < counter.length && i < itemsList.length; i++) {
       total += counter[i] * (itemsList[i]?['price'] ?? 0);
     }
     return total;
@@ -85,5 +85,15 @@ class CartController extends GetxController {
     final counterValues = counterStrings.map((str) => int.parse(str)).toList();
     counter.assignAll(counterValues);
     update();
+  }
+  Future clear() async {
+    SharedPreferences prefs =
+        await SharedPreferences.getInstance();
+      prefs.remove('cartItems');
+      itemsList.clear();
+      counter.clear();
+      itemCart.clear();
+      numberOfItem.value = 0;
+      update();
   }
 }

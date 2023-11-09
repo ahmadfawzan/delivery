@@ -35,12 +35,17 @@ class _CartState extends State<Cart> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              IconButton(
-                  onPressed: () => {Navigator.of(context).pop()},
+            GetBuilder(
+            init: CartController(),
+          builder: (cartController) =>  IconButton(
+                  onPressed: () async {
+                    cartController.clear();
+                    Get.back();
+                      },
                   icon: const Icon(
                     Icons.arrow_back,
                     size: 25,
-                  )),
+                  ))),
               cartController.itemsList.isEmpty
                   ? const Center(
                       child: TextWidgets(
@@ -208,12 +213,14 @@ class _CartState extends State<Cart> {
                                                     width: 70,
                                                     child: TextWidgets(
                                                       text:
-                                                      '${cartController.calculateOneItems(index)!=0?cartController.calculateOneItems(index).toDouble():cartController.itemsList[index]!['price'].toString()}JD',
+                                                          '${cartController.calculateOneItems(index) != 0 ? cartController.calculateOneItems(index).toDouble() : cartController.itemsList[index]!['price'].toString()}JD',
                                                       fontSize: 15,
-                                                      fontWeight: FontWeight.bold,
-                                                      color:
-                                                          const Color(0xff000000),
-                                                      textOverFlow: TextOverflow.ellipsis,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color: const Color(
+                                                          0xff000000),
+                                                      textOverFlow:
+                                                          TextOverflow.ellipsis,
                                                     ),
                                                   ),
                                                 ],
