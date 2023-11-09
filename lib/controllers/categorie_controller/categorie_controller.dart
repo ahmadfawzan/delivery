@@ -7,7 +7,7 @@ class CategorieController extends GetxController {
   var isLoading=true.obs;
   final RxList<Categorie> categorieList = <Categorie>[].obs;
   final RxList<String> categorieError = <String>[].obs;
-  int ? id;
+  int? id;
   String? title;
   String? popMenuValue;
   @override

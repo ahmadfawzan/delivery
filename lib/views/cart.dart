@@ -1,3 +1,4 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
@@ -340,7 +341,27 @@ class _CartState extends State<Cart> {
                       ),
                     ),
               MaterialButtonWidgets(
-                  onPressed: () async {},
+                  onPressed: () async {
+                    if(cartController.counter.isNotEmpty && cartController.counter.any((element) => element >0)){
+                      Get.toNamed("/checkout");
+                    }else{
+                      if (!mounted) return;
+                      AwesomeDialog(
+                        context: context,
+                        animType: AnimType.leftSlide,
+                        dialogType: DialogType.error,
+                        btnOkOnPress: () async {},
+                        btnCancelOnPress: () {},
+                        title: "number of product",
+                        body: const TextWidgets(
+                          text: "Please specify that the number of product items must not be zero",
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                          textAlign: TextAlign.center,
+                        ),
+                      ).show();
+                    }
+                  },
                   height: 50,
                   minWidth: double.infinity,
                   textColor: Colors.white,

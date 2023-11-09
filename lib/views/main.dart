@@ -10,6 +10,7 @@ import '../bindings/item_shop_binding/item_shop_binding.dart';
 import '../bindings/shop_binding/shop_binding.dart';
 import '../services/fierbace/firebase_options.dart';
 import 'cart.dart';
+import 'checkout.dart';
 import 'homepage.dart';
 import 'item_shop.dart';
 import 'splach_screen.dart';
@@ -69,6 +70,10 @@ class MyApp extends StatelessWidget {
         GetPage(
           name: "/deleteAddress",
           page: () =>  const DeleteAddress(),
+        ),
+        GetPage(
+          name: "/checkout",
+          page: () =>  const CheckOut(),
         ),
       ],
     );

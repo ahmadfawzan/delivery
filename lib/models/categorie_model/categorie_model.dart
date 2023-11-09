@@ -12,8 +12,8 @@ class Categorie {
   String? imageUrl;
   String? type;
   int? deliveryFee;
-  String? expeditedFees;
-  String? schedulerFees;
+  int? expeditedFees;
+  int? schedulerFees;
   String? startWorkTime;
   String? endWorkTime;
   int? active;
