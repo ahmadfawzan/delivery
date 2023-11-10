@@ -17,6 +17,7 @@ class CheckOut extends StatefulWidget {
 class _CheckOutState extends State<CheckOut> {
   final AddressController addressController = Get.find();
   final CheckOutController checkOutController = Get.find();
+  late GoogleMapController _controller;
 
   @override
   void initState() {
@@ -62,7 +63,7 @@ class _CheckOutState extends State<CheckOut> {
               Obx(() {
                 return Container(
                   width: double.infinity,
-                  height: 350,
+                  height: 325,
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(10),
@@ -95,15 +96,15 @@ class _CheckOutState extends State<CheckOut> {
                             initialCameraPosition: CameraPosition(
                               target: LatLng(
                                   checkOutController.changeAddressList.isEmpty
-                                      ? checkOutController
-                                          .popMenuValueCheckOut[0].latitude
-                                      : checkOutController
-                                          .changeAddressList.first.latitude,
+                                      ? double.parse(checkOutController
+                                          .popMenuValueCheckOut[0].latitude)
+                                      : double.parse(checkOutController
+                                          .changeAddressList.first.latitude!),
                                   checkOutController.changeAddressList.isEmpty
-                                      ? checkOutController
-                                          .popMenuValueCheckOut[0].longitude
-                                      : checkOutController
-                                          .changeAddressList.first.longitude),
+                                      ? double.parse(checkOutController
+                                          .popMenuValueCheckOut[0].longitude)
+                                      : double.parse(checkOutController
+                                          .changeAddressList.first.longitude!)),
                               zoom: 14.4746,
                             ),
                             markers: {
@@ -112,16 +113,21 @@ class _CheckOutState extends State<CheckOut> {
                                 draggable: true,
                                 position: LatLng(
                                     checkOutController.changeAddressList.isEmpty
-                                        ? checkOutController
-                                            .popMenuValueCheckOut[0].latitude
-                                        : checkOutController
-                                            .changeAddressList.first.latitude,
+                                        ? double.parse(checkOutController
+                                            .popMenuValueCheckOut[0].latitude)
+                                        : double.parse(checkOutController
+                                            .changeAddressList.first.latitude!),
                                     checkOutController.changeAddressList.isEmpty
-                                        ? checkOutController
-                                            .popMenuValueCheckOut[0].longitude
-                                        : checkOutController
-                                            .changeAddressList.first.longitude),
+                                        ? double.parse(checkOutController
+                                            .popMenuValueCheckOut[0].longitude)
+                                        : double.parse(checkOutController
+                                            .changeAddressList
+                                            .first
+                                            .longitude!)),
                               )
+                            },
+                            onMapCreated: (GoogleMapController controller) {
+                              _controller = controller;
                             },
                             mapType: MapType.normal,
                           ),
@@ -135,13 +141,15 @@ class _CheckOutState extends State<CheckOut> {
                           children: [
                             Column(
                               mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     const Icon(
                                       Icons.location_on_outlined,
-                                      size: 22,
+                                      size: 24,
                                     ),
                                     const SizedBox(
                                       width: 3,
@@ -149,9 +157,46 @@ class _CheckOutState extends State<CheckOut> {
                                     TextWidgets(
                                       text:
                                           "${checkOutController.changeAddressList.isEmpty ? checkOutController.popMenuValueCheckOut[0].street : checkOutController.changeAddressList.first.street}",
-                                      fontSize: 12,
+                                      fontSize: 14,
                                       fontWeight: FontWeight.bold,
                                     ),
+                                  ],
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    const Icon(
+                                      Icons.home_outlined,
+                                      size: 24,
+                                    ),
+                                    const SizedBox(
+                                      width: 3,
+                                    ),
+                                    Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        TextWidgets(
+                                          text:
+                                              "bulding:${checkOutController.changeAddressList.isEmpty  ? checkOutController.popMenuValueCheckOut[0].buildingNumber??'0' : checkOutController.changeAddressList.first.buildingNumber??'0'}",
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                        const SizedBox(height: 5,),
+                                        TextWidgets(
+                                          text:
+                                          "apartment:${checkOutController.changeAddressList.isEmpty ? checkOutController.popMenuValueCheckOut[0].apartmentNum : checkOutController.changeAddressList.first.apartmentNum}",
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ],
+                                    )
                                   ],
                                 )
                               ],
@@ -164,6 +209,35 @@ class _CheckOutState extends State<CheckOut> {
                                       setState(() {
                                         checkOutController
                                             .changeAddressList.value = [value];
+                                        _controller.animateCamera(
+                                            CameraUpdate.newCameraPosition(
+                                                CameraPosition(
+                                          target: LatLng(
+                                            checkOutController
+                                                    .changeAddressList.isEmpty
+                                                ? double.parse(
+                                                    checkOutController
+                                                        .popMenuValueCheckOut[0]
+                                                        .latitude)
+                                                : double.parse(
+                                                    checkOutController
+                                                        .changeAddressList
+                                                        .first
+                                                        .latitude!),
+                                            checkOutController
+                                                    .changeAddressList.isEmpty
+                                                ? double.parse(
+                                                    checkOutController
+                                                        .popMenuValueCheckOut[0]
+                                                        .longitude)
+                                                : double.parse(
+                                                    checkOutController
+                                                        .changeAddressList
+                                                        .first
+                                                        .longitude!),
+                                          ),
+                                          zoom: 14,
+                                        )));
                                       });
                                     },
                                     child: Row(

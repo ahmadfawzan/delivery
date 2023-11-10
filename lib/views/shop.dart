@@ -19,6 +19,7 @@ class _ShopsState extends State<Shops> {
   final AddressController addressController = Get.find();
   final ShopController shopController = Get.find();
   final CartController cartController = Get.find();
+
   @override
   void initState() {
     shopController.fetchShop();
@@ -46,8 +47,8 @@ class _ShopsState extends State<Shops> {
                                 addressController.fetchAddress(),
                                 shopController.shopList.clear(),
                                 shopController.shopSearch.clear(),
-                                shopController.searchText.value='',
-                                shopController.isLoading.value=true,
+                                shopController.searchText.value = '',
+                                shopController.isLoading.value = true,
                                 Get.back(),
                               },
                           icon: const Icon(
@@ -106,128 +107,138 @@ class _ShopsState extends State<Shops> {
                     color: Colors.grey,
                   ),
                 ),
-    GetBuilder<AddressController>(
-    init: AddressController(),
-    builder: (addressController) {
-    return Padding(
-                  padding: const EdgeInsets.only(right: 151.0),
-                  child: SizedBox(
-                      width: 150,
-                      height: 30,
-                      child: PopupMenuButton<String>(
-                          color: const Color(0xffEBFAF5),
-                          onSelected: (value) {
-                            setState(() {
-                              addressController.popMenuValue = value;
-                              shopController.fetchShop();
-                            });
-                          },
-                          child: Row(
-                            children: [
-                              addressController.addressList.isEmpty
-                                  ? const TextWidgets(
-                                      text: 'No Loction',
-                                      fontWeight: FontWeight.bold,
-                                      textOverFlow: TextOverflow.ellipsis,
-                                      fontSize: 15,
-                                    )
-                                  : Expanded(
-                                      child: TextWidgets(
-                                      text: addressController.popMenuValue ??
-                                          (addressController
-                                                      .addressList[0].type ==
-                                                  1
-                                              ? "Home (${addressController.addressList[0].street.toString()})"
-                                              : addressController.addressList[0]
-                                                          .type ==
-                                                      2
-                                                  ? "Work (${addressController.addressList[0].street.toString()})"
-                                                  : addressController
-                                                              .addressList[0]
-                                                              .type ==
-                                                          3
-                                                      ? "Other (${addressController.addressList[0].street.toString()})"
-                                                      : ''),
-                                      fontWeight: FontWeight.bold,
-                                      textOverFlow: TextOverflow.ellipsis,
-                                      fontSize: 15,
-                                    )),
-                              const Icon(
-                                Icons.keyboard_arrow_down_outlined,
-                                color: Colors.green,
-                                size: 25,
-                              ),
-                            ],
-                          ),
-                          itemBuilder: (context) => [
-                                ...addressController.addressList.map((item) {
-                                  return PopupMenuItem<String>(
-                                    value: item.type == 1
-                                        ? "Home (${item.street.toString()})"
-                                        : item.type == 2
-                                            ? "Work (${item.street.toString()})"
-                                            : "Other (${item.street.toString()})",
-                                    child: Container(
-                                      width: 190,
-                                      padding:
-                                          const EdgeInsets.only(right: 8.0),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          const SizedBox(
-                                            height: 10,
-                                          ),
-                                          TextWidgets(
-                                            text: item.type == 1
-                                                ? item.street.toString()
-                                                : item.type == 2
-                                                    ? item.street.toString()
-                                                    : item.street.toString(),
-                                            textOverFlow: TextOverflow.ellipsis,
-                                            fontSize: 13,
+                GetBuilder<AddressController>(
+                    init: AddressController(),
+                    builder: (addressController) {
+                      return Padding(
+                        padding: const EdgeInsets.only(right: 151.0),
+                        child: SizedBox(
+                            width: 150,
+                            height: 30,
+                            child: PopupMenuButton<String>(
+                                color: const Color(0xffEBFAF5),
+                                onSelected: (value) {
+                                  setState(() {
+                                    addressController.popMenuValue = value;
+                                    shopController.fetchShop();
+                                  });
+                                },
+                                child: Row(
+                                  children: [
+                                    addressController.addressList.isEmpty
+                                        ? const TextWidgets(
+                                            text: 'No Loction',
                                             fontWeight: FontWeight.bold,
-                                          ),
-                                          const SizedBox(
-                                            height: 6,
-                                          ),
-                                          TextWidgets(
-                                            text: item.type == 1
-                                                ? '${item.city.toString()} - ${item.apartmentNum.toString()}'
-                                                : item.type == 2
-                                                    ? '${item.city.toString()} - ${item.apartmentNum.toString()}'
-                                                    : '${item.city.toString()} - ${item.apartmentNum.toString()}',
                                             textOverFlow: TextOverflow.ellipsis,
-                                            fontSize: 10,
+                                            fontSize: 15,
+                                          )
+                                        : Expanded(
+                                            child: TextWidgets(
+                                            text: addressController
+                                                    .popMenuValue ??
+                                                (addressController
+                                                            .addressList[0]
+                                                            .type ==
+                                                        1
+                                                    ? "Home (${addressController.addressList[0].street.toString()})"
+                                                    : addressController
+                                                                .addressList[0]
+                                                                .type ==
+                                                            2
+                                                        ? "Work (${addressController.addressList[0].street.toString()})"
+                                                        : addressController
+                                                                    .addressList[
+                                                                        0]
+                                                                    .type ==
+                                                                3
+                                                            ? "Other (${addressController.addressList[0].street.toString()})"
+                                                            : ''),
                                             fontWeight: FontWeight.bold,
-                                          ),
-                                          const SizedBox(
-                                            height: 10,
-                                          ),
-                                          Theme(
-                                            data: ThemeData(
-                                              dividerColor: Colors.black,
-                                            ),
-                                            child: const PopupMenuDivider(
-                                              height: 4,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
+                                            textOverFlow: TextOverflow.ellipsis,
+                                            fontSize: 15,
+                                          )),
+                                    const Icon(
+                                      Icons.keyboard_arrow_down_outlined,
+                                      color: Colors.green,
+                                      size: 25,
                                     ),
-                                  );
-                                }),
-                                PopupMenuItem(
-                                  child: const TextWidgets(
-                                      text: '+Add new address'),
-                                  onTap: () {
-                                    Get.toNamed("/addNewAddress");
-                                  },
-                                )
-                              ])),
-                );}),
+                                  ],
+                                ),
+                                itemBuilder: (context) => [
+                                      ...addressController.addressList
+                                          .map((item) {
+                                        return PopupMenuItem<String>(
+                                          value: item.type == 1
+                                              ? "Home (${item.street.toString()})"
+                                              : item.type == 2
+                                                  ? "Work (${item.street.toString()})"
+                                                  : "Other (${item.street.toString()})",
+                                          child: Container(
+                                            width: 190,
+                                            padding: const EdgeInsets.only(
+                                                right: 8.0),
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                const SizedBox(
+                                                  height: 10,
+                                                ),
+                                                TextWidgets(
+                                                  text: item.type == 1
+                                                      ? item.street.toString()
+                                                      : item.type == 2
+                                                          ? item.street
+                                                              .toString()
+                                                          : item.street
+                                                              .toString(),
+                                                  textOverFlow:
+                                                      TextOverflow.ellipsis,
+                                                  fontSize: 13,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                                const SizedBox(
+                                                  height: 6,
+                                                ),
+                                                TextWidgets(
+                                                  text: item.type == 1
+                                                      ? '${item.city.toString()} - ${item.apartmentNum.toString()}'
+                                                      : item.type == 2
+                                                          ? '${item.city.toString()} - ${item.apartmentNum.toString()}'
+                                                          : '${item.city.toString()} - ${item.apartmentNum.toString()}',
+                                                  textOverFlow:
+                                                      TextOverflow.ellipsis,
+                                                  fontSize: 10,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                                const SizedBox(
+                                                  height: 10,
+                                                ),
+                                                Theme(
+                                                  data: ThemeData(
+                                                    dividerColor: Colors.black,
+                                                  ),
+                                                  child: const PopupMenuDivider(
+                                                    height: 4,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        );
+                                      }),
+                                      PopupMenuItem(
+                                        child: const TextWidgets(
+                                            text: '+Add new address'),
+                                        onTap: () {
+                                          Get.toNamed("/addNewAddress");
+                                        },
+                                      )
+                                    ])),
+                      );
+                    }),
                 const SizedBox(
                   height: 30,
                 ),
@@ -321,383 +332,16 @@ class _ShopsState extends State<Shops> {
                                       width: double.infinity,
                                       color: Colors.white,
                                       height: 120,
-                                      child: shopController.shopSearch[index]
-                                          .open ==
-                                          1? InkWell(
-                                        splashColor: Colors.grey,
-                                        onTap: () {
-                                          shopController.id = shopController.shopSearch[index].id;
-                                          Get.toNamed('/itemShop');
-                                        },
-                                        child: Row(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: [
-                                            const SizedBox(
-                                              width: 25,
-                                            ),
-                                            shopController.shopSearch[index]
-                                                        .open ==
-                                                    1
-                                                ? ClipRRect(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            10),
-                                                    child: ImageNetworkWidget(
-                                                      image:
-                                                          'https://news.wasiljo.com/${shopController.shopSearch[index].license.toString()}',
-                                                      height: 90,
-                                                      width: 90,
-                                                      fit: BoxFit.fitHeight,
-                                                      errorbuilder:
-                                                          (BuildContext context,
-                                                              Object exception,
-                                                              StackTrace?
-                                                                  stackTrace) {
-                                                        return Image.asset(
-                                                          'assets/images/image2.png',
-                                                          fit: BoxFit.fitHeight,
-                                                          height: 90,
-                                                          width: 90,
-                                                        );
-                                                      },
-                                                    ),
-                                                  )
-                                                : SizedBox(
-                                                    width: 90,
-                                                    height: 90,
-                                                    child: Stack(
-                                                      children: [
-                                                        ClipRRect(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(10),
-                                                          child:
-                                                              ImageNetworkWidget(
-                                                            image:
-                                                                'https://news.wasiljo.com/${shopController.shopSearch[index].license.toString()}',
-                                                            height: 90,
-                                                            width: 90,
-                                                            fit: BoxFit
-                                                                .fitHeight,
-                                                            errorbuilder:
-                                                                (BuildContext
-                                                                        context,
-                                                                    Object
-                                                                        exception,
-                                                                    StackTrace?
-                                                                        stackTrace) {
-                                                              return Image
-                                                                  .asset(
-                                                                'assets/images/image2.png',
-                                                                fit: BoxFit
-                                                                    .fitHeight,
-                                                                height: 90,
-                                                                width: 90,
-                                                              );
-                                                            },
-                                                          ),
-                                                        ),
-                                                        ClipRRect(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(10),
-                                                          child: const Opacity(
-                                                            opacity: 0.5,
-                                                            child: ModalBarrier(
-                                                                dismissible:
-                                                                    false,
-                                                                color: Colors
-                                                                    .black),
-                                                          ),
-                                                        ),
-                                                        Center(
-                                                          child: TextWidgets(
-                                                            text: shopController
-                                                                        .shopSearch[
-                                                                            index]
-                                                                        .open ==
-                                                                    0
-                                                                ? "Closed"
-                                                                : "Busy",
-                                                            color: Colors.white,
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                            fontSize: 15.5,
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                            const SizedBox(
-                                              width: 30,
-                                            ),
-                                            Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                const SizedBox(
-                                                  height: 10,
-                                                ),
-                                                TextWidgets(
-                                                  text: shopController
-                                                      .shopSearch[index]
-                                                      .shopNameEn
-                                                      .toString(),
-                                                  fontSize: 20,
-                                                  fontWeight: FontWeight.bold,
-                                                  color:
-                                                      const Color(0xff000000),
-                                                ),
-                                                const SizedBox(
-                                                  height: 3,
-                                                ),
-                                                TextWidgets(
-                                                  text: shopController
-                                                      .shopSearch[index]
-                                                      .address
-                                                      .toString(),
-                                                  fontSize: 11,
-                                                  color: Colors.grey,
-                                                ),
-                                                const SizedBox(
-                                                  height: 40,
-                                                ),
-                                                Row(
-                                                  children: [
-                                                    const Icon(
-                                                      Icons.star,
-                                                      color: Color(0xff15CB95),
-                                                      size: 19,
-                                                    ),
-                                                    const SizedBox(
-                                                      width: 4,
-                                                    ),
-                                                    TextWidgets(
-                                                      text: shopController
-                                                          .shopSearch[index]
-                                                          .rating
-                                                          .toString(),
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                    ),
-                                                    const SizedBox(
-                                                      width: 3,
-                                                    ),
-                                                    TextWidgets(
-                                                      text:
-                                                          '(${shopController.shopSearch[index].totalRating.toString()}+ Ratings)',
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      color: Colors.grey,
-                                                    )
-                                                  ],
-                                                )
-                                              ],
-                                            )
-                                          ],
-                                        ),
-                                      ):Row(
-                                        crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                        children: [
-                                          const SizedBox(
-                                            width: 25,
-                                          ),
-                                          shopController.shopSearch[index]
-                                              .open ==
+                                      child: shopController
+                                                  .shopSearch[index].open ==
                                               1
-                                              ? ClipRRect(
-                                            borderRadius:
-                                            BorderRadius.circular(
-                                                10),
-                                            child: ImageNetworkWidget(
-                                              image:
-                                              'https://news.wasiljo.com/${shopController.shopSearch[index].license.toString()}',
-                                              height: 90,
-                                              width: 90,
-                                              fit: BoxFit.fitHeight,
-                                              errorbuilder:
-                                                  (BuildContext context,
-                                                  Object exception,
-                                                  StackTrace?
-                                                  stackTrace) {
-                                                return Image.asset(
-                                                  'assets/images/image2.png',
-                                                  fit: BoxFit.fitHeight,
-                                                  height: 90,
-                                                  width: 90,
-                                                );
-                                              },
-                                            ),
-                                          )
-                                              : SizedBox(
-                                            width: 90,
-                                            height: 90,
-                                            child: Stack(
-                                              children: [
-                                                ClipRRect(
-                                                  borderRadius:
-                                                  BorderRadius
-                                                      .circular(10),
-                                                  child:
-                                                  ImageNetworkWidget(
-                                                    image:
-                                                    'https://news.wasiljo.com/${shopController.shopSearch[index].license.toString()}',
-                                                    height: 90,
-                                                    width: 90,
-                                                    fit: BoxFit
-                                                        .fitHeight,
-                                                    errorbuilder:
-                                                        (BuildContext
-                                                    context,
-                                                        Object
-                                                        exception,
-                                                        StackTrace?
-                                                        stackTrace) {
-                                                      return Image
-                                                          .asset(
-                                                        'assets/images/image2.png',
-                                                        fit: BoxFit
-                                                            .fitHeight,
-                                                        height: 90,
-                                                        width: 90,
-                                                      );
-                                                    },
-                                                  ),
-                                                ),
-                                                ClipRRect(
-                                                  borderRadius:
-                                                  BorderRadius
-                                                      .circular(10),
-                                                  child: const Opacity(
-                                                    opacity: 0.5,
-                                                    child: ModalBarrier(
-                                                        dismissible:
-                                                        false,
-                                                        color: Colors
-                                                            .black),
-                                                  ),
-                                                ),
-                                                Center(
-                                                  child: TextWidgets(
-                                                    text: shopController
-                                                        .shopSearch[
-                                                    index]
-                                                        .open ==
-                                                        0
-                                                        ? "Closed"
-                                                        : "Busy",
-                                                    color: Colors.white,
-                                                    fontWeight:
-                                                    FontWeight.bold,
-                                                    fontSize: 15.5,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          const SizedBox(
-                                            width: 30,
-                                          ),
-                                          Column(
-                                            crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                            children: [
-                                              const SizedBox(
-                                                height: 10,
-                                              ),
-                                              TextWidgets(
-                                                text: shopController
-                                                    .shopSearch[index]
-                                                    .shopNameEn
-                                                    .toString(),
-                                                fontSize: 20,
-                                                fontWeight: FontWeight.bold,
-                                                color:
-                                                const Color(0xff000000),
-                                              ),
-                                              const SizedBox(
-                                                height: 3,
-                                              ),
-                                              TextWidgets(
-                                                text: shopController
-                                                    .shopSearch[index]
-                                                    .address
-                                                    .toString(),
-                                                fontSize: 11,
-                                                color: Colors.grey,
-                                              ),
-                                              const SizedBox(
-                                                height: 40,
-                                              ),
-                                              Row(
-                                                children: [
-                                                  const Icon(
-                                                    Icons.star,
-                                                    color: Color(0xff15CB95),
-                                                    size: 19,
-                                                  ),
-                                                  const SizedBox(
-                                                    width: 4,
-                                                  ),
-                                                  TextWidgets(
-                                                    text: shopController
-                                                        .shopSearch[index]
-                                                        .rating
-                                                        .toString(),
-                                                    fontWeight:
-                                                    FontWeight.bold,
-                                                  ),
-                                                  const SizedBox(
-                                                    width: 3,
-                                                  ),
-                                                  TextWidgets(
-                                                    text:
-                                                    '(${shopController.shopSearch[index].totalRating.toString()}+ Ratings)',
-                                                    fontWeight:
-                                                    FontWeight.bold,
-                                                    color: Colors.grey,
-                                                  )
-                                                ],
-                                              )
-                                            ],
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                  ));
-                                })
-                            : ListView.builder(
-                                padding: const EdgeInsets.only(top: 7),
-                                scrollDirection: Axis.vertical,
-                                shrinkWrap: true,
-                                itemCount: shopController.shopList.length,
-                                itemBuilder: (context, index) {
-                                  return SingleChildScrollView(
-                                      child: Padding(
-                                    padding: const EdgeInsets.only(bottom: 3),
-                                    child: Container(
-                                      width: double.infinity,
-                                      color: Colors.white,
-                                      height: 120,
-                                      child: shopController.isLoading.value
-                                          ? Shimmer.fromColors(
-                                              baseColor: Colors.grey[350]!,
-                                              highlightColor: Colors.grey[100]!,
-                                              child: Container(
-                                                color: Colors.white,
-                                                height: 120,
-                                                width: double.infinity,
-                                              ))
-                                          : shopController.shopList[index]
-                                          .open ==
-                                         1
                                           ? InkWell(
                                               splashColor: Colors.grey,
                                               onTap: () {
-                                               shopController.id = shopController.shopList[index].id;
-                                               Get.toNamed('/itemShop');
+                                                shopController.id =
+                                                    shopController
+                                                        .shopSearch[index].id;
+                                                Get.toNamed('/itemShop');
                                               },
                                               child: Row(
                                                 crossAxisAlignment:
@@ -706,7 +350,8 @@ class _ShopsState extends State<Shops> {
                                                   const SizedBox(
                                                     width: 25,
                                                   ),
-                                                  shopController.shopList[index]
+                                                  shopController
+                                                              .shopSearch[index]
                                                               .open ==
                                                           1
                                                       ? ClipRRect(
@@ -716,7 +361,7 @@ class _ShopsState extends State<Shops> {
                                                           child:
                                                               ImageNetworkWidget(
                                                             image:
-                                                                'https://news.wasiljo.com/${shopController.shopList[index].license.toString()}',
+                                                                'https://news.wasiljo.com/${shopController.shopSearch[index].license.toString()}',
                                                             height: 90,
                                                             width: 90,
                                                             fit: BoxFit
@@ -752,7 +397,7 @@ class _ShopsState extends State<Shops> {
                                                                 child:
                                                                     ImageNetworkWidget(
                                                                   image:
-                                                                      'https://news.wasiljo.com/${shopController.shopList[index].license.toString()}',
+                                                                      'https://news.wasiljo.com/${shopController.shopSearch[index].license.toString()}',
                                                                   height: 90,
                                                                   width: 90,
                                                                   fit: BoxFit
@@ -794,7 +439,7 @@ class _ShopsState extends State<Shops> {
                                                                 child:
                                                                     TextWidgets(
                                                                   text: shopController
-                                                                              .shopList[index]
+                                                                              .shopSearch[index]
                                                                               .open ==
                                                                           0
                                                                       ? "Closed"
@@ -824,7 +469,7 @@ class _ShopsState extends State<Shops> {
                                                       ),
                                                       TextWidgets(
                                                         text: shopController
-                                                            .shopList[index]
+                                                            .shopSearch[index]
                                                             .shopNameEn
                                                             .toString(),
                                                         fontSize: 20,
@@ -838,7 +483,7 @@ class _ShopsState extends State<Shops> {
                                                       ),
                                                       TextWidgets(
                                                         text: shopController
-                                                            .shopList[index]
+                                                            .shopSearch[index]
                                                             .address
                                                             .toString(),
                                                         fontSize: 11,
@@ -860,7 +505,8 @@ class _ShopsState extends State<Shops> {
                                                           ),
                                                           TextWidgets(
                                                             text: shopController
-                                                                .shopList[index]
+                                                                .shopSearch[
+                                                                    index]
                                                                 .rating
                                                                 .toString(),
                                                             fontWeight:
@@ -871,7 +517,7 @@ class _ShopsState extends State<Shops> {
                                                           ),
                                                           TextWidgets(
                                                             text:
-                                                                '(${shopController.shopList[index].totalRating.toString()}+ Ratings)',
+                                                                '(${shopController.shopSearch[index].totalRating.toString()}+ Ratings)',
                                                             fontWeight:
                                                                 FontWeight.bold,
                                                             color: Colors.grey,
@@ -882,189 +528,598 @@ class _ShopsState extends State<Shops> {
                                                   )
                                                 ],
                                               ),
-                                            ):Row(
-                                        crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                        children: [
-                                          const SizedBox(
-                                            width: 25,
-                                          ),
-                                          shopController.shopList[index]
-                                              .open ==
-                                              1
-                                              ? ClipRRect(
-                                            borderRadius:
-                                            BorderRadius
-                                                .circular(10),
-                                            child:
-                                            ImageNetworkWidget(
-                                              image:
-                                              'https://news.wasiljo.com/${shopController.shopList[index].license.toString()}',
-                                              height: 90,
-                                              width: 90,
-                                              fit: BoxFit
-                                                  .fitHeight,
-                                              errorbuilder:
-                                                  (BuildContext
-                                              context,
-                                                  Object
-                                                  exception,
-                                                  StackTrace?
-                                                  stackTrace) {
-                                                return Image
-                                                    .asset(
-                                                  'assets/images/image2.png',
-                                                  fit: BoxFit
-                                                      .fitHeight,
-                                                  height: 90,
-                                                  width: 90,
-                                                );
-                                              },
-                                            ),
-                                          )
-                                              : SizedBox(
-                                            width: 90,
-                                            height: 90,
-                                            child: Stack(
+                                            )
+                                          : Row(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
                                               children: [
-                                                ClipRRect(
-                                                  borderRadius:
-                                                  BorderRadius
-                                                      .circular(
-                                                      10),
-                                                  child:
-                                                  ImageNetworkWidget(
-                                                    image:
-                                                    'https://news.wasiljo.com/${shopController.shopList[index].license.toString()}',
-                                                    height: 90,
-                                                    width: 90,
-                                                    fit: BoxFit
-                                                        .fitHeight,
-                                                    errorbuilder: (BuildContext
-                                                    context,
-                                                        Object
-                                                        exception,
-                                                        StackTrace?
-                                                        stackTrace) {
-                                                      return Image
-                                                          .asset(
-                                                        'assets/images/image2.png',
-                                                        fit: BoxFit
-                                                            .fitHeight,
-                                                        height:
-                                                        90,
+                                                const SizedBox(
+                                                  width: 25,
+                                                ),
+                                                shopController.shopSearch[index]
+                                                            .open ==
+                                                        1
+                                                    ? ClipRRect(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(10),
+                                                        child:
+                                                            ImageNetworkWidget(
+                                                          image:
+                                                              'https://news.wasiljo.com/${shopController.shopSearch[index].license.toString()}',
+                                                          height: 90,
+                                                          width: 90,
+                                                          fit: BoxFit.fitHeight,
+                                                          errorbuilder:
+                                                              (BuildContext
+                                                                      context,
+                                                                  Object
+                                                                      exception,
+                                                                  StackTrace?
+                                                                      stackTrace) {
+                                                            return Image.asset(
+                                                              'assets/images/image2.png',
+                                                              fit: BoxFit
+                                                                  .fitHeight,
+                                                              height: 90,
+                                                              width: 90,
+                                                            );
+                                                          },
+                                                        ),
+                                                      )
+                                                    : SizedBox(
                                                         width: 90,
-                                                      );
-                                                    },
-                                                  ),
+                                                        height: 90,
+                                                        child: Stack(
+                                                          children: [
+                                                            ClipRRect(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          10),
+                                                              child:
+                                                                  ImageNetworkWidget(
+                                                                image:
+                                                                    'https://news.wasiljo.com/${shopController.shopSearch[index].license.toString()}',
+                                                                height: 90,
+                                                                width: 90,
+                                                                fit: BoxFit
+                                                                    .fitHeight,
+                                                                errorbuilder: (BuildContext
+                                                                        context,
+                                                                    Object
+                                                                        exception,
+                                                                    StackTrace?
+                                                                        stackTrace) {
+                                                                  return Image
+                                                                      .asset(
+                                                                    'assets/images/image2.png',
+                                                                    fit: BoxFit
+                                                                        .fitHeight,
+                                                                    height: 90,
+                                                                    width: 90,
+                                                                  );
+                                                                },
+                                                              ),
+                                                            ),
+                                                            ClipRRect(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          10),
+                                                              child:
+                                                                  const Opacity(
+                                                                opacity: 0.5,
+                                                                child: ModalBarrier(
+                                                                    dismissible:
+                                                                        false,
+                                                                    color: Colors
+                                                                        .black),
+                                                              ),
+                                                            ),
+                                                            Center(
+                                                              child:
+                                                                  TextWidgets(
+                                                                text: shopController
+                                                                            .shopSearch[index]
+                                                                            .open ==
+                                                                        0
+                                                                    ? "Closed"
+                                                                    : "Busy",
+                                                                color: Colors
+                                                                    .white,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                                fontSize: 15.5,
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                const SizedBox(
+                                                  width: 30,
                                                 ),
-                                                ClipRRect(
-                                                  borderRadius:
-                                                  BorderRadius
-                                                      .circular(
-                                                      10),
-                                                  child:
-                                                  const Opacity(
-                                                    opacity: 0.5,
-                                                    child: ModalBarrier(
-                                                        dismissible:
-                                                        false,
-                                                        color: Colors
-                                                            .black),
-                                                  ),
-                                                ),
-                                                Center(
-                                                  child:
-                                                  TextWidgets(
-                                                    text: shopController
-                                                        .shopList[index]
-                                                        .open ==
-                                                        0
-                                                        ? "Closed"
-                                                        : "Busy",
-                                                    color: Colors
-                                                        .white,
-                                                    fontWeight:
-                                                    FontWeight
-                                                        .bold,
-                                                    fontSize:
-                                                    15.5,
-                                                  ),
-                                                ),
+                                                Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    const SizedBox(
+                                                      height: 10,
+                                                    ),
+                                                    TextWidgets(
+                                                      text: shopController
+                                                          .shopSearch[index]
+                                                          .shopNameEn
+                                                          .toString(),
+                                                      fontSize: 20,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color: const Color(
+                                                          0xff000000),
+                                                    ),
+                                                    const SizedBox(
+                                                      height: 3,
+                                                    ),
+                                                    TextWidgets(
+                                                      text: shopController
+                                                          .shopSearch[index]
+                                                          .address
+                                                          .toString(),
+                                                      fontSize: 11,
+                                                      color: Colors.grey,
+                                                    ),
+                                                    const SizedBox(
+                                                      height: 40,
+                                                    ),
+                                                    Row(
+                                                      children: [
+                                                        const Icon(
+                                                          Icons.star,
+                                                          color:
+                                                              Color(0xff15CB95),
+                                                          size: 19,
+                                                        ),
+                                                        const SizedBox(
+                                                          width: 4,
+                                                        ),
+                                                        TextWidgets(
+                                                          text: shopController
+                                                              .shopSearch[index]
+                                                              .rating
+                                                              .toString(),
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
+                                                        const SizedBox(
+                                                          width: 3,
+                                                        ),
+                                                        TextWidgets(
+                                                          text:
+                                                              '(${shopController.shopSearch[index].totalRating.toString()}+ Ratings)',
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          color: Colors.grey,
+                                                        )
+                                                      ],
+                                                    )
+                                                  ],
+                                                )
                                               ],
                                             ),
-                                          ),
-                                          const SizedBox(
-                                            width: 30,
-                                          ),
-                                          Column(
-                                            crossAxisAlignment:
-                                            CrossAxisAlignment
-                                                .start,
-                                            children: [
-                                              const SizedBox(
-                                                height: 10,
-                                              ),
-                                              TextWidgets(
-                                                text: shopController
-                                                    .shopList[index]
-                                                    .shopNameEn
-                                                    .toString(),
-                                                fontSize: 20,
-                                                fontWeight:
-                                                FontWeight.bold,
-                                                color: const Color(
-                                                    0xff000000),
-                                              ),
-                                              const SizedBox(
-                                                height: 3,
-                                              ),
-                                              TextWidgets(
-                                                text: shopController
-                                                    .shopList[index]
-                                                    .address
-                                                    .toString(),
-                                                fontSize: 11,
-                                                color: Colors.grey,
-                                              ),
-                                              const SizedBox(
-                                                height: 40,
-                                              ),
-                                              Row(
-                                                children: [
-                                                  const Icon(
-                                                    Icons.star,
-                                                    color: Color(
-                                                        0xff15CB95),
-                                                    size: 19,
+                                    ),
+                                  ));
+                                })
+                            : ListView.builder(
+                                padding: const EdgeInsets.only(top: 7),
+                                scrollDirection: Axis.vertical,
+                                shrinkWrap: true,
+                                itemCount: shopController.shopList.length,
+                                itemBuilder: (context, index) {
+                                  return SingleChildScrollView(
+                                      child: Padding(
+                                    padding: const EdgeInsets.only(bottom: 3),
+                                    child: Container(
+                                      width: double.infinity,
+                                      color: Colors.white,
+                                      height: 120,
+                                      child: shopController.isLoading.value
+                                          ? Shimmer.fromColors(
+                                              baseColor: Colors.grey[350]!,
+                                              highlightColor: Colors.grey[100]!,
+                                              child: Container(
+                                                color: Colors.white,
+                                                height: 120,
+                                                width: double.infinity,
+                                              ))
+                                          : shopController
+                                                      .shopList[index].open ==
+                                                  1
+                                              ? InkWell(
+                                                  splashColor: Colors.grey,
+                                                  onTap: () {
+                                                    shopController.id =
+                                                        shopController
+                                                            .shopList[index].id;
+                                                    Get.toNamed('/itemShop');
+                                                  },
+                                                  child: Row(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      const SizedBox(
+                                                        width: 25,
+                                                      ),
+                                                      shopController
+                                                                  .shopList[
+                                                                      index]
+                                                                  .open ==
+                                                              1
+                                                          ? ClipRRect(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          10),
+                                                              child:
+                                                                  ImageNetworkWidget(
+                                                                image:
+                                                                    'https://news.wasiljo.com/${shopController.shopList[index].license.toString()}',
+                                                                height: 90,
+                                                                width: 90,
+                                                                fit: BoxFit
+                                                                    .fitHeight,
+                                                                errorbuilder: (BuildContext
+                                                                        context,
+                                                                    Object
+                                                                        exception,
+                                                                    StackTrace?
+                                                                        stackTrace) {
+                                                                  return Image
+                                                                      .asset(
+                                                                    'assets/images/image2.png',
+                                                                    fit: BoxFit
+                                                                        .fitHeight,
+                                                                    height: 90,
+                                                                    width: 90,
+                                                                  );
+                                                                },
+                                                              ),
+                                                            )
+                                                          : SizedBox(
+                                                              width: 90,
+                                                              height: 90,
+                                                              child: Stack(
+                                                                children: [
+                                                                  ClipRRect(
+                                                                    borderRadius:
+                                                                        BorderRadius.circular(
+                                                                            10),
+                                                                    child:
+                                                                        ImageNetworkWidget(
+                                                                      image:
+                                                                          'https://news.wasiljo.com/${shopController.shopList[index].license.toString()}',
+                                                                      height:
+                                                                          90,
+                                                                      width: 90,
+                                                                      fit: BoxFit
+                                                                          .fitHeight,
+                                                                      errorbuilder: (BuildContext context,
+                                                                          Object
+                                                                              exception,
+                                                                          StackTrace?
+                                                                              stackTrace) {
+                                                                        return Image
+                                                                            .asset(
+                                                                          'assets/images/image2.png',
+                                                                          fit: BoxFit
+                                                                              .fitHeight,
+                                                                          height:
+                                                                              90,
+                                                                          width:
+                                                                              90,
+                                                                        );
+                                                                      },
+                                                                    ),
+                                                                  ),
+                                                                  ClipRRect(
+                                                                    borderRadius:
+                                                                        BorderRadius.circular(
+                                                                            10),
+                                                                    child:
+                                                                        const Opacity(
+                                                                      opacity:
+                                                                          0.5,
+                                                                      child: ModalBarrier(
+                                                                          dismissible:
+                                                                              false,
+                                                                          color:
+                                                                              Colors.black),
+                                                                    ),
+                                                                  ),
+                                                                  Center(
+                                                                    child:
+                                                                        TextWidgets(
+                                                                      text: shopController.shopList[index].open ==
+                                                                              0
+                                                                          ? "Closed"
+                                                                          : "Busy",
+                                                                      color: Colors
+                                                                          .white,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold,
+                                                                      fontSize:
+                                                                          15.5,
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                      const SizedBox(
+                                                        width: 30,
+                                                      ),
+                                                      Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          const SizedBox(
+                                                            height: 10,
+                                                          ),
+                                                          TextWidgets(
+                                                            text: shopController
+                                                                .shopList[index]
+                                                                .shopNameEn
+                                                                .toString(),
+                                                            fontSize: 20,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            color: const Color(
+                                                                0xff000000),
+                                                          ),
+                                                          const SizedBox(
+                                                            height: 3,
+                                                          ),
+                                                          TextWidgets(
+                                                            text: shopController
+                                                                .shopList[index]
+                                                                .address
+                                                                .toString(),
+                                                            fontSize: 11,
+                                                            color: Colors.grey,
+                                                          ),
+                                                          const SizedBox(
+                                                            height: 40,
+                                                          ),
+                                                          Row(
+                                                            children: [
+                                                              const Icon(
+                                                                Icons.star,
+                                                                color: Color(
+                                                                    0xff15CB95),
+                                                                size: 19,
+                                                              ),
+                                                              const SizedBox(
+                                                                width: 4,
+                                                              ),
+                                                              TextWidgets(
+                                                                text: shopController
+                                                                    .shopList[
+                                                                        index]
+                                                                    .rating
+                                                                    .toString(),
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                              ),
+                                                              const SizedBox(
+                                                                width: 3,
+                                                              ),
+                                                              TextWidgets(
+                                                                text:
+                                                                    '(${shopController.shopList[index].totalRating.toString()}+ Ratings)',
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                                color:
+                                                                    Colors.grey,
+                                                              )
+                                                            ],
+                                                          )
+                                                        ],
+                                                      )
+                                                    ],
                                                   ),
-                                                  const SizedBox(
-                                                    width: 4,
-                                                  ),
-                                                  TextWidgets(
-                                                    text: shopController
-                                                        .shopList[index]
-                                                        .rating
-                                                        .toString(),
-                                                    fontWeight:
-                                                    FontWeight.bold,
-                                                  ),
-                                                  const SizedBox(
-                                                    width: 3,
-                                                  ),
-                                                  TextWidgets(
-                                                    text:
-                                                    '(${shopController.shopList[index].totalRating.toString()}+ Ratings)',
-                                                    fontWeight:
-                                                    FontWeight.bold,
-                                                    color: Colors.grey,
-                                                  )
-                                                ],
-                                              )
-                                            ],
-                                          )
-                                        ],
-                                      ),
+                                                )
+                                              : Row(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.center,
+                                                  children: [
+                                                    const SizedBox(
+                                                      width: 25,
+                                                    ),
+                                                    shopController
+                                                                .shopList[index]
+                                                                .open ==
+                                                            1
+                                                        ? ClipRRect(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        10),
+                                                            child:
+                                                                ImageNetworkWidget(
+                                                              image:
+                                                                  'https://news.wasiljo.com/${shopController.shopList[index].license.toString()}',
+                                                              height: 90,
+                                                              width: 90,
+                                                              fit: BoxFit
+                                                                  .fitHeight,
+                                                              errorbuilder: (BuildContext
+                                                                      context,
+                                                                  Object
+                                                                      exception,
+                                                                  StackTrace?
+                                                                      stackTrace) {
+                                                                return Image
+                                                                    .asset(
+                                                                  'assets/images/image2.png',
+                                                                  fit: BoxFit
+                                                                      .fitHeight,
+                                                                  height: 90,
+                                                                  width: 90,
+                                                                );
+                                                              },
+                                                            ),
+                                                          )
+                                                        : SizedBox(
+                                                            width: 90,
+                                                            height: 90,
+                                                            child: Stack(
+                                                              children: [
+                                                                ClipRRect(
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              10),
+                                                                  child:
+                                                                      ImageNetworkWidget(
+                                                                    image:
+                                                                        'https://news.wasiljo.com/${shopController.shopList[index].license.toString()}',
+                                                                    height: 90,
+                                                                    width: 90,
+                                                                    fit: BoxFit
+                                                                        .fitHeight,
+                                                                    errorbuilder: (BuildContext
+                                                                            context,
+                                                                        Object
+                                                                            exception,
+                                                                        StackTrace?
+                                                                            stackTrace) {
+                                                                      return Image
+                                                                          .asset(
+                                                                        'assets/images/image2.png',
+                                                                        fit: BoxFit
+                                                                            .fitHeight,
+                                                                        height:
+                                                                            90,
+                                                                        width:
+                                                                            90,
+                                                                      );
+                                                                    },
+                                                                  ),
+                                                                ),
+                                                                ClipRRect(
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              10),
+                                                                  child:
+                                                                      const Opacity(
+                                                                    opacity:
+                                                                        0.5,
+                                                                    child: ModalBarrier(
+                                                                        dismissible:
+                                                                            false,
+                                                                        color: Colors
+                                                                            .black),
+                                                                  ),
+                                                                ),
+                                                                Center(
+                                                                  child:
+                                                                      TextWidgets(
+                                                                    text: shopController.shopList[index].open ==
+                                                                            0
+                                                                        ? "Closed"
+                                                                        : "Busy",
+                                                                    color: Colors
+                                                                        .white,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold,
+                                                                    fontSize:
+                                                                        15.5,
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                    const SizedBox(
+                                                      width: 30,
+                                                    ),
+                                                    Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        const SizedBox(
+                                                          height: 10,
+                                                        ),
+                                                        TextWidgets(
+                                                          text: shopController
+                                                              .shopList[index]
+                                                              .shopNameEn
+                                                              .toString(),
+                                                          fontSize: 20,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          color: const Color(
+                                                              0xff000000),
+                                                        ),
+                                                        const SizedBox(
+                                                          height: 3,
+                                                        ),
+                                                        TextWidgets(
+                                                          text: shopController
+                                                              .shopList[index]
+                                                              .address
+                                                              .toString(),
+                                                          fontSize: 11,
+                                                          color: Colors.grey,
+                                                        ),
+                                                        const SizedBox(
+                                                          height: 40,
+                                                        ),
+                                                        Row(
+                                                          children: [
+                                                            const Icon(
+                                                              Icons.star,
+                                                              color: Color(
+                                                                  0xff15CB95),
+                                                              size: 19,
+                                                            ),
+                                                            const SizedBox(
+                                                              width: 4,
+                                                            ),
+                                                            TextWidgets(
+                                                              text: shopController
+                                                                  .shopList[
+                                                                      index]
+                                                                  .rating
+                                                                  .toString(),
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                            ),
+                                                            const SizedBox(
+                                                              width: 3,
+                                                            ),
+                                                            TextWidgets(
+                                                              text:
+                                                                  '(${shopController.shopList[index].totalRating.toString()}+ Ratings)',
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                              color:
+                                                                  Colors.grey,
+                                                            )
+                                                          ],
+                                                        )
+                                                      ],
+                                                    )
+                                                  ],
+                                                ),
                                     ),
                                   ));
                                 }),
