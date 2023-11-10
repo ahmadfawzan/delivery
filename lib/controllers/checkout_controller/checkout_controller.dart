@@ -6,6 +6,7 @@ class CheckOutController extends GetxController {
   final AddressController addressController = Get.find();
   final RxList<Address> changeAddressList = <Address>[].obs;
   List popMenuValueCheckOut = [];
+  String phoneNumber='';
 
   void PopMenuValueCheckOut() {
     popMenuValueCheckOut = addressController.addressList

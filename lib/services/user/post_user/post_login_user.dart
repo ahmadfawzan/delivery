@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
+import '../../../controllers/checkout_controller/checkout_controller.dart';
 import '../../../widgets/text_widgets.dart';
 
 Future PostLogin(mobileNumber, countryCode, password,
@@ -25,11 +26,13 @@ Future PostLogin(mobileNumber, countryCode, password,
   );
   var data = json.decode(response.body);
   if (response.statusCode == 200) {
+    final CheckOutController checkOutController = Get.put(CheckOutController(),permanent: true);
     sharedtoken.setString('token', data['data']['token']);
     const storage = FlutterSecureStorage();
     await storage.write(key: 'token', value: data['data']['token']);
     if (!context.mounted) return;
     Get.offAllNamed('/home');
+    checkOutController.phoneNumber ='${countryCode + mobileNumber.text}';
   } else {
     if (!context.mounted) return;
     AwesomeDialog(

@@ -63,7 +63,7 @@ class _CheckOutState extends State<CheckOut> {
               Obx(() {
                 return Container(
                   width: double.infinity,
-                  height: 325,
+                  height: 315,
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(10),
@@ -145,7 +145,7 @@ class _CheckOutState extends State<CheckOut> {
                               children: [
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     const Icon(
                                       Icons.location_on_outlined,
@@ -154,12 +154,13 @@ class _CheckOutState extends State<CheckOut> {
                                     const SizedBox(
                                       width: 3,
                                     ),
-                                    TextWidgets(
-                                      text:
-                                          "${checkOutController.changeAddressList.isEmpty ? checkOutController.popMenuValueCheckOut[0].street : checkOutController.changeAddressList.first.street}",
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                                   TextWidgets(
+                                        text:
+                                            "${checkOutController.changeAddressList.isEmpty ? checkOutController.popMenuValueCheckOut[0].street : checkOutController.changeAddressList.first.street}",
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold,
+                                        textAlign: TextAlign.center,
+                                      ),
                                   ],
                                 ),
                                 const SizedBox(
@@ -198,7 +199,29 @@ class _CheckOutState extends State<CheckOut> {
                                       ],
                                     )
                                   ],
-                                )
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    const Icon(
+                                      Icons.phone,
+                                      size: 22,
+                                    ),
+                                    const SizedBox(
+                                      width: 3,
+                                    ),
+                                    TextWidgets(
+                                      text:
+                                      "mobile ${checkOutController.phoneNumber}",
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ],
+                                ),
                               ],
                             ),
                             SizedBox(
