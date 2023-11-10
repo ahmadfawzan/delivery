@@ -6,6 +6,7 @@ import 'package:firebase_core/firebase_core.dart';
 import '../bindings/address_binding/address_binding.dart';
 import '../bindings/cart_binding/cart_binding.dart';
 import '../bindings/categorie_binding/categorie_binding.dart';
+import '../bindings/checkout_binding/checkout_binding.dart';
 import '../bindings/item_shop_binding/item_shop_binding.dart';
 import '../bindings/shop_binding/shop_binding.dart';
 import '../services/fierbace/firebase_options.dart';
@@ -74,6 +75,9 @@ class MyApp extends StatelessWidget {
         GetPage(
           name: "/checkout",
           page: () =>  const CheckOut(),
+          binding:BindingsBuilder(() {
+            CheckOutBinding().dependencies();
+          }),
         ),
       ],
     );

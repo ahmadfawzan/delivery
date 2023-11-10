@@ -481,7 +481,8 @@ class _ItemShopState extends State<ItemShop> {
                                                       .toString(),
                                                   fontSize: 15,
                                                   fontWeight: FontWeight.bold,
-                                                  color: const Color(0xff000000),
+                                                  color:
+                                                      const Color(0xff000000),
                                                 ),
                                                 const SizedBox(
                                                   height: 3,
@@ -597,8 +598,12 @@ class _ItemShopState extends State<ItemShop> {
                                                               ).show();
                                                             }
                                                           } else {
-                                                            if( cartController.itemCart.isEmpty){
-                                                              cartController.counter.clear();
+                                                            if (cartController
+                                                                .itemCart
+                                                                .isEmpty) {
+                                                              cartController
+                                                                  .counter
+                                                                  .clear();
                                                             }
                                                             cartController
                                                                 .itemCart
@@ -651,11 +656,13 @@ class _ItemShopState extends State<ItemShop> {
                                                                           index]
                                                                       .quantity,
                                                             });
-                                                            cartController.addItemToCart();
+                                                            cartController
+                                                                .addItemToCart();
                                                             cartController
                                                                 .counter
                                                                 .add(0);
-                                                            cartController.saveCounterValues();
+                                                            cartController
+                                                                .saveCounterValues();
                                                             if (mounted) {
                                                               AwesomeDialog(
                                                                 animType: AnimType
@@ -850,7 +857,8 @@ class _ItemShopState extends State<ItemShop> {
                                                   width: 100,
                                                   child: Column(
                                                     crossAxisAlignment:
-                                                        CrossAxisAlignment.start,
+                                                        CrossAxisAlignment
+                                                            .start,
                                                     children: [
                                                       const SizedBox(
                                                         height: 10,
@@ -983,8 +991,12 @@ class _ItemShopState extends State<ItemShop> {
                                                               ).show();
                                                             }
                                                           } else {
-                                                            if( cartController.itemCart.isEmpty){
-                                                              cartController.counter.clear();
+                                                            if (cartController
+                                                                .itemCart
+                                                                .isEmpty) {
+                                                              cartController
+                                                                  .counter
+                                                                  .clear();
                                                             }
                                                             cartController
                                                                 .itemCart
@@ -1038,11 +1050,13 @@ class _ItemShopState extends State<ItemShop> {
                                                                           index]
                                                                       .quantity,
                                                             });
-                                                            cartController.addItemToCart();
+                                                            cartController
+                                                                .addItemToCart();
                                                             cartController
                                                                 .counter
                                                                 .add(0);
-                                                            cartController.saveCounterValues();
+                                                            cartController
+                                                                .saveCounterValues();
                                                             if (mounted) {
                                                               AwesomeDialog(
                                                                 animType: AnimType
