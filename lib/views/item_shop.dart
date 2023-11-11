@@ -480,6 +480,7 @@ class _ItemShopState extends State<ItemShop> {
                                                       .en!
                                                       .toString(),
                                                   fontSize: 15,
+                                                  textOverFlow: TextOverflow.ellipsis,
                                                   fontWeight: FontWeight.bold,
                                                   color:
                                                       const Color(0xff000000),
@@ -493,6 +494,7 @@ class _ItemShopState extends State<ItemShop> {
                                                       .description
                                                       .en
                                                       .toString(),
+                                                  textOverFlow: TextOverflow.ellipsis,
                                                   fontSize: 11,
                                                   color: Colors.grey,
                                                 ),
@@ -872,6 +874,7 @@ class _ItemShopState extends State<ItemShop> {
                                                         fontSize: 15,
                                                         fontWeight:
                                                             FontWeight.bold,
+                                                        textOverFlow: TextOverflow.ellipsis,
                                                         color: const Color(
                                                             0xff000000),
                                                       ),
@@ -884,6 +887,7 @@ class _ItemShopState extends State<ItemShop> {
                                                             .description!
                                                             .en
                                                             .toString(),
+                                                        textOverFlow: TextOverflow.ellipsis,
                                                         fontSize: 11,
                                                         color: Colors.grey,
                                                       ),

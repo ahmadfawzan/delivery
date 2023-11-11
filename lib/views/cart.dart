@@ -190,22 +190,31 @@ class _CartState extends State<Cart> {
                                                 mainAxisAlignment:
                                                     MainAxisAlignment.start,
                                                 children: [
-                                                  TextWidgets(
-                                                    text:
-                                                        '${cartController.itemsList[index]?['title'][0]['en']}',
-                                                    fontSize: 17,
-                                                    fontWeight: FontWeight.bold,
-                                                    color:
-                                                        const Color(0xff000000),
-                                                  ),
+                                                   SizedBox(
+                                                       width: 120,
+                                                     child: TextWidgets(
+                                                        text:
+                                                            '${cartController.itemsList[index]?['title'][0]['en']}',
+                                                        fontSize: 17,
+                                                        fontWeight: FontWeight.bold,
+                                                        textOverFlow: TextOverflow.ellipsis,
+                                                        color:
+                                                            const Color(0xff000000),
+                                                      ),
+                                                   ),
+
                                                   const SizedBox(
                                                     height: 5,
                                                   ),
-                                                  TextWidgets(
-                                                    text:
-                                                        '${cartController.itemsList[index]?['description'][0]['en']}',
-                                                    fontSize: 11,
-                                                    color: Colors.grey,
+                                                  SizedBox(
+                                                    width: 120,
+                                                    child: TextWidgets(
+                                                      text:
+                                                          '${cartController.itemsList[index]?['description'][0]['en']}',
+                                                      textOverFlow: TextOverflow.ellipsis,
+                                                      fontSize: 11,
+                                                      color: Colors.grey,
+                                                    ),
                                                   ),
                                                   const SizedBox(
                                                     height: 5,
