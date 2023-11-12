@@ -593,12 +593,7 @@ class _CheckOutState extends State<CheckOut> {
                                               .map((String value) {
                                             return DropdownMenuItem<String>(
                                               value: value,
-                                              child: Row(
-                                                children: [
-                                                  const SizedBox(width: 15),
-                                                  Text(value),
-                                                ],
-                                              ),
+                                              child: Text(value),
                                             );
                                           }).toList(),
                                           isExpanded: true,
@@ -662,12 +657,8 @@ class _CheckOutState extends State<CheckOut> {
                                               .map((String value) {
                                             return DropdownMenuItem<String>(
                                               value: value,
-                                              child: Row(
-                                                children: [
-                                                  const SizedBox(width: 15),
-                                                  Text(value),
-                                                ],
-                                              ),
+                                              child: Text(value),
+
                                             );
                                           }).toList(),
                                           isExpanded: true,
