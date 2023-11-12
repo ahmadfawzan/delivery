@@ -655,7 +655,7 @@ class _ItemShopState extends State<ItemShop> {
                                                                 .addItemToCart();
                                                             cartController
                                                                 .counter
-                                                                .add(0);
+                                                                .add(1);
                                                             cartController
                                                                 .saveCounterValues();
                                                             if (mounted) {
@@ -1055,7 +1055,7 @@ class _ItemShopState extends State<ItemShop> {
                                                                 .addItemToCart();
                                                             cartController
                                                                 .counter
-                                                                .add(0);
+                                                                .add(1);
                                                             cartController
                                                                 .saveCounterValues();
                                                             if (mounted) {

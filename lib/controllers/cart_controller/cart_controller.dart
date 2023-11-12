@@ -49,7 +49,7 @@ class CartController extends GetxController {
   }
 
   void decrement(int index) {
-    if (counter[index] > 0) {
+    if (counter[index] > 1) {
       counter[index]--;
       update();
     }
