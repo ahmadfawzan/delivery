@@ -396,7 +396,6 @@ class _CheckOutState extends State<CheckOut> {
                                             ]))
                               ],
                             ),
-
                           ],
                         ),
                       ),
@@ -406,7 +405,7 @@ class _CheckOutState extends State<CheckOut> {
                     ),
                     Container(
                       width: double.infinity,
-                      height: 315,
+                      height: 280,
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(10),
@@ -417,39 +416,227 @@ class _CheckOutState extends State<CheckOut> {
                           ),
                         ],
                       ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisAlignment:
-                            MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment:
-                            CrossAxisAlignment.center,
-                            children: [
-                              const TextWidgets(
-                                text: "Select Payment method",
-                                fontWeight: FontWeight.bold,
-                                fontSize: 14,
-                              ),
-                              DropdownButtonWidget(
-                                items: checkOutController.itemPayment
-                                    .map((String value) {
-                                  return DropdownMenuItem<String>(
-                                    value: value,
-                                    child: Text(value),
-                                  );
-                                }).toList(),
-                                onChanged: (dynamic newValue) {
-                                  setState(() {
-                                    checkOutController.dropDownValueForPayment = newValue.toString();
-                                  });
-                                },
-                                value: checkOutController
-                                    .dropDownValueForPayment,
-                              )
-                            ],
-                          )
-                        ],
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 10.0, right: 10),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                const TextWidgets(
+                                  text: "Select Payment method",
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 14,
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 10.0),
+                                  child: Container(
+                                    width: 125,
+                                    height: 50,
+                                    decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        border: Border.all(
+                                            color:  const Color(0xffEFF1F7), width: 2),
+                                        borderRadius: BorderRadius.circular(10)),
+                                    child: DropdownButtonWidget(
+                                      underline: Container(),
+                                      items: checkOutController.itemPayment
+                                          .map((String value) {
+                                        return DropdownMenuItem<String>(
+                                          value: value,
+                                          child: Row(
+                                            children: [
+                                              const SizedBox(width: 15),
+                                              Text(value),
+                                            ],
+                                          ),
+                                        );
+                                      }).toList(),
+                                      isExpanded: true,
+                                     icon: const Icon(
+                                        Icons.arrow_drop_down,
+                                        color: Color(0xff16CB96),
+                                      ),
+                                      onChanged: (dynamic newValue) {
+                                        setState(() {
+                                          checkOutController
+                                                  .dropDownValueForPayment =
+                                              newValue.toString();
+                                        });
+                                      },
+                                      value: checkOutController
+                                          .dropDownValueForPayment,
+                                    ),
+                                  ),
+                                ),
+
+                              ],
+                            ),
+                            const SizedBox(height: 10,),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                const TextWidgets(
+                                  text: "Select Date Order",
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 14,
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 10.0),
+                                  child: Container(
+                                    width: 160,
+                                    height: 55,
+                                    decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        border: Border.all(
+                                            color:  const Color(0xffEFF1F7), width: 2),
+                                        borderRadius: BorderRadius.circular(10)),
+                                    child: DropdownButtonWidget(
+                                      underline: Container(),
+                                      items: checkOutController.itemDate
+                                          .map((String value) {
+                                        return DropdownMenuItem<String>(
+                                          value: value,
+                                          child: Row(
+                                            children: [
+                                              const SizedBox(width: 5),
+                                              Text(value),
+                                            ],
+                                          ),
+                                        );
+                                      }).toList(),
+                                      isExpanded: true,
+                                      iconVisibility: const Visibility(
+                                      visible: false,
+                                      child: Icon(Icons.arrow_downward),
+                                    ),
+                                      onChanged: (dynamic newValue) {
+                                        setState(() {
+                                          checkOutController
+                                              .selectedDate =
+                                              newValue.toString();
+                                        });
+                                      },
+                                      value: checkOutController
+                                          .selectedDate,
+                                    ),
+                                  ),
+                                ),
+
+                              ],
+                            ),
+                            const SizedBox(height: 15,),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const TextWidgets(
+                                  text: "Select Range Time Order",
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 14,
+                                ),
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 10.0),
+                                      child: Container(
+                                        width: 120,
+                                        height: 60,
+                                        decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            border: Border.all(
+                                                color:  const Color(0xffEFF1F7), width: 2),
+                                            borderRadius: BorderRadius.circular(10)),
+                                        child: DropdownButtonWidget(
+                                          underline: Container(),
+                                          items: checkOutController.itemDate
+                                              .map((String value) {
+                                            return DropdownMenuItem<String>(
+                                              value: value,
+                                              child: Row(
+                                                crossAxisAlignment: CrossAxisAlignment.center,
+                                                mainAxisAlignment: MainAxisAlignment.start,
+                                                children: [
+                                                  const SizedBox(width: 5),
+                                                  TextWidgets(text:value ,textAlign: TextAlign.center,),
+                                                ],
+                                              ),
+                                            );
+                                          }).toList(),
+                                          isExpanded: true,
+                                          icon: const Icon(
+                                            Icons.arrow_drop_down,
+                                            color: Color(0xff16CB96),
+                                          ),
+                                          onChanged: (dynamic newValue) {
+                                            setState(() {
+                                              checkOutController
+                                                  .selectedDate =
+                                                  newValue.toString();
+                                            });
+                                          },
+                                          value: checkOutController
+                                              .selectedDate,
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(width: 15,),
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 10.0),
+                                      child: Container(
+                                        width: 120,
+                                        height: 60,
+                                        decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            border: Border.all(
+                                                color:  const Color(0xffEFF1F7), width: 2),
+                                            borderRadius: BorderRadius.circular(10)),
+                                        child: DropdownButtonWidget(
+
+                                          underline: Container(),
+                                          items: checkOutController.itemDate
+                                              .map((String value) {
+                                            return DropdownMenuItem<String>(
+                                              value: value,
+                                              child: Row(
+                                                crossAxisAlignment: CrossAxisAlignment.center,
+                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                children: [
+                                                  const SizedBox(width: 5),
+                                                  TextWidgets(text:value ,textAlign: TextAlign.center,),
+                                                ],
+                                              ),
+                                            );
+                                          }).toList(),
+                                          isExpanded: true,
+                                          icon: const Icon(
+                                            Icons.arrow_drop_down,
+                                            color: Color(0xff16CB96),
+                                          ),
+                                          onChanged: (dynamic newValue) {
+                                            setState(() {
+                                              checkOutController
+                                                  .selectedDate =
+                                                  newValue.toString();
+                                            });
+                                          },
+                                          value: checkOutController
+                                              .selectedDate,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                )
+
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ]);

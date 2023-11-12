@@ -108,7 +108,7 @@ class _HomePageState extends State<HomePage> {
                     fontSize: 16,
                     color: Colors.white,
                   ),
-                  onTap: (){
+                  onTap: () {
                     Get.toNamed('deleteAddress');
                   },
                 ),
@@ -304,25 +304,24 @@ class _HomePageState extends State<HomePage> {
                                       ...addressController.addressList
                                           .map((item) {
                                         return PopupMenuItem<String>(
+                                          padding: const EdgeInsets.all(4),
                                           value: item.type == 1
                                               ? "Home (${item.street.toString()})"
                                               : item.type == 2
                                                   ? "Work (${item.street.toString()})"
                                                   : "Other (${item.street.toString()})",
-                                          child: Container(
-                                            width: 190,
-                                            padding: const EdgeInsets.only(
-                                                right: 8.0),
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                const SizedBox(
-                                                  height: 10,
-                                                ),
-                                                TextWidgets(
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: [
+                                              const SizedBox(
+                                                height: 10,
+                                              ),
+                                              Align(
+                                                alignment: Alignment.centerLeft,
+                                                child: TextWidgets(
                                                   text: item.type == 1
                                                       ? item.street.toString()
                                                       : item.type == 2
@@ -330,38 +329,36 @@ class _HomePageState extends State<HomePage> {
                                                               .toString()
                                                           : item.street
                                                               .toString(),
-                                                  textOverFlow:
-                                                      TextOverflow.ellipsis,
                                                   fontSize: 13,
                                                   fontWeight: FontWeight.bold,
                                                 ),
-                                                const SizedBox(
-                                                  height: 6,
+                                              ),
+                                              const SizedBox(
+                                                height: 6,
+                                              ),
+                                              TextWidgets(
+                                                text: item.type == 1
+                                                    ? '${item.city.toString()} - ${item.apartmentNum.toString()}'
+                                                    : item.type == 2
+                                                        ? '${item.city.toString()} - ${item.apartmentNum.toString()}'
+                                                        : '${item.city.toString()} - ${item.apartmentNum.toString()}',
+                                                textOverFlow:
+                                                    TextOverflow.ellipsis,
+                                                fontSize: 10,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                              const SizedBox(
+                                                height: 10,
+                                              ),
+                                              Theme(
+                                                data: ThemeData(
+                                                  dividerColor: Colors.black,
                                                 ),
-                                                TextWidgets(
-                                                  text: item.type == 1
-                                                      ? '${item.city.toString()} - ${item.apartmentNum.toString()}'
-                                                      : item.type == 2
-                                                          ? '${item.city.toString()} - ${item.apartmentNum.toString()}'
-                                                          : '${item.city.toString()} - ${item.apartmentNum.toString()}',
-                                                  textOverFlow:
-                                                      TextOverflow.ellipsis,
-                                                  fontSize: 10,
-                                                  fontWeight: FontWeight.bold,
+                                                child: const PopupMenuDivider(
+                                                  height: 4,
                                                 ),
-                                                const SizedBox(
-                                                  height: 10,
-                                                ),
-                                                Theme(
-                                                  data: ThemeData(
-                                                    dividerColor: Colors.black,
-                                                  ),
-                                                  child: const PopupMenuDivider(
-                                                    height: 4,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
+                                              ),
+                                            ],
                                           ),
                                         );
                                       }),
@@ -396,9 +393,8 @@ class _HomePageState extends State<HomePage> {
                             highlightColor: Colors.grey[100]!,
                             child: SingleChildScrollView(
                               child: StaggeredGridView.countBuilder(
-                                staggeredTileBuilder: (index) =>
-                                    StaggeredTile.count(
-                                        1, index.isEven ? 1.3 : 1.6),
+                                staggeredTileBuilder: (int index) =>
+                                    const StaggeredTile.fit(1),
                                 physics: const NeverScrollableScrollPhysics(),
                                 shrinkWrap: true,
                                 scrollDirection: Axis.vertical,
@@ -421,9 +417,8 @@ class _HomePageState extends State<HomePage> {
                           )
                         : SingleChildScrollView(
                             child: StaggeredGridView.countBuilder(
-                              staggeredTileBuilder: (index) =>
-                                  StaggeredTile.count(
-                                      1, index.isEven ? 1.3 : 1.6),
+                              staggeredTileBuilder: (int index) =>
+                                  const StaggeredTile.fit(1),
                               physics: const NeverScrollableScrollPhysics(),
                               shrinkWrap: true,
                               scrollDirection: Axis.vertical,
@@ -448,15 +443,11 @@ class _HomePageState extends State<HomePage> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(top: 25.0),
-                                          child: ImageNetworkWidget(
+                                       ImageNetworkWidget(
                                             image:
                                                 'https://news.wasiljo.com/${categorieController.categorieList[index].imageUrl}',
                                             fit: BoxFit.fitWidth,
                                           ),
-                                        ),
                                         Padding(
                                           padding: const EdgeInsets.only(
                                               bottom: 12.0),

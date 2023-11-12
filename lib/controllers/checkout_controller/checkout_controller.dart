@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../models/address_model/address_model.dart';
 import '../address_controller/address_controller.dart';
@@ -10,6 +11,10 @@ class CheckOutController extends GetxController {
   final RxString phoneNumber=''.obs;
   String dropDownValueForPayment = 'Cash';
   var itemPayment=['Cash','Wallet'];
+  late String selectedDate=DateFormat('yyyy-MM-dd').format(DateTime.now().add(const Duration(days: 1)));
+  late List<String> itemDate  = [
+    for (int i = 0; i < 7; i++) DateFormat('yyyy-MM-dd').format(DateTime.now().add(Duration(days: i))),
+  ];
   @override
   void onInit() {
     sharedPreferencesPhone();

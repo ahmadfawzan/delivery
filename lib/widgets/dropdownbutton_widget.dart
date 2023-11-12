@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
 class DropdownButtonWidget extends StatefulWidget {
-  final List<DropdownMenuItem<String>> items;
+  final List<DropdownMenuItem> items;
   final ValueChanged? onChanged;
   final Icon? icon;
+  final Visibility? iconVisibility;
   final dynamic value;
   final DropdownButtonBuilder? selectedItemBuilder;
   final Text? hint;
@@ -14,7 +15,7 @@ class DropdownButtonWidget extends StatefulWidget {
   final TextStyle? style;
   bool isDense;
   final Color? dropdownColor;
-
+  final Widget? underline;
   DropdownButtonWidget({
     Key? key,
     required this.items,
@@ -29,7 +30,7 @@ class DropdownButtonWidget extends StatefulWidget {
     this.elevation=8,
     this.isDense=false,
     this.isExpanded=false,
-    this.dropdownColor,
+    this.dropdownColor, this.underline, this.iconVisibility,
   }) : super(key: key);
 
   @override
@@ -42,7 +43,7 @@ class _DropdownButtonWidgetState extends State<DropdownButtonWidget> {
     return DropdownButton(
       items: widget.items,
       onChanged: widget.onChanged,
-      icon: widget.icon,
+      icon: widget.icon ?? widget.iconVisibility,
       value: widget.value,
       selectedItemBuilder: widget.selectedItemBuilder,
       hint: widget.hint,
@@ -53,6 +54,7 @@ class _DropdownButtonWidgetState extends State<DropdownButtonWidget> {
       style: widget.style,
       isDense: widget.isDense,
       dropdownColor: widget.dropdownColor,
+      underline: widget.underline,
     );
   }
 }

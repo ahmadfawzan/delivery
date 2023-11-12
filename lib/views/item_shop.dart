@@ -181,25 +181,25 @@ class _ItemShopState extends State<ItemShop> {
                                         ...addressController.addressList
                                             .map((item) {
                                           return PopupMenuItem<String>(
+                                            padding: const EdgeInsets.all(4),
                                             value: item.type == 1
                                                 ? "Home (${item.street.toString()})"
                                                 : item.type == 2
                                                     ? "Work (${item.street.toString()})"
                                                     : "Other (${item.street.toString()})",
-                                            child: Container(
-                                              width: 190,
-                                              padding: const EdgeInsets.only(
-                                                  right: 8.0),
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  const SizedBox(
-                                                    height: 10,
-                                                  ),
-                                                  TextWidgets(
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              children: [
+                                                const SizedBox(
+                                                  height: 10,
+                                                ),
+                                                Align(
+                                                  alignment:
+                                                      Alignment.centerLeft,
+                                                  child: TextWidgets(
                                                     text: item.type == 1
                                                         ? item.street.toString()
                                                         : item.type == 2
@@ -207,40 +207,36 @@ class _ItemShopState extends State<ItemShop> {
                                                                 .toString()
                                                             : item.street
                                                                 .toString(),
-                                                    textOverFlow:
-                                                        TextOverflow.ellipsis,
                                                     fontSize: 13,
                                                     fontWeight: FontWeight.bold,
                                                   ),
-                                                  const SizedBox(
-                                                    height: 6,
+                                                ),
+                                                const SizedBox(
+                                                  height: 6,
+                                                ),
+                                                TextWidgets(
+                                                  text: item.type == 1
+                                                      ? '${item.city.toString()} - ${item.apartmentNum.toString()}'
+                                                      : item.type == 2
+                                                          ? '${item.city.toString()} - ${item.apartmentNum.toString()}'
+                                                          : '${item.city.toString()} - ${item.apartmentNum.toString()}',
+                                                  textOverFlow:
+                                                      TextOverflow.ellipsis,
+                                                  fontSize: 10,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                                const SizedBox(
+                                                  height: 10,
+                                                ),
+                                                Theme(
+                                                  data: ThemeData(
+                                                    dividerColor: Colors.black,
                                                   ),
-                                                  TextWidgets(
-                                                    text: item.type == 1
-                                                        ? '${item.city.toString()} - ${item.apartmentNum.toString()}'
-                                                        : item.type == 2
-                                                            ? '${item.city.toString()} - ${item.apartmentNum.toString()}'
-                                                            : '${item.city.toString()} - ${item.apartmentNum.toString()}',
-                                                    textOverFlow:
-                                                        TextOverflow.ellipsis,
-                                                    fontSize: 10,
-                                                    fontWeight: FontWeight.bold,
+                                                  child: const PopupMenuDivider(
+                                                    height: 4,
                                                   ),
-                                                  const SizedBox(
-                                                    height: 10,
-                                                  ),
-                                                  Theme(
-                                                    data: ThemeData(
-                                                      dividerColor:
-                                                          Colors.black,
-                                                    ),
-                                                    child:
-                                                        const PopupMenuDivider(
-                                                      height: 4,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
+                                                ),
+                                              ],
                                             ),
                                           );
                                         }),
@@ -248,12 +244,7 @@ class _ItemShopState extends State<ItemShop> {
                                           child: const TextWidgets(
                                               text: '+Add new address'),
                                           onTap: () {
-                                            Navigator.of(context).push(
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    const AddNewAddress(),
-                                              ),
-                                            );
+                                            Get.toNamed("/addNewAddress");
                                           },
                                         )
                                       ])),
@@ -480,7 +471,8 @@ class _ItemShopState extends State<ItemShop> {
                                                       .en!
                                                       .toString(),
                                                   fontSize: 15,
-                                                  textOverFlow: TextOverflow.ellipsis,
+                                                  textOverFlow:
+                                                      TextOverflow.ellipsis,
                                                   fontWeight: FontWeight.bold,
                                                   color:
                                                       const Color(0xff000000),
@@ -494,7 +486,8 @@ class _ItemShopState extends State<ItemShop> {
                                                       .description
                                                       .en
                                                       .toString(),
-                                                  textOverFlow: TextOverflow.ellipsis,
+                                                  textOverFlow:
+                                                      TextOverflow.ellipsis,
                                                   fontSize: 11,
                                                   color: Colors.grey,
                                                 ),
@@ -874,7 +867,9 @@ class _ItemShopState extends State<ItemShop> {
                                                         fontSize: 15,
                                                         fontWeight:
                                                             FontWeight.bold,
-                                                        textOverFlow: TextOverflow.ellipsis,
+                                                        textOverFlow:
+                                                            TextOverflow
+                                                                .ellipsis,
                                                         color: const Color(
                                                             0xff000000),
                                                       ),
@@ -887,7 +882,9 @@ class _ItemShopState extends State<ItemShop> {
                                                             .description!
                                                             .en
                                                             .toString(),
-                                                        textOverFlow: TextOverflow.ellipsis,
+                                                        textOverFlow:
+                                                            TextOverflow
+                                                                .ellipsis,
                                                         fontSize: 11,
                                                         color: Colors.grey,
                                                       ),
