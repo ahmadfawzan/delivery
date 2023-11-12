@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../controllers/address_controller/address_controller.dart';
+import '../controllers/cart_controller/cart_controller.dart';
 import '../controllers/checkout_controller/checkout_controller.dart';
 import '../widgets/dropdownbutton_widget.dart';
 
@@ -18,12 +19,13 @@ class CheckOut extends StatefulWidget {
 class _CheckOutState extends State<CheckOut> {
   final AddressController addressController = Get.find();
   final CheckOutController checkOutController = Get.find();
+  final CartController cartController = Get.find();
   late GoogleMapController _controller;
+  late List<String> hourList;
 
   @override
   void initState() {
     checkOutController.PopMenuValueCheckOut();
-
     super.initState();
   }
 
@@ -438,8 +440,10 @@ class _CheckOutState extends State<CheckOut> {
                                     decoration: BoxDecoration(
                                         color: Colors.white,
                                         border: Border.all(
-                                            color:  const Color(0xffEFF1F7), width: 2),
-                                        borderRadius: BorderRadius.circular(10)),
+                                            color: const Color(0xffEFF1F7),
+                                            width: 2),
+                                        borderRadius:
+                                            BorderRadius.circular(10)),
                                     child: DropdownButtonWidget(
                                       underline: Container(),
                                       items: checkOutController.itemPayment
@@ -455,7 +459,7 @@ class _CheckOutState extends State<CheckOut> {
                                         );
                                       }).toList(),
                                       isExpanded: true,
-                                     icon: const Icon(
+                                      icon: const Icon(
                                         Icons.arrow_drop_down,
                                         color: Color(0xff16CB96),
                                       ),
@@ -464,6 +468,10 @@ class _CheckOutState extends State<CheckOut> {
                                           checkOutController
                                                   .dropDownValueForPayment =
                                               newValue.toString();
+                                          checkOutController
+                                                  .selectedPaymentValue =
+                                              checkOutController
+                                                  .paymentOptions[newValue]!;
                                         });
                                       },
                                       value: checkOutController
@@ -471,10 +479,11 @@ class _CheckOutState extends State<CheckOut> {
                                     ),
                                   ),
                                 ),
-
                               ],
                             ),
-                            const SizedBox(height: 10,),
+                            const SizedBox(
+                              height: 10,
+                            ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               crossAxisAlignment: CrossAxisAlignment.center,
@@ -492,8 +501,10 @@ class _CheckOutState extends State<CheckOut> {
                                     decoration: BoxDecoration(
                                         color: Colors.white,
                                         border: Border.all(
-                                            color:  const Color(0xffEFF1F7), width: 2),
-                                        borderRadius: BorderRadius.circular(10)),
+                                            color: const Color(0xffEFF1F7),
+                                            width: 2),
+                                        borderRadius:
+                                            BorderRadius.circular(10)),
                                     child: DropdownButtonWidget(
                                       underline: Container(),
                                       items: checkOutController.itemDate
@@ -510,25 +521,24 @@ class _CheckOutState extends State<CheckOut> {
                                       }).toList(),
                                       isExpanded: true,
                                       iconVisibility: const Visibility(
-                                      visible: false,
-                                      child: Icon(Icons.arrow_downward),
-                                    ),
+                                        visible: false,
+                                        child: Icon(Icons.arrow_downward),
+                                      ),
                                       onChanged: (dynamic newValue) {
                                         setState(() {
-                                          checkOutController
-                                              .selectedDate =
+                                          checkOutController.selectedDate =
                                               newValue.toString();
                                         });
                                       },
-                                      value: checkOutController
-                                          .selectedDate,
+                                      value: checkOutController.selectedDate,
                                     ),
                                   ),
                                 ),
-
                               ],
                             ),
-                            const SizedBox(height: 15,),
+                            const SizedBox(
+                              height: 15,
+                            ),
                             Column(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -544,26 +554,49 @@ class _CheckOutState extends State<CheckOut> {
                                   children: [
                                     Padding(
                                       padding: const EdgeInsets.only(top: 10.0),
-                                      child: Container(
-                                        width: 120,
+                                      child: SizedBox(
+                                        width: 140,
                                         height: 60,
-                                        decoration: BoxDecoration(
-                                            color: Colors.white,
-                                            border: Border.all(
-                                                color:  const Color(0xffEFF1F7), width: 2),
-                                            borderRadius: BorderRadius.circular(10)),
-                                        child: DropdownButtonWidget(
-                                          underline: Container(),
-                                          items: checkOutController.itemDate
+                                        child: DropdownButtonFormField(
+                                          decoration: InputDecoration(
+                                            labelText: 'From Houre',
+                                            labelStyle: const TextStyle(
+                                              color: Color(0xff7E7E7E),
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                            focusedBorder: OutlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(10.0),
+                                              borderSide: const BorderSide(
+                                                color: Color(0xffEFF1F7),
+                                                width: 2,
+                                              ),
+                                            ),
+                                            disabledBorder: OutlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(10.0),
+                                              borderSide: const BorderSide(
+                                                color: Color(0xffEFF1F7),
+                                                width: 2,
+                                              ),
+                                            ),
+                                            enabledBorder: OutlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(10.0),
+                                              borderSide: const BorderSide(
+                                                color: Color(0xffEFF1F7),
+                                                width: 2,
+                                              ),
+                                            ),
+                                          ),
+                                          items: checkOutController.hourList
                                               .map((String value) {
                                             return DropdownMenuItem<String>(
                                               value: value,
                                               child: Row(
-                                                crossAxisAlignment: CrossAxisAlignment.center,
-                                                mainAxisAlignment: MainAxisAlignment.start,
                                                 children: [
-                                                  const SizedBox(width: 5),
-                                                  TextWidgets(text:value ,textAlign: TextAlign.center,),
+                                                  const SizedBox(width: 15),
+                                                  Text(value),
                                                 ],
                                               ),
                                             );
@@ -576,39 +609,63 @@ class _CheckOutState extends State<CheckOut> {
                                           onChanged: (dynamic newValue) {
                                             setState(() {
                                               checkOutController
-                                                  .selectedDate =
+                                                      .selectedFromTime =
                                                   newValue.toString();
                                             });
                                           },
                                           value: checkOutController
-                                              .selectedDate,
+                                              .selectedFromTime,
                                         ),
                                       ),
                                     ),
-                                    const SizedBox(width: 15,),
+                                    const SizedBox(
+                                      width: 15,
+                                    ),
                                     Padding(
                                       padding: const EdgeInsets.only(top: 10.0),
-                                      child: Container(
-                                        width: 120,
+                                      child: SizedBox(
+                                        width: 140,
                                         height: 60,
-                                        decoration: BoxDecoration(
-                                            color: Colors.white,
-                                            border: Border.all(
-                                                color:  const Color(0xffEFF1F7), width: 2),
-                                            borderRadius: BorderRadius.circular(10)),
-                                        child: DropdownButtonWidget(
-
-                                          underline: Container(),
-                                          items: checkOutController.itemDate
+                                        child: DropdownButtonFormField(
+                                          decoration: InputDecoration(
+                                            labelText: 'to Houre',
+                                            labelStyle: const TextStyle(
+                                              color: Color(0xff7E7E7E),
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                            focusedBorder: OutlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(10.0),
+                                              borderSide: const BorderSide(
+                                                color: Color(0xffEFF1F7),
+                                                width: 2,
+                                              ),
+                                            ),
+                                            disabledBorder: OutlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(10.0),
+                                              borderSide: const BorderSide(
+                                                color: Color(0xffEFF1F7),
+                                                width: 2,
+                                              ),
+                                            ),
+                                            enabledBorder: OutlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(10.0),
+                                              borderSide: const BorderSide(
+                                                color: Color(0xffEFF1F7),
+                                                width: 2,
+                                              ),
+                                            ),
+                                          ),
+                                          items: checkOutController.hourList
                                               .map((String value) {
                                             return DropdownMenuItem<String>(
                                               value: value,
                                               child: Row(
-                                                crossAxisAlignment: CrossAxisAlignment.center,
-                                                mainAxisAlignment: MainAxisAlignment.center,
                                                 children: [
-                                                  const SizedBox(width: 5),
-                                                  TextWidgets(text:value ,textAlign: TextAlign.center,),
+                                                  const SizedBox(width: 15),
+                                                  Text(value),
                                                 ],
                                               ),
                                             );
@@ -621,24 +678,187 @@ class _CheckOutState extends State<CheckOut> {
                                           onChanged: (dynamic newValue) {
                                             setState(() {
                                               checkOutController
-                                                  .selectedDate =
+                                                      .selectedToTime =
                                                   newValue.toString();
                                             });
                                           },
-                                          value: checkOutController
-                                              .selectedDate,
+                                          value:
+                                              checkOutController.selectedToTime,
                                         ),
                                       ),
                                     ),
                                   ],
-                                )
-
+                                ),
                               ],
                             ),
                           ],
                         ),
                       ),
                     ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    GetBuilder(
+                      init: CartController(),
+                      builder: (cartController) => Container(
+                        width: double.infinity,
+                        height: cartController.itemsList.length * 80.0,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.5),
+                              blurRadius: 3,
+                            ),
+                          ],
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 10.0, right: 10),
+                          child: ListView.builder(
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemCount: cartController.itemsList.length,
+                              itemBuilder: (context, index) {
+                                return Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Column( crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                          children: [
+                                            TextWidgets(
+                                              text:
+                                              '${cartController.itemsList[index]?['title'][0]['en']}',
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.bold,
+                                              textOverFlow: TextOverflow.ellipsis,
+                                              color: const Color(0xff000000),
+                                            ),
+                                            TextWidgets(
+                                              text:
+                                              '${cartController.itemsList[index]?['description'][0]['en']}',
+                                              textOverFlow: TextOverflow.ellipsis,
+                                              fontSize: 11,
+                                              color: Colors.grey,
+                                            ),
+                                            TextWidgets(
+                                              text:
+                                              '${cartController.calculateOneItems(index) != 0 ? cartController.calculateOneItems(index).toDouble() : cartController.itemsList[index]!['price'].toString()}JD',
+                                              fontSize: 15,
+                                              fontWeight:
+                                              FontWeight.bold,
+                                              color: const Color(
+                                                  0xff000000),
+                                              textOverFlow:
+                                              TextOverflow.ellipsis,
+                                            ),
+                                          ],
+                                        ),
+                                        Container(
+                                          height: 40,
+                                          width: 100,
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                            BorderRadius
+                                                .circular(25),
+                                            color: Colors.white,
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: Colors.grey
+                                                    .withOpacity(
+                                                    0.5),
+                                                spreadRadius: 5,
+                                                blurRadius: 7,
+                                                offset: const Offset(
+                                                    0,
+                                                    3), // changes position of shadow
+                                              ),
+                                            ],
+                                          ),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                            MainAxisAlignment
+                                                .spaceBetween,
+                                            crossAxisAlignment:
+                                            CrossAxisAlignment
+                                                .center,
+                                            children: [
+                                              SizedBox(
+                                                width: 30,
+                                                child: IconButton(
+                                                    onPressed:
+                                                        () {
+                                                      cartController
+                                                          .increment(
+                                                          index);
+                                                    },
+                                                    icon:
+                                                    const Icon(
+                                                      Icons.add,
+                                                      size: 20,
+                                                      color: Color(
+                                                          0xff15CA95),
+                                                    )),
+                                              ),
+                                              SizedBox(
+                                                width: 40,
+                                                child: Center(
+                                                  child: cartController
+                                                      .counter
+                                                      .isEmpty
+                                                      ? const TextWidgets(
+                                                    text:
+                                                    "0",
+                                                    fontWeight:
+                                                    FontWeight.bold,
+                                                    textOverFlow:
+                                                    TextOverflow.ellipsis,
+                                                    fontSize:
+                                                    13,
+                                                  )
+                                                      : TextWidgets(
+                                                    text:
+                                                    "${cartController.counter[index]}",
+                                                    fontWeight:
+                                                    FontWeight.bold,
+                                                    textOverFlow:
+                                                    TextOverflow.ellipsis,
+                                                    fontSize:
+                                                    13,
+                                                  ),
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                width: 30,
+                                                child: IconButton(
+                                                    onPressed:
+                                                        () {
+                                                      cartController
+                                                          .decrement(
+                                                          index);
+                                                    },
+                                                    icon:
+                                                    const Icon(
+                                                      Icons
+                                                          .remove,
+                                                      size: 20,
+                                                      color: Color(
+                                                          0xff15CA95),
+                                                    )),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    );
+                              }),
+                        ),
+                      ),
+                    )
                   ]);
             })),
       ),

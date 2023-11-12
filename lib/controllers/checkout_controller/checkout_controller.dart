@@ -10,10 +10,21 @@ class CheckOutController extends GetxController {
   List popMenuValueCheckOut = [];
   final RxString phoneNumber=''.obs;
   String dropDownValueForPayment = 'Cash';
-  var itemPayment=['Cash','Wallet'];
+  var itemPayment=[ 'Cash',
+    'Wallet',];
+  late int selectedPaymentValue=1;
+  Map<String, int> paymentOptions = {
+    'Cash': 1,
+    'Wallet': 2,
+  };
   late String selectedDate=DateFormat('yyyy-MM-dd').format(DateTime.now().add(const Duration(days: 1)));
   late List<String> itemDate  = [
     for (int i = 0; i < 7; i++) DateFormat('yyyy-MM-dd').format(DateTime.now().add(Duration(days: i))),
+  ];
+  String selectedFromTime = DateFormat('hh:mm a').format(DateTime.now().add(const Duration(hours: 12)));
+  String selectedToTime = DateFormat('hh:mm a').format(DateTime.now().add(const Duration(hours: 4)));
+  List<String> hourList = [
+  for (int hour = 1; hour <= 12; hour++) DateFormat('hh:mm a').format(DateTime.now().add(Duration(hours: hour))),
   ];
   @override
   void onInit() {
