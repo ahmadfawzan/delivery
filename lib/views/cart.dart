@@ -88,99 +88,31 @@ class _CartState extends State<Cart> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,
                                           children: [
-                                            cartController.itemsList[index]
-                                                        ?["quantity"] !=
-                                                    0
-                                                ? ClipRRect(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            10),
-                                                    child: ImageNetworkWidget(
-                                                      image:
-                                                          'https://news.wasiljo.com/${cartController.itemsList[index]?["imageUrl"]}',
-                                                      height: 110,
-                                                      width: 110,
-                                                      fit: BoxFit.fitWidth,
-                                                      errorbuilder:
-                                                          (BuildContext context,
-                                                              Object exception,
-                                                              StackTrace?
-                                                                  stackTrace) {
-                                                        return Image.asset(
-                                                          'assets/images/image2.png',
-                                                          height: 110,
-                                                          width: 110,
-                                                          fit: BoxFit.fitWidth,
-                                                        );
-                                                      },
-                                                    ),
-                                                  )
-                                                : SizedBox(
-                                                    width: 110,
+
+                                            ClipRRect(
+                                              borderRadius:
+                                              BorderRadius.circular(
+                                                  10),
+                                              child: ImageNetworkWidget(
+                                                image:
+                                                'https://news.wasiljo.com/${cartController.itemsList[index]?["imageUrl"]}',
+                                                height: 110,
+                                                width: 110,
+                                                fit: BoxFit.fitHeight,
+                                                errorbuilder:
+                                                    (BuildContext context,
+                                                    Object exception,
+                                                    StackTrace?
+                                                    stackTrace) {
+                                                  return Image.asset(
+                                                    'assets/images/image2.png',
                                                     height: 110,
-                                                    child: Stack(
-                                                      children: [
-                                                        ClipRRect(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(10),
-                                                          child:
-                                                              ImageNetworkWidget(
-                                                            image:
-                                                                'https://news.wasiljo.com/${cartController.itemsList[index]?["image_url"]}',
-                                                            height: 110,
-                                                            width: 110,
-                                                            fit:
-                                                                BoxFit.fitWidth,
-                                                            errorbuilder:
-                                                                (BuildContext
-                                                                        context,
-                                                                    Object
-                                                                        exception,
-                                                                    StackTrace?
-                                                                        stackTrace) {
-                                                              return Image
-                                                                  .asset(
-                                                                'assets/images/image2.png',
-                                                                height: 110,
-                                                                width: 110,
-                                                                fit: BoxFit
-                                                                    .fitWidth,
-                                                              );
-                                                            },
-                                                          ),
-                                                        ),
-                                                        ClipRRect(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(10),
-                                                          child: const Opacity(
-                                                            opacity: 0.5,
-                                                            child: ModalBarrier(
-                                                                dismissible:
-                                                                    false,
-                                                                color: Colors
-                                                                    .black),
-                                                          ),
-                                                        ),
-                                                        Center(
-                                                          child: TextWidgets(
-                                                            text: cartController
-                                                                            .itemsList[index]
-                                                                        ?[
-                                                                        "quantity"] ==
-                                                                    0
-                                                                ? "Not Available"
-                                                                : "",
-                                                            color: Colors.white,
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                            fontSize: 15.5,
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
+                                                    width: 110,
+                                                    fit: BoxFit.fitHeight,
+                                                  );
+                                                },
+                                              ),
+                                            ),
                                             Padding(
                                               padding: const EdgeInsets.only(
                                                   top: 15.0),

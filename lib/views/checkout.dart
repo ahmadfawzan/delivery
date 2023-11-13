@@ -870,7 +870,7 @@ class _CheckOutState extends State<CheckOut> {
                           ],
                         ),
                         child:Padding(
-                          padding: const EdgeInsets.only(left: 10.0,right: 10,top: 20),
+                          padding: const EdgeInsets.only(left: 10.0,right: 13,top: 20),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.start,
