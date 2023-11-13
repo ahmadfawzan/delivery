@@ -8,7 +8,7 @@ class ItemShop {
   int? id;
   Title? title;
   Title? description;
-  int? price;
+  num?  price;
   int? shopId;
   int? categoryId;
   int? active;
