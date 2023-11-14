@@ -4,8 +4,6 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../services/user/post_user/post_login_user.dart';
 import '../../../views/about_us.dart';
-import '../../../views/login.dart';
-import '../../../views/signup.dart';
 import '../../../widgets/text_widgets.dart';
 
 Future localStorageSignUpUser(
@@ -18,7 +16,7 @@ Future localStorageSignUpUser(
     {required BuildContext context}) async {
   SharedPreferences signUpUser = await SharedPreferences.getInstance();
   signUpUser.setString('name', name.text);
-  signUpUser.setString('email', email.text);;
+  signUpUser.setString('email', email.text);
   signUpUser.setString('mobileNumber', mobileNumber.text);
   signUpUser.setString('Password', password.text);
   signUpUser.setString('dropDownValue', dropDownValue);
@@ -37,8 +35,7 @@ Future localStorageSignUpUser(
       getPassword.toString().isNotEmpty &&
       getDropDownValue!.isNotEmpty &&
       getCountryCode!.isNotEmpty) {
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => const Login()));
+    Get.toNamed("/login");
     if (!context.mounted) return;
     AwesomeDialog(
       animType: AnimType.leftSlide,
@@ -54,9 +51,7 @@ Future localStorageSignUpUser(
       ),
     ).show();
   } else {
-    if (!context.mounted) return;
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => const SignUp()));
+    Get.toNamed("/signUp");
   }
 }
 
@@ -78,8 +73,7 @@ Future localStorageLoginUser(TextEditingController mobileNumber,
     PostLogin(mobileNumber, countryCode, password, context: context);
   } else {
     if (!context.mounted) return;
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => const Login()));
+    Get.toNamed("/login");
   }
 }
 

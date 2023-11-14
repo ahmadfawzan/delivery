@@ -1076,7 +1076,7 @@ class _ShopsState extends State<Shops> {
                                                           color: Colors.grey,
                                                         ),
                                                         const SizedBox(
-                                                          height: 40,
+                                                          height: 35,
                                                         ),
                                                         Row(
                                                           children: [

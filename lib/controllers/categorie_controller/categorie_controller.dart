@@ -9,6 +9,9 @@ class CategorieController extends GetxController {
   final RxList<String> categorieError = <String>[].obs;
   int? id;
   String? title;
+  num? expeditedFees;
+  num? deliveryFee;
+  num? commesion;
   String? popMenuValue;
   @override
   void onInit() {

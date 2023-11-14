@@ -6,8 +6,11 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../controllers/address_controller/address_controller.dart';
 import '../controllers/cart_controller/cart_controller.dart';
+import '../controllers/categorie_controller/categorie_controller.dart';
 import '../controllers/checkout_controller/checkout_controller.dart';
+import '../services/order/post_order/post_order.dart';
 import '../widgets/dropdownbutton_widget.dart';
+import '../widgets/material_button_widgets.dart';
 
 class CheckOut extends StatefulWidget {
   const CheckOut({super.key});
@@ -20,6 +23,7 @@ class _CheckOutState extends State<CheckOut> {
   final AddressController addressController = Get.find();
   final CheckOutController checkOutController = Get.find();
   final CartController cartController = Get.find();
+  final CategorieController categorieController = Get.find();
   late GoogleMapController _controller;
   late List<String> hourList;
 
@@ -31,7 +35,13 @@ class _CheckOutState extends State<CheckOut> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return WillPopScope(
+        onWillPop: () async {
+      checkOutController.changeAddressList.clear();
+      Get.back();
+      return true;
+    },
+    child:Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Padding(
@@ -604,12 +614,12 @@ class _CheckOutState extends State<CheckOut> {
                                           onChanged: (dynamic newValue) {
                                             setState(() {
                                               checkOutController
-                                                      .selectedFromTime =
+                                                  .selectedFromTime =
                                                   newValue.toString();
                                             });
                                           },
-                                          value: checkOutController
-                                              .selectedFromTime,
+                                          value:
+                                          checkOutController.selectedFromTime,
                                         ),
                                       ),
                                     ),
@@ -658,7 +668,6 @@ class _CheckOutState extends State<CheckOut> {
                                             return DropdownMenuItem<String>(
                                               value: value,
                                               child: Text(value),
-
                                             );
                                           }).toList(),
                                           isExpanded: true,
@@ -712,143 +721,121 @@ class _CheckOutState extends State<CheckOut> {
                               itemExtent: 80.0,
                               itemBuilder: (context, index) {
                                 return Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Column(
                                       crossAxisAlignment:
-                                          CrossAxisAlignment.center,
+                                          CrossAxisAlignment.start,
                                       mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Column( crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                          mainAxisAlignment:
                                           MainAxisAlignment.center,
-                                          children: [
-                                            TextWidgets(
-                                              text:
+                                      children: [
+                                        TextWidgets(
+                                          text:
                                               '${cartController.itemsList[index]?['title'][0]['en']}',
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.bold,
-                                              textOverFlow: TextOverflow.ellipsis,
-                                              color: const Color(0xff000000),
-                                            ),
-                                            const SizedBox(height: 10,),
-                                            TextWidgets(
-                                              text:
-                                              '${cartController.itemsList[index]?['description'][0]['en']}',
-                                              textOverFlow: TextOverflow.ellipsis,
-                                              fontSize: 11,
-                                              color: Colors.grey,
-                                            ),
-                                            TextWidgets(
-                                              text:
-                                              '${cartController.calculateOneItems(index) != 0 ? cartController.calculateOneItems(index).toDouble() : cartController.itemsList[index]!['price'].toString()}JD',
-                                              fontSize: 15,
-                                              fontWeight:
-                                              FontWeight.bold,
-                                              color: const Color(
-                                                  0xff000000),
-                                              textOverFlow:
-                                              TextOverflow.ellipsis,
-                                            ),
-                                          ],
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.bold,
+                                          textOverFlow: TextOverflow.ellipsis,
+                                          color: const Color(0xff000000),
                                         ),
-                                        Container(
-                                          height: 40,
-                                          width: 100,
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                            BorderRadius
-                                                .circular(25),
-                                            color: Colors.white,
-                                            boxShadow: [
-                                              BoxShadow(
-                                                color: Colors.grey
-                                                    .withOpacity(
-                                                    0.5),
-                                                spreadRadius: 5,
-                                                blurRadius: 7,
-                                                offset: const Offset(
-                                                    0,
-                                                    3), // changes position of shadow
-                                              ),
-                                            ],
-                                          ),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                            MainAxisAlignment
-                                                .spaceBetween,
-                                            crossAxisAlignment:
-                                            CrossAxisAlignment
-                                                .center,
-                                            children: [
-                                              SizedBox(
-                                                width: 30,
-                                                child: IconButton(
-                                                    onPressed:
-                                                        () {
-                                                      cartController
-                                                          .increment(
-                                                          index);
-                                                    },
-                                                    icon:
-                                                    const Icon(
-                                                      Icons.add,
-                                                      size: 20,
-                                                      color: Color(
-                                                          0xff15CA95),
-                                                    )),
-                                              ),
-                                              SizedBox(
-                                                width: 40,
-                                                child: Center(
-                                                  child: cartController
-                                                      .counter
-                                                      .isEmpty
-                                                      ? const TextWidgets(
-                                                    text:
-                                                    "0",
-                                                    fontWeight:
-                                                    FontWeight.bold,
-                                                    textOverFlow:
-                                                    TextOverflow.ellipsis,
-                                                    fontSize:
-                                                    13,
-                                                  )
-                                                      : TextWidgets(
-                                                    text:
-                                                    "${cartController.counter[index]}",
-                                                    fontWeight:
-                                                    FontWeight.bold,
-                                                    textOverFlow:
-                                                    TextOverflow.ellipsis,
-                                                    fontSize:
-                                                    13,
-                                                  ),
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                width: 30,
-                                                child: IconButton(
-                                                    onPressed:
-                                                        () {
-                                                      cartController
-                                                          .decrement(
-                                                          index);
-                                                    },
-                                                    icon:
-                                                    const Icon(
-                                                      Icons
-                                                          .remove,
-                                                      size: 20,
-                                                      color: Color(
-                                                          0xff15CA95),
-                                                    )),
-                                              ),
-
-                                            ],
-                                          ),
+                                        const SizedBox(
+                                          height: 10,
+                                        ),
+                                        TextWidgets(
+                                          text:
+                                              '${cartController.itemsList[index]?['description'][0]['en']}',
+                                          textOverFlow: TextOverflow.ellipsis,
+                                          fontSize: 11,
+                                          color: Colors.grey,
+                                        ),
+                                        TextWidgets(
+                                          text:
+                                              '${cartController.calculateOneItems(index) != 0 ? cartController.calculateOneItems(index).toDouble() : cartController.itemsList[index]!['price'].toString()}JD',
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.bold,
+                                          color: const Color(0xff000000),
+                                          textOverFlow: TextOverflow.ellipsis,
                                         ),
                                       ],
-                                    );
+                                    ),
+                                    Container(
+                                      height: 40,
+                                      width: 100,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(25),
+                                        color: Colors.white,
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.grey.withOpacity(0.5),
+                                            spreadRadius: 5,
+                                            blurRadius: 7,
+                                            offset: const Offset(0,
+                                                3), // changes position of shadow
+                                          ),
+                                        ],
+                                      ),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          SizedBox(
+                                            width: 30,
+                                            child: IconButton(
+                                                onPressed: () {
+                                                  cartController
+                                                      .increment(index);
+                                                },
+                                                icon: const Icon(
+                                                  Icons.add,
+                                                  size: 20,
+                                                  color: Color(0xff15CA95),
+                                                )),
+                                          ),
+                                          SizedBox(
+                                            width: 40,
+                                            child: Center(
+                                              child: cartController
+                                                      .counter.isEmpty
+                                                  ? const TextWidgets(
+                                                      text: "0",
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      textOverFlow:
+                                                          TextOverflow.ellipsis,
+                                                      fontSize: 13,
+                                                    )
+                                                  : TextWidgets(
+                                                      text:
+                                                          "${cartController.counter[index]}",
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      textOverFlow:
+                                                          TextOverflow.ellipsis,
+                                                      fontSize: 13,
+                                                    ),
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            width: 30,
+                                            child: IconButton(
+                                                onPressed: () {
+                                                  cartController
+                                                      .decrement(index);
+                                                },
+                                                icon: const Icon(
+                                                  Icons.remove,
+                                                  size: 20,
+                                                  color: Color(0xff15CA95),
+                                                )),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                );
                               }),
                         ),
                       ),
@@ -869,25 +856,48 @@ class _CheckOutState extends State<CheckOut> {
                             ),
                           ],
                         ),
-                        child:Padding(
-                          padding: const EdgeInsets.only(left: 10.0,right: 13,top: 20),
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              left: 10.0, right: 13, top: 20),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   const TextWidgets(
-                                    text:"Subtotal:",
+                                    text: "Subtotal:",
                                     fontSize: 13,
                                     fontWeight: FontWeight.bold,
                                     color: Color(0xff828282),
                                     textAlign: TextAlign.center,
                                   ),
                                   TextWidgets(
-                                    text:"${cartController.calculateTotal()}",
+                                    text: "${cartController.calculateTotal()}",
+                                    fontSize: 13,
+                                    color: const Color(0xff828282),
+                                    fontWeight: FontWeight.bold,
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ],
+                              ),
+                               Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  const TextWidgets(
+                                    text: "Delivery fee",
+                                    fontSize: 13,
+                                    color: Color(0xff828282),
+                                    fontWeight: FontWeight.bold,
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  TextWidgets(
+                                    text: "${categorieController.deliveryFee ?? 0}.00",
                                     fontSize: 13,
                                     color: const Color(0xff828282),
                                     fontWeight: FontWeight.bold,
@@ -897,17 +907,18 @@ class _CheckOutState extends State<CheckOut> {
                               ),
                               const Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   TextWidgets(
-                                    text:"Delivery fee",
+                                    text: "Service fee",
                                     fontSize: 13,
                                     color: Color(0xff828282),
                                     fontWeight: FontWeight.bold,
                                     textAlign: TextAlign.center,
                                   ),
                                   TextWidgets(
-                                    text:"0.00",
+                                    text: "0.00",
                                     fontSize: 13,
                                     color: Color(0xff828282),
                                     fontWeight: FontWeight.bold,
@@ -915,39 +926,22 @@ class _CheckOutState extends State<CheckOut> {
                                   ),
                                 ],
                               ),
-                              const Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  TextWidgets(
-                                    text:"Service fee",
-                                    fontSize: 13,
-                                    color: Color(0xff828282),
-                                    fontWeight: FontWeight.bold,
-                                    textAlign: TextAlign.center,
-                                  ),
-                                  TextWidgets(
-                                    text:"0.00",
-                                    fontSize: 13,
-                                    color: Color(0xff828282),
-                                    fontWeight: FontWeight.bold,
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ],
+                              const SizedBox(
+                                height: 10,
                               ),
-                              const SizedBox(height: 10,),
                               Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   const TextWidgets(
-                                    text:"Total amount",
+                                    text: "Total amount",
                                     fontSize: 14,
                                     fontWeight: FontWeight.bold,
                                     textAlign: TextAlign.center,
                                   ),
                                   TextWidgets(
-                                    text:"${cartController.calculateTotal()}",
+                                    text: "${checkOutController.calculateTotalOrder()}",
                                     fontSize: 14,
                                     fontWeight: FontWeight.bold,
                                     textAlign: TextAlign.center,
@@ -956,18 +950,51 @@ class _CheckOutState extends State<CheckOut> {
                               ),
                             ],
                           ),
-                        )
+                        )),
+                    const SizedBox(
+                      height: 10,
                     ),
                     Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-
+                        MaterialButtonWidgets(
+                          onPressed: () {},
+                          height: 60,
+                          minWidth: 150,
+                          textColor: const Color(0xff15CA95),
+                          color: Colors.white,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              side: const BorderSide(
+                                  width: 1.0, color: Color(0xff15CA95))),
+                          child: const TextWidgets(
+                              text: "00",
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        MaterialButtonWidgets(
+                          onPressed: () {
+                            RemoteServicesNewOrder.postNewOrder(checkOutController:checkOutController,cartController:cartController,categorieController:categorieController,context:context);
+                          },
+                          height: 60,
+                          minWidth: 150,
+                          textColor: Colors.white,
+                          color: const Color(0xff15CA95),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: const TextWidgets(
+                              text: "Add New Order",
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold),
+                        ),
                       ],
-                    )
+                    ),
                   ]);
             })),
-      ),
+      )
+    ),
     );
   }
 }

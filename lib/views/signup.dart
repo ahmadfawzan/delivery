@@ -1,5 +1,6 @@
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
@@ -9,7 +10,6 @@ import '../widgets/image_widgets.dart';
 import '../widgets/material_button_widgets.dart';
 import '../widgets/text_form_field_widgets.dart';
 import '../widgets/text_widgets.dart';
-import 'login.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({Key? key}) : super(key: key);
@@ -49,6 +49,7 @@ class _SignUpState extends State<SignUp> {
 
     var data = json.decode(response.body);
     if (response.statusCode == 200) {
+      if (!context.mounted) return;
       localStorageSignUpUser(
           name, email, mobileNumber, password, dropDownValue, countryCode,
           context: context);
@@ -707,11 +708,7 @@ class _SignUpState extends State<SignUp> {
                             Center(
                                 child: TextButton(
                               onPressed: () {
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (context) => const Login(),
-                                  ),
-                                );
+                                Get.toNamed("/login");
                               },
                               style: TextButton.styleFrom(
                                 foregroundColor: Colors.grey,

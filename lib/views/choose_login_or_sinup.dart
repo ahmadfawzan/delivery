@@ -1,10 +1,8 @@
-
-import 'package:delivery/views/signup.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import '../widgets/image_widgets.dart';
 import '../widgets/material_button_widgets.dart';
 import '../widgets/text_widgets.dart';
-import 'login.dart';
 
 class ChooseLoginOrSingup extends StatefulWidget {
   const ChooseLoginOrSingup({super.key});
@@ -24,12 +22,11 @@ class _ChooseLoginOrSingupState extends State<ChooseLoginOrSingup> {
           children: [
             const ImageWidget(
                 image: 'assets/images/Logo.png', width: 180, height: 150),
-            Container(
+            SizedBox(
               width: 283,
               child: MaterialButtonWidgets(
                   onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => const Login()));
+                    Get.toNamed("/login");
                   },
                   height: 70,
                   minWidth: 150,
@@ -56,14 +53,11 @@ class _ChooseLoginOrSingupState extends State<ChooseLoginOrSingup> {
             const SizedBox(
               height: 20,
             ),
-            Container(
+            SizedBox(
               width: 283,
               child: MaterialButtonWidgets(
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const SignUp()),
-                    );
+                    Get.toNamed("/signUp");
                   },
                   height: 70,
                   minWidth: 150,

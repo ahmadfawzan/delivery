@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../controllers/address_controller/address_controller.dart';
 import '../../../controllers/cart_controller/cart_controller.dart';
-import '../../../views/signup.dart';
 import '../../../widgets/text_widgets.dart';
 Future DeleteUser({required BuildContext context}) async {
   final AddressController addressController = Get.find();
@@ -32,8 +31,7 @@ Future DeleteUser({required BuildContext context}) async {
         addressController.popMenuValue=null;
         await prefs.clear();
         await sharedtoken.clear();
-        Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) => const SignUp()));
+        Get.offAllNamed("/signUp");
         cartController.numberOfItem.value=0;
       },
       context: context,

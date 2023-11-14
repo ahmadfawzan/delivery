@@ -12,7 +12,6 @@ import '../widgets/image_widgets.dart';
 import '../widgets/network_image.dart';
 import '../widgets/text_widgets.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'login.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({super.key});
@@ -134,8 +133,7 @@ class _HomePageState extends State<HomePage> {
                         SharedPreferences prefs =
                             await SharedPreferences.getInstance();
                         await prefs.clear();
-                        Navigator.of(context).pushReplacement(MaterialPageRoute(
-                            builder: (context) => const Login()));
+                        Get.offAllNamed("/login");
                         cartController.numberOfItem.value = 0;
                       },
                       btnCancelOnPress: () {},
@@ -434,6 +432,12 @@ class _HomePageState extends State<HomePage> {
                                             .categorieList[index].title?.en;
                                     categorieController.id = categorieController
                                         .categorieList[index].id;
+                                    categorieController.expeditedFees=categorieController
+                                        .categorieList[index].expeditedFees??0;
+                                    categorieController.deliveryFee=categorieController
+                                        .categorieList[index].deliveryFee??0;
+                                    categorieController.commesion=categorieController
+                                        .categorieList[index].commesion;
                                     Get.toNamed('/shops');
                                   },
                                   child: Card(

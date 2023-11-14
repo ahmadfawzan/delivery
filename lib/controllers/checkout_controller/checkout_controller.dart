@@ -3,19 +3,23 @@ import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../models/address_model/address_model.dart';
 import '../address_controller/address_controller.dart';
+import '../cart_controller/cart_controller.dart';
+import '../categorie_controller/categorie_controller.dart';
 
 class CheckOutController extends GetxController {
   final AddressController addressController = Get.find();
   final RxList<Address> changeAddressList = <Address>[].obs;
+  final CartController cartController = Get.find();
+  final CategorieController categorieController = Get.find();
   List popMenuValueCheckOut = [];
   final RxString phoneNumber=''.obs;
   String dropDownValueForPayment = 'Cash';
   var itemPayment=[ 'Cash',
     'Wallet',];
-  late int selectedPaymentValue=1;
+  late int selectedPaymentValue=2;
   Map<String, int> paymentOptions = {
-    'Cash': 1,
-    'Wallet': 2,
+    'Cash': 2,
+    'Wallet': 1,
   };
   late String selectedDate=DateFormat('yyyy-MM-dd').format(DateTime.now().add(const Duration(days: 1)));
   late List<String> itemDate  = [
@@ -53,5 +57,10 @@ class CheckOutController extends GetxController {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     phoneNumber.value = prefs.getString('PhoneNumber') ??'';
     update();
+  }
+  double calculateTotalOrder() {
+    double total = 0;
+    total = cartController.calculateTotal() + (categorieController.deliveryFee ?? 0);
+    return total;
   }
 }

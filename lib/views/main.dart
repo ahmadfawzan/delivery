@@ -1,6 +1,8 @@
 import 'package:delivery/views/add_new_address.dart';
 import 'package:delivery/views/delete_address.dart';
+import 'package:delivery/views/login.dart';
 import 'package:delivery/views/shop.dart';
+import 'package:delivery/views/signup.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import '../bindings/address_binding/address_binding.dart';
@@ -77,7 +79,17 @@ class MyApp extends StatelessWidget {
           page: () =>  const CheckOut(),
           binding:BindingsBuilder(() {
             CheckOutBinding().dependencies();
+            ShopBinding().dependencies();
           }),
+
+        ),
+        GetPage(
+          name: "/signUp",
+          page: () =>  const SignUp(),
+        ),
+        GetPage(
+          name: "/login",
+          page: () =>  const Login(),
         ),
       ],
     );

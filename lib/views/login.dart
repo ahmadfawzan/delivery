@@ -1,12 +1,12 @@
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import '../utils/Helper/shared_preferences/shared_preferences.dart';
 import '../widgets/country_code_picker.dart';
 import '../widgets/image_widgets.dart';
 import '../widgets/material_button_widgets.dart';
 import '../widgets/text_form_field_widgets.dart';
 import '../widgets/text_widgets.dart';
-import 'signup.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -246,11 +246,7 @@ class _LoginState extends State<Login> {
                 Center(
                     child: TextButton(
                   onPressed: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => const SignUp(),
-                      ),
-                    );
+                    Get.toNamed("/signUp");
                   },
                   style: TextButton.styleFrom(
                     foregroundColor: Colors.grey,

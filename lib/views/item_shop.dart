@@ -13,7 +13,6 @@ import '../widgets/material_button_widgets.dart';
 import '../widgets/network_image.dart';
 import '../widgets/text_form_field_widgets.dart';
 import '../widgets/text_widgets.dart';
-import 'add_new_address.dart';
 
 class ItemShop extends StatefulWidget {
   const ItemShop({
@@ -547,7 +546,7 @@ class _ItemShopState extends State<ItemShop> {
                                                                       element);
                                                               final int itemId =
                                                                   int.tryParse(itemMap[
-                                                                              'id']
+                                                                              'sub_categories_id']
                                                                           .toString()) ??
                                                                       0;
                                                               return itemId ==
@@ -603,10 +602,11 @@ class _ItemShopState extends State<ItemShop> {
                                                             cartController
                                                                 .itemCart
                                                                 .add({
-                                                              "id": itemShopController
-                                                                  .itemShopSearch[
-                                                                      index]
-                                                                  .id,
+                                                              "sub_categories_id":
+                                                                  itemShopController
+                                                                      .itemShopSearch[
+                                                                          index]
+                                                                      .id,
                                                               "imageUrl":
                                                                   itemShopController
                                                                       .itemShopSearch[
@@ -650,6 +650,12 @@ class _ItemShopState extends State<ItemShop> {
                                                                       .itemShopSearch[
                                                                           index]
                                                                       .quantity,
+
+                                                              "total":
+                                                              itemShopController
+                                                                  .itemShopList[
+                                                              index]
+                                                                  .price,
                                                             });
                                                             cartController
                                                                 .addItemToCart();
@@ -946,7 +952,7 @@ class _ItemShopState extends State<ItemShop> {
                                                                       element);
                                                               final int itemId =
                                                                   int.tryParse(itemMap[
-                                                                              'id']
+                                                                              'sub_categories_id']
                                                                           .toString()) ??
                                                                       0;
                                                               return itemId ==
@@ -1002,11 +1008,12 @@ class _ItemShopState extends State<ItemShop> {
                                                             cartController
                                                                 .itemCart
                                                                 .add({
-                                                              "id": itemShopController
-                                                                  .itemShopList[
-                                                                      index]
-                                                                  .id
-                                                                  .toString(),
+                                                              "sub_categories_id":
+                                                                  itemShopController
+                                                                      .itemShopList[
+                                                                          index]
+                                                                      .id
+                                                                      .toString(),
                                                               "imageUrl":
                                                                   itemShopController
                                                                       .itemShopList[
@@ -1050,6 +1057,11 @@ class _ItemShopState extends State<ItemShop> {
                                                                       .itemShopList[
                                                                           index]
                                                                       .quantity,
+                                                              "total":
+                                                                  itemShopController
+                                                                      .itemShopList[
+                                                                          index]
+                                                                      .price,
                                                             });
                                                             cartController
                                                                 .addItemToCart();

@@ -18,7 +18,6 @@ import '../widgets/material_button_widgets.dart';
 import '../widgets/text_form_field_widgets.dart';
 import '../widgets/text_widgets.dart';
 
-
 class AddNewAddress extends StatefulWidget {
   const AddNewAddress({super.key});
 
@@ -58,49 +57,49 @@ class _AddNewAddressState extends State<AddNewAddress> {
         addresses = addressList.map((json) => Address.fromJson(json)).toList();
         addressesType = addresses
             ?.where((element) =>
-        element.type == 1 && selectedOption == 1 ||
-            selectedOption == 2 && element.type == 2)
+                element.type == 1 && selectedOption == 1 ||
+                selectedOption == 2 && element.type == 2)
             .toList();
       });
       if (mounted) {
         addressesType!.isEmpty
             ? postDataAddresses(lat, long, selectedOption, city, street, name,
-            buildingNumber, apartmentNum,
-            context: context)
+                buildingNumber, apartmentNum,
+                context: context)
             : AwesomeDialog(
-          context: context,
-          animType: AnimType.leftSlide,
-          dialogType: DialogType.info,
-          btnOkOnPress: () {
-            PutAddresses(
-              context: context,
-              addressesType: addressesType,
-              lat: lat,
-              long: long,
-              name: name,
-              street: street,
-              buildingNumber: buildingNumber,
-              city: city,
-              apartmentNum: apartmentNum,
-            );
-          },
-          btnCancelOnPress: () {},
-          title: selectedOption == 1
-              ? 'change Address Home'
-              : selectedOption == 2
-              ? 'change Address Work'
-              : '',
-          body: TextWidgets(
-            text: selectedOption == 1
-                ? "The Home address exists. Do you want to change it?"
-                : selectedOption == 2
-                ? "The Work address exists. Do you want to change it?"
-                : "",
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-            textAlign: TextAlign.center,
-          ),
-        ).show();
+                context: context,
+                animType: AnimType.leftSlide,
+                dialogType: DialogType.info,
+                btnOkOnPress: () {
+                  PutAddresses(
+                    context: context,
+                    addressesType: addressesType,
+                    lat: lat,
+                    long: long,
+                    name: name,
+                    street: street,
+                    buildingNumber: buildingNumber,
+                    city: city,
+                    apartmentNum: apartmentNum,
+                  );
+                },
+                btnCancelOnPress: () {},
+                title: selectedOption == 1
+                    ? 'change Address Home'
+                    : selectedOption == 2
+                        ? 'change Address Work'
+                        : '',
+                body: TextWidgets(
+                  text: selectedOption == 1
+                      ? "The Home address exists. Do you want to change it?"
+                      : selectedOption == 2
+                          ? "The Work address exists. Do you want to change it?"
+                          : "",
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  textAlign: TextAlign.center,
+                ),
+              ).show();
       }
     } else {
       if (mounted) {
@@ -169,7 +168,8 @@ class _AddNewAddressState extends State<AddNewAddress> {
   Future<void> getAddressAndcity() async {
     List<Placemark> placemarks = await placemarkFromCoordinates(lat!, long!);
     setState(() {
-      city = placemarks[0].locality!.isEmpty ? 'No City' : placemarks[0].locality;
+      city =
+          placemarks[0].locality!.isEmpty ? 'No City' : placemarks[0].locality;
       street = placemarks[0].street;
       name = placemarks[0].name;
     });
@@ -204,178 +204,214 @@ class _AddNewAddressState extends State<AddNewAddress> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.only(top: 40.0),
-          child: Column(
-            children: [
-              const Center(
-                  child: TextWidgets(
-                      text: 'Address',
-                      fontSize: 25,
-                      fontWeight: FontWeight.bold)),
-              const SizedBox(
-                height: 10,
-              ),
-              SizedBox(
-                width: double.infinity,
-                height: 250,
-                child: _kGooglePlex == null
-                    ? const Text('')
-                    : GoogleMap(
-                  gestureRecognizers: <Factory<
-                      OneSequenceGestureRecognizer>>{
-                    Factory<PanGestureRecognizer>(
-                            () => PanGestureRecognizer()),
-                    Factory<ScaleGestureRecognizer>(
-                            () => ScaleGestureRecognizer()),
-                    Factory<TapGestureRecognizer>(
-                            () => TapGestureRecognizer()),
-                    Factory<EagerGestureRecognizer>(
-                            () => EagerGestureRecognizer()),
-                  },
-                  initialCameraPosition: _kGooglePlex!,
-                  markers: marker,
-                  mapType: MapType.normal,
-                  onMapCreated: (GoogleMapController controller) {
-                    _controller = controller;
-                  },
-                  myLocationEnabled: true,
+    return WillPopScope(
+      onWillPop: () async {
+        Get.toNamed('/home');
+        return true;
+      },
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.only(top: 40.0),
+            child: Column(
+              children: [
+                const Center(
+                    child: TextWidgets(
+                        text: 'Address',
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold)),
+                const SizedBox(
+                  height: 10,
                 ),
-              ),
-              const SizedBox(
-                height: 7,
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  SearchMapPlaceWidget(
-                    bgColor: const Color(0xffE0E0E0),
-                    iconColor: Colors.black,
-                    placeholder: 'Search Location',
-                    placeType: PlaceType.address,
-                    hasClearButton: false,
-                    textColor: Colors.black,
-                    apiKey: 'AIzaSyC7OA_kF9duRuHHew__jN_HdYh8yq0BCtE',
-                    onSelected: (Place place) async {
-                      if (mounted) {
-                        final geo = await place.geolocation;
-                        _controller.animateCamera(
-                            CameraUpdate.newLatLng(geo?.coordinates));
-                        _controller.animateCamera(
-                            CameraUpdate.newLatLngBounds(geo?.bounds, 0));
-                        final center = geo!.coordinates;
-                        setState(() {
-                          lat = center.latitude;
-                          long = center.longitude;
-                          marker.add(
-                            Marker(
-                              draggable: true,
-                              markerId: const MarkerId('1'),
-                              position: center,
-                              onDragEnd: (LatLng v) {
-                                lat = v.latitude;
-                                long = v.longitude;
-                                getAddressAndcity();
-                              },
-                            ),
-                          );
-                        });
-                        getAddressAndcity();
-                        onMapCreated();
-                      }
-                    },
-                  ),
-                  const SizedBox(
-                    height: 5,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 7),
-                    child: Row(
-                      children: [
-                        RadioMenuButton(
-                          value: 1,
-                          groupValue: selectedOption,
-                          onChanged: (value) {
-                            setState(() {
-                              selectedOption = value!;
-                            });
+                SizedBox(
+                  width: double.infinity,
+                  height: 250,
+                  child: _kGooglePlex == null
+                      ? const Text('')
+                      : GoogleMap(
+                          gestureRecognizers: <Factory<
+                              OneSequenceGestureRecognizer>>{
+                            Factory<PanGestureRecognizer>(
+                                () => PanGestureRecognizer()),
+                            Factory<ScaleGestureRecognizer>(
+                                () => ScaleGestureRecognizer()),
+                            Factory<TapGestureRecognizer>(
+                                () => TapGestureRecognizer()),
+                            Factory<EagerGestureRecognizer>(
+                                () => EagerGestureRecognizer()),
                           },
-                          child: const TextWidgets(
-                            text: 'Home',
-                            fontSize: 16,
-                            color: Color(0xff8D8D8E),
-                          ),
-                        ),
-                        RadioMenuButton(
-                          value: 2,
-                          groupValue: selectedOption,
-                          onChanged: (value) {
-                            setState(() {
-                              selectedOption = value!;
-                            });
+                          initialCameraPosition: _kGooglePlex!,
+                          markers: marker,
+                          mapType: MapType.normal,
+                          onMapCreated: (GoogleMapController controller) {
+                            _controller = controller;
                           },
-                          child: const TextWidgets(
-                            text: 'Work',
-                            fontSize: 16,
-                            color: Color(0xff8D8D8E),
-                          ),
+                          myLocationEnabled: true,
                         ),
-                        RadioMenuButton(
-                          value: 3,
-                          groupValue: selectedOption,
-                          onChanged: (value) {
-                            setState(() {
-                              selectedOption = value!;
-                            });
-                          },
-                          child: const TextWidgets(
-                            text: 'Other',
-                            fontSize: 16,
-                            color: Color(0xff8D8D8E),
-                          ),
-                        ),
-                      ],
+                ),
+                const SizedBox(
+                  height: 7,
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    SearchMapPlaceWidget(
+                      bgColor: const Color(0xffE0E0E0),
+                      iconColor: Colors.black,
+                      placeholder: 'Search Location',
+                      placeType: PlaceType.address,
+                      hasClearButton: false,
+                      textColor: Colors.black,
+                      apiKey: 'AIzaSyC7OA_kF9duRuHHew__jN_HdYh8yq0BCtE',
+                      onSelected: (Place place) async {
+                        if (mounted) {
+                          final geo = await place.geolocation;
+                          _controller.animateCamera(
+                              CameraUpdate.newLatLng(geo?.coordinates));
+                          _controller.animateCamera(
+                              CameraUpdate.newLatLngBounds(geo?.bounds, 0));
+                          final center = geo!.coordinates;
+                          setState(() {
+                            lat = center.latitude;
+                            long = center.longitude;
+                            marker.add(
+                              Marker(
+                                draggable: true,
+                                markerId: const MarkerId('1'),
+                                position: center,
+                                onDragEnd: (LatLng v) {
+                                  lat = v.latitude;
+                                  long = v.longitude;
+                                  getAddressAndcity();
+                                },
+                              ),
+                            );
+                          });
+                          getAddressAndcity();
+                          onMapCreated();
+                        }
+                      },
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 15, right: 15),
-                    child: Container(
-                        height: 235,
-                        width: double.infinity,
-                        decoration: const BoxDecoration(
-                          color: Color(0xffFFFFFF),
-                          borderRadius: BorderRadius.all(Radius.circular(20)),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Color(0xffE0E0E0),
-                              blurRadius: 15.0,
-                              spreadRadius: 5.0,
-                              offset: Offset(0.0, 0.0),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 7),
+                      child: Row(
+                        children: [
+                          RadioMenuButton(
+                            value: 1,
+                            groupValue: selectedOption,
+                            onChanged: (value) {
+                              setState(() {
+                                selectedOption = value!;
+                              });
+                            },
+                            child: const TextWidgets(
+                              text: 'Home',
+                              fontSize: 16,
+                              color: Color(0xff8D8D8E),
                             ),
-                          ],
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            SizedBox(
-                              height: 80,
-                              child: TextFormFieldWidgets(
+                          ),
+                          RadioMenuButton(
+                            value: 2,
+                            groupValue: selectedOption,
+                            onChanged: (value) {
+                              setState(() {
+                                selectedOption = value!;
+                              });
+                            },
+                            child: const TextWidgets(
+                              text: 'Work',
+                              fontSize: 16,
+                              color: Color(0xff8D8D8E),
+                            ),
+                          ),
+                          RadioMenuButton(
+                            value: 3,
+                            groupValue: selectedOption,
+                            onChanged: (value) {
+                              setState(() {
+                                selectedOption = value!;
+                              });
+                            },
+                            child: const TextWidgets(
+                              text: 'Other',
+                              fontSize: 16,
+                              color: Color(0xff8D8D8E),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 15, right: 15),
+                      child: Container(
+                          height: 235,
+                          width: double.infinity,
+                          decoration: const BoxDecoration(
+                            color: Color(0xffFFFFFF),
+                            borderRadius: BorderRadius.all(Radius.circular(20)),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Color(0xffE0E0E0),
+                                blurRadius: 15.0,
+                                spreadRadius: 5.0,
+                                offset: Offset(0.0, 0.0),
+                              ),
+                            ],
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              SizedBox(
+                                height: 80,
+                                child: TextFormFieldWidgets(
+                                    contentPadding: const EdgeInsets.symmetric(
+                                        vertical: 23, horizontal: 10),
+                                    readOnly: true,
+                                    hintText: street ?? 'StreetName',
+                                    enabledBorderUnderline:
+                                        const UnderlineInputBorder(
+                                      borderSide: BorderSide(
+                                        width: 2, //<-- SEE HERE
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                    focusedBorderUnderline:
+                                        const UnderlineInputBorder(
+                                      borderSide: BorderSide(
+                                        width: 2, //<-- SEE HERE
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                    hintstyle: const TextStyle(
+                                      fontSize: 20,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    prefixIcon: const Icon(
+                                      Icons.location_on,
+                                      color: Colors.black,
+                                      size: 35,
+                                    )),
+                              ),
+                              SizedBox(
+                                height: 75,
+                                child: TextFormFieldWidgets(
                                   contentPadding: const EdgeInsets.symmetric(
-                                      vertical: 23, horizontal: 10),
-                                  readOnly: true,
-                                  hintText: street ?? 'StreetName',
+                                      vertical: 25, horizontal: 10),
+                                  controller: buildingNumber,
+                                  hintText: 'Building Number',
                                   enabledBorderUnderline:
-                                  const UnderlineInputBorder(
+                                      const UnderlineInputBorder(
                                     borderSide: BorderSide(
                                       width: 2, //<-- SEE HERE
                                       color: Colors.black,
                                     ),
                                   ),
                                   focusedBorderUnderline:
-                                  const UnderlineInputBorder(
+                                      const UnderlineInputBorder(
                                     borderSide: BorderSide(
                                       width: 2, //<-- SEE HERE
                                       color: Colors.black,
@@ -383,201 +419,176 @@ class _AddNewAddressState extends State<AddNewAddress> {
                                   ),
                                   hintstyle: const TextStyle(
                                     fontSize: 20,
-                                    overflow: TextOverflow.ellipsis,
                                   ),
                                   prefixIcon: const Icon(
-                                    Icons.location_on,
+                                    Icons.add_location_alt,
                                     color: Colors.black,
                                     size: 35,
-                                  )),
+                                  ),
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'Please enter your BulidNumber';
+                                    }
+                                    return null;
+                                  },
+                                ),
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  SizedBox(
+                                    width: 150,
+                                    child: TextFormFieldWidgets(
+                                      contentPadding:
+                                          const EdgeInsets.symmetric(
+                                              vertical: 23, horizontal: 10),
+                                      readOnly: true,
+                                      inputBorder: InputBorder.none,
+                                      hintText: city ?? 'city',
+                                      hintstyle: const TextStyle(
+                                          fontSize: 20,
+                                          overflow: TextOverflow.ellipsis),
+                                      prefixIcon: const Icon(
+                                        Icons.location_city,
+                                        color: Colors.black,
+                                        size: 35,
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 150,
+                                    child: TextFormFieldWidgets(
+                                      contentPadding:
+                                          const EdgeInsets.symmetric(
+                                              vertical: 23, horizontal: 10),
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {
+                                          return 'Please enter your Apartment Num';
+                                        }
+                                        return null;
+                                      },
+                                      controller: apartmentNum,
+                                      inputBorder: InputBorder.none,
+                                      hintText: 'Apartment Num',
+                                      hintstyle: const TextStyle(
+                                          fontSize: 20,
+                                          overflow: TextOverflow.ellipsis),
+                                      prefixIcon: const Icon(
+                                        Icons.numbers,
+                                        color: Colors.black,
+                                        size: 35,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              )
+                            ],
+                          )),
+                    ),
+                    SizedBox(
+                      width: double.infinity,
+                      height: 120,
+                      child: Row(
+                        children: [
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          IconButton(
+                            icon: const Icon(
+                              Icons.arrow_back_ios_new,
+                              color: Color(0xff4B5056),
+                              size: 40,
                             ),
-                            SizedBox(
-                              height: 75,
-                              child: TextFormFieldWidgets(
-                                contentPadding: const EdgeInsets.symmetric(
-                                    vertical: 25, horizontal: 10),
-                                controller: buildingNumber,
-                                hintText: 'Building Number',
-                                enabledBorderUnderline:
-                                const UnderlineInputBorder(
-                                  borderSide: BorderSide(
-                                    width: 2, //<-- SEE HERE
-                                    color: Colors.black,
+                            onPressed: () {
+                              Get.toNamed("/home");
+                            },
+                          ),
+                          const SizedBox(
+                            width: 40,
+                          ),
+                          MaterialButtonWidgets(
+                              onPressed: () async {
+                                fetchAddresses();
+                              },
+                              height: 60,
+                              textColor: Colors.white,
+                              color: const Color(0xff15CB95),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                              child: const Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  SizedBox(
+                                    width: 10,
                                   ),
-                                ),
-                                focusedBorderUnderline:
-                                const UnderlineInputBorder(
-                                  borderSide: BorderSide(
-                                    width: 2, //<-- SEE HERE
-                                    color: Colors.black,
+                                  Icon(
+                                    Icons.check,
+                                    color: Colors.white,
+                                    size: 20,
                                   ),
-                                ),
-                                hintstyle: const TextStyle(
-                                  fontSize: 20,
-                                ),
-                                prefixIcon: const Icon(
-                                  Icons.add_location_alt,
-                                  color: Colors.black,
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  TextWidgets(
+                                      text: "SAVE ADDRESS",
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold),
+                                ],
+                              )),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          Container(
+                            width: 65,
+                            height: 65,
+                            decoration: const BoxDecoration(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(20)),
+                              color: Color(0xff14CB95),
+                            ),
+                            child: Center(
+                              child: IconButton(
+                                onPressed: () async {
+                                  loction1 =
+                                      await Geolocator.getCurrentPosition()
+                                          .then((value) => value);
+                                  lat = loction1.latitude;
+                                  long = loction1.longitude;
+                                  setState(() {
+                                    marker.add(
+                                      Marker(
+                                        draggable: true,
+                                        markerId: const MarkerId('1'),
+                                        position: LatLng(lat!, long!),
+                                        onDragEnd: (LatLng v) {
+                                          lat = v.latitude;
+                                          long = v.longitude;
+                                          getAddressAndcity();
+                                        },
+                                      ),
+                                    );
+                                  });
+                                  getAddressAndcity();
+                                  onMapCreated();
+                                },
+                                icon: const Icon(
+                                  Icons.location_on,
+                                  color: Colors.white,
                                   size: 35,
                                 ),
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Please enter your BulidNumber';
-                                  }
-                                  return null;
-                                },
                               ),
                             ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SizedBox(
-                                  width: 150,
-                                  child: TextFormFieldWidgets(
-                                    contentPadding: const EdgeInsets.symmetric(
-                                        vertical: 23, horizontal: 10),
-                                    readOnly: true,
-                                    inputBorder: InputBorder.none,
-                                    hintText: city ?? 'city',
-                                    hintstyle: const TextStyle(
-                                        fontSize: 20,
-                                        overflow: TextOverflow.ellipsis),
-                                    prefixIcon: const Icon(
-                                      Icons.location_city,
-                                      color: Colors.black,
-                                      size: 35,
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 150,
-                                  child: TextFormFieldWidgets(
-                                    contentPadding: const EdgeInsets.symmetric(
-                                        vertical: 23, horizontal: 10),
-                                    validator: (value) {
-                                      if (value == null || value.isEmpty) {
-                                        return 'Please enter your Apartment Num';
-                                      }
-                                      return null;
-                                    },
-                                    controller: apartmentNum,
-                                    inputBorder: InputBorder.none,
-                                    hintText: 'Apartment Num',
-                                    hintstyle: const TextStyle(
-                                        fontSize: 20,
-                                        overflow: TextOverflow.ellipsis),
-                                    prefixIcon: const Icon(
-                                      Icons.numbers,
-                                      color: Colors.black,
-                                      size: 35,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            )
-                          ],
-                        )),
-                  ),
-                  SizedBox(
-                    width: double.infinity,
-                    height: 120,
-                    child: Row(
-                      children: [
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        IconButton(
-                          icon: const Icon(
-                            Icons.arrow_back_ios_new,
-                            color: Color(0xff4B5056),
-                            size: 40,
-                          ),
-                          onPressed: () {
-                            Get.toNamed("/home");
-                          },
-                        ),
-                        const SizedBox(
-                          width: 40,
-                        ),
-                        MaterialButtonWidgets(
-                            onPressed: () async {
-                              fetchAddresses();
-                            },
-                            height: 60,
-                            textColor: Colors.white,
-                            color: const Color(0xff15CB95),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(5),
-                            ),
-                            child: const Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Icon(
-                                  Icons.check,
-                                  color: Colors.white,
-                                  size: 20,
-                                ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                TextWidgets(
-                                    text: "SAVE ADDRESS",
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold),
-                              ],
-                            )),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        Container(
-                          width: 65,
-                          height: 65,
-                          decoration: const BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(20)),
-                            color: Color(0xff14CB95),
-                          ),
-                          child: Center(
-                            child: IconButton(
-                              onPressed: () async {
-                                loction1 = await Geolocator.getCurrentPosition()
-                                    .then((value) => value);
-                                lat = loction1.latitude;
-                                long = loction1.longitude;
-                                setState(() {
-                                  marker.add(
-                                    Marker(
-                                      draggable: true,
-                                      markerId: const MarkerId('1'),
-                                      position: LatLng(lat!, long!),
-                                      onDragEnd: (LatLng v) {
-                                        lat = v.latitude;
-                                        long = v.longitude;
-                                        getAddressAndcity();
-                                      },
-                                    ),
-                                  );
-                                });
-                                getAddressAndcity();
-                                onMapCreated();
-                              },
-                              icon: const Icon(
-                                Icons.location_on,
-                                color: Colors.white,
-                                size: 35,
-                              ),
-                            ),
-                          ),
-                        )
-                      ],
+                          )
+                        ],
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            ],
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
